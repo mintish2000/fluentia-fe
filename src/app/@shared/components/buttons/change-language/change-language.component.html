@@ -1,13 +1,13 @@
 <app-action-button
   class="language-button"
   [matMenuTriggerFor]="languageMenu"
-  [text]="currentLanguage"
+  [text]="currentLanguage()"
   icon="translate"
   type="basic"
 />
 
 <mat-menu #languageMenu="matMenu">
-  <button *ngFor="let lang of filteredSystemLanguages" (click)="switchLanguage(lang)" mat-menu-item>
+  <button *ngFor="let lang of filteredSystemLanguages()" (click)="switchLanguage(lang)" mat-menu-item>
     {{ 'pages.layout.header.language.' + lang | translate }}
   </button>
 </mat-menu>

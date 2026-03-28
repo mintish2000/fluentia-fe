@@ -1,18 +1,15 @@
-import { AppUserType } from "@shared/enums/user/app-user-type.enum";
+import { AppUserType } from '@shared/enums/user/app-user-type.enum';
 
 export interface AppUser {
-  id: number;
-  email: string;
-  username: string;
+  id: number | string;
+  email: string | null;
   name: string;
   userRole: AppUserType;
-  role: string;
+  role: string | null;
+  firstName?: string | null;
+  lastName?: string | null;
   phoneNumber?: string;
   profilePicture?: string;
-  preachingCard?: {
-    numberOfMosques: number;
-    numberOfSermons: number;
-    numberOfListeners: number;
-    tags: string;
-  };
+  englishLevel?: string | null;
+  learningGoals?: string | null;
 }

@@ -1,0 +1,36 @@
+<section class="learning-page">
+  <header class="learning-page__header">
+    <h1>Course Catalog</h1>
+    <p>Browse available English learning courses from our tutors.</p>
+  </header>
+
+  @if (isLoading()) {
+    <p class="state-text">Loading courses...</p>
+  } @else if (!hasCourses()) {
+    <p class="state-text">No courses available right now.</p>
+  } @else {
+    <div class="card-grid">
+      @for (course of courses(); track course.id) {
+        <article class="learning-card">
+          <h2>{{ course.title }}</h2>
+          <p>{{ course.description || 'No description provided yet.' }}</p>
+          <div class="meta-row">
+            <span>Level: {{ course.level }}</span>
+            <span>Price: {{ course.price ?? 0 }}</span>
+          </div>
+          <a [routerLink]="['/main/courses', course.id]">View details</a>
+        </article>
+      }
+    </div>
+  }
+
+  <footer class="pager">
+    <button type="button" (click)="previousPage()" [disabled]="page() <= 1 || isLoading()">
+      Previous
+    </button>
+    <span>Page {{ page() }}</span>
+    <button type="button" (click)="nextPage()" [disabled]="!hasNextPage() || isLoading()">
+      Next
+    </button>
+  </footer>
+</section>

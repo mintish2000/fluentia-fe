@@ -1,16 +1,13 @@
 import { Direction } from '@angular/cdk/bidi';
 import { Location } from '@angular/common';
-import { Injectable, OnDestroy, inject, signal } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { Subject } from 'rxjs';
 
 import { ActiveStatus, Pagination } from '@shared/enums';
 import { AuthService } from '@shared/services/auth/auth.service';
-import { DialogService } from '@shared/services/dialog/dialog.service';
-import { LookupService } from '@shared/services/lookup/lookup.service';
 import { UserService } from '@shared/services/user/user.service';
 import { LocalStorageService } from '../../services/local-storage/local-storage.service';
 import { SystemService } from '../../services/system/system.service';
@@ -19,10 +16,7 @@ import { ToastService } from '../../services/toast/toast.service';
 // A base class for inheriting all key services, getters, and functions. (inject function is really helpful).
 
 @Injectable()
-export abstract class BaseComponent implements OnDestroy {
-  // Unsubscribe from observables through this property.
-  protected destroy$: Subject<boolean> = new Subject();
-
+export abstract class BaseComponent {
   protected _translate = inject(TranslateService);
   protected _titleService = inject(Title);
   protected _formBuilder = inject(FormBuilder);
@@ -31,10 +25,8 @@ export abstract class BaseComponent implements OnDestroy {
   protected _location = inject(Location);
 
   protected _systemService = inject(SystemService);
-  protected _lookupService = inject(LookupService);
   protected _localStorageService = inject(LocalStorageService);
   protected _toast = inject(ToastService);
-  protected _dialogService = inject(DialogService);
   protected _authService = inject(AuthService);
   protected _userService = inject(UserService);
 
@@ -59,7 +51,7 @@ export abstract class BaseComponent implements OnDestroy {
 
   protected get _filteredSystemLanguages(): string[] {
     return this._systemLanguages.filter(
-      (lang) => lang !== this._translate.currentLang
+      (lang) => lang !== this._systemService.currentLocale
     );
   }
 
@@ -99,10 +91,5 @@ export abstract class BaseComponent implements OnDestroy {
     this._router.navigate([route], {
       queryParamsHandling: mergeParams ? 'merge' : 'replace',
     });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next(true);
-    this.destroy$.complete();
   }
 }

@@ -45,14 +45,14 @@ export class ApiService {
   private _http = inject(HttpClient);
 
   constructor() {
-    this._baseUrl = environment.apiUrl;
+    this._baseUrl = environment.apiUrl.replace(/\/+$/, '');
   }
 
   get<T = unknown>(options: APIOptions = { path: '' }) {
     const sanitizedQueryParams = this._sanitizeQueryParams(
       options.params ?? {},
     );
-    const url = this._baseUrl + (options.path ?? '');
+    const url = this._buildUrl(options.path);
     const httpParams: HttpParams = new HttpParams({
       fromObject: sanitizedQueryParams,
     });
@@ -62,12 +62,12 @@ export class ApiService {
       responseType: (options.responseType as 'json') || 'json',
       observe: (options.observe as 'body') || 'body',
       context: _handleContexts(options.contexts),
-      withCredentials: options.withCredentials ?? true,
+      withCredentials: options.withCredentials ?? false,
     });
   }
 
   post<T = unknown>(options: APIOptions = { path: '' }) {
-    const url = this._baseUrl + (options.path ?? '');
+    const url = this._buildUrl(options.path);
     const sanitizedQueryParams = this._sanitizeQueryParams(
       options.params ?? {},
     );
@@ -80,12 +80,12 @@ export class ApiService {
       responseType: (options.responseType as 'json') || 'json',
       observe: (options.observe as 'body') || 'body',
       context: _handleContexts(options.contexts),
-      withCredentials: options.withCredentials ?? true,
+      withCredentials: options.withCredentials ?? false,
     });
   }
 
   delete<T = unknown>(options: APIOptions = { path: '' }) {
-    const url = this._baseUrl + (options.path ?? '');
+    const url = this._buildUrl(options.path);
     const sanitizedQueryParams = this._sanitizeQueryParams(
       options.params ?? {},
     );
@@ -98,12 +98,12 @@ export class ApiService {
       responseType: (options.responseType as 'json') || 'json',
       observe: (options.observe as 'body') || 'body',
       context: _handleContexts(options.contexts),
-      withCredentials: options.withCredentials ?? true,
+      withCredentials: options.withCredentials ?? false,
     });
   }
 
   patch<T = unknown>(options: APIOptions = { path: '' }) {
-    const url = this._baseUrl + (options.path ?? '');
+    const url = this._buildUrl(options.path);
     const sanitizedQueryParams = this._sanitizeQueryParams(
       options.params ?? {},
     );
@@ -115,12 +115,12 @@ export class ApiService {
       responseType: (options.responseType as 'json') || 'json',
       observe: (options.observe as 'body') || 'body',
       context: _handleContexts(options.contexts),
-      withCredentials: options.withCredentials ?? true,
+      withCredentials: options.withCredentials ?? false,
     });
   }
 
   put<T = unknown>(options: APIOptions = { path: '' }) {
-    const url = this._baseUrl + (options.path ?? '');
+    const url = this._buildUrl(options.path);
     const sanitizedQueryParams = this._sanitizeQueryParams(
       options.params ?? {},
     );
@@ -133,7 +133,7 @@ export class ApiService {
       responseType: (options.responseType as 'json') || 'json',
       observe: (options.observe as 'body') || 'body',
       context: _handleContexts(options.contexts),
-      withCredentials: options.withCredentials ?? true,
+      withCredentials: options.withCredentials ?? false,
     });
   }
 
@@ -147,6 +147,14 @@ export class ApiService {
     }
 
     return params as SanitizedQueryParams;
+  }
+
+  /**
+   * Builds a consistent absolute API URL from a relative path.
+   */
+  private _buildUrl(path: string = ''): string {
+    const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+    return `${this._baseUrl}${normalizedPath}`;
   }
 }
 

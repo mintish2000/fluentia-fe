@@ -1,17 +1,52 @@
 import { FormControl } from '@angular/forms';
-import { AppUser } from '@shared/interfaces/user/app-user.interface';
+import { BackendUser } from '@shared/interfaces/learning/learning.interface';
 
 export interface LoginForm {
-  userName: FormControl<string>;
+  email: FormControl<string>;
   password: FormControl<string>;
+  rememberMe: FormControl<boolean>;
 }
 export interface LoginPayload {
-  userName: string;
+  email: string;
+  password: string;
+}
+
+export interface RegisterForm {
+  firstName: FormControl<string>;
+  lastName: FormControl<string>;
+  email: FormControl<string>;
+  password: FormControl<string>;
+  confirmPassword: FormControl<string>;
+}
+
+export interface RegisterPayload {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+}
+
+export interface ForgotPasswordForm {
+  email: FormControl<string>;
+}
+
+export interface ForgotPasswordPayload {
+  email: string;
+}
+
+export interface ResetPasswordForm {
+  password: FormControl<string>;
+  confirmPassword: FormControl<string>;
+}
+
+export interface ResetPasswordPayload {
+  hash: string;
   password: string;
 }
 
 export interface LoginResponse {
   token: string;
   refreshToken: string;
-  userInfo: AppUser;
+  tokenExpires?: number;
+  user: BackendUser;
 }

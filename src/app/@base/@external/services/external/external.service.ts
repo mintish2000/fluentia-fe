@@ -1,9 +1,11 @@
 import { inject, Injectable } from '@angular/core';
 import {
+  ForgotPasswordPayload,
   LoginPayload,
   LoginResponse,
+  RegisterPayload,
+  ResetPasswordPayload,
 } from '@base/@external/login/interfaces/login.interface';
-import { ApiResult } from '@shared/interfaces';
 import { ApiService } from '@shared/services/api/api.service';
 
 @Injectable({
@@ -13,27 +15,30 @@ export class ExternalService {
   private _api = inject(ApiService);
 
   login(data: LoginPayload) {
-    return this._api.post<ApiResult>({
-      path: '/users/login',
+    return this._api.post<LoginResponse>({
+      path: '/auth/email/login',
       body: data,
     });
   }
 
-  verifyOtp(username: string, otp: number) {
-    return this._api.post<LoginResponse>({
-      path: '/users/checkOtp',
-      body: {
-        userName: username,
-        otpValue: otp,
-      },
-      withCredentials: true,
+  register(data: RegisterPayload) {
+    return this._api.post<void>({
+      path: '/auth/email/register',
+      body: data,
     });
   }
 
-  resendOtp(username: string) {
-    return this._api.post<ApiResult>({
-      path: '/users/resendOTP',
-      body: { userName: username },
+  forgotPassword(data: ForgotPasswordPayload) {
+    return this._api.post<void>({
+      path: '/auth/forgot/password',
+      body: data,
+    });
+  }
+
+  resetPassword(data: ResetPasswordPayload) {
+    return this._api.post<void>({
+      path: '/auth/reset/password',
+      body: data,
     });
   }
 }

@@ -10,6 +10,9 @@ export const routes: Routes = [
     path: 'main',
     loadChildren: () => import('./@base/@main/@features/features.routes'),
   },
+  { path: 'admin', pathMatch: 'full', redirectTo: 'main/admin' },
+  { path: 'tutor', pathMatch: 'full', redirectTo: 'main/tutor' },
+  { path: 'student', pathMatch: 'full', redirectTo: 'main/student' },
   {
     path: '',
     pathMatch: 'full',

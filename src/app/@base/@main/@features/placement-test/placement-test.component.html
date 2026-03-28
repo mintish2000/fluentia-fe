@@ -1,47 +1,105 @@
 <section class="page">
   <header class="page__header">
-    <h1 class="page__title">PLACEMENT TEST</h1>
-    <p class="page__subtitle">Discover your English level with a comprehensive assessment</p>
+    <h1 class="page__title">Placement Test</h1>
+    <p class="page__subtitle">
+      One-time timed assessment (50 questions) to determine your English level.
+    </p>
   </header>
 
-  <div class="grid">
-    <div class="card">
-      <div class="card__title">HOW IT WORKS</div>
-      <ul class="list">
-        <li>Online & free</li>
-        <li>Duration: up to 20 minutes</li>
-        <li>Covers A1 to C1 levels</li>
-      </ul>
-    </div>
+  @if (!placementQuiz()) {
+    <article class="card">
+      <p class="helper-text">Placement test is not configured yet.</p>
+    </article>
+  } @else if (hasCompletedPlacement()) {
+    <article class="card card--highlight">
+      <h2 class="card__title">Placement Test Completed</h2>
+      <p class="helper-text">
+        You have already completed this one-time test. Your result is visible to admins.
+      </p>
+    </article>
+  } @else if (isLoadingQuestions()) {
+    <article class="card">
+      <p class="helper-text">Loading test questions...</p>
+    </article>
+  } @else if (hasQuestions()) {
+    <article class="card card--highlight">
+      <h2 class="card__title">{{ placementQuiz()!.title }}</h2>
+      <p><strong>Questions:</strong> {{ questions().length }} / 50</p>
+      <p><strong>Answered:</strong> {{ answerProgress() }}</p>
+      <p><strong>Time left:</strong> {{ timerText() }}</p>
+    </article>
 
-    <div class="card card--highlight">
-      <div class="card__title">WHY A PLACEMENT TEST?</div>
-      <ul class="list">
-        <li>Determines English proficiency level</li>
-        <li>Ensures correct class placement</li>
-        <li>Identifies strengths and weaknesses</li>
-        <li>Provides personalized recommendations</li>
-      </ul>
-      <button type="button" class="cta">Take Your Free Test Now</button>
-    </div>
+    <article class="card">
+      <h2 class="card__title">Questions</h2>
+      <div class="questions">
+        @for (question of questions(); track question.id; let index = $index) {
+          <div
+            class="question"
+            [class.question--unanswered]="!isQuestionAnswered(question)"
+          >
+            <p>{{ index + 1 }}. {{ question.prompt }}</p>
+            @if (!isQuestionAnswered(question)) {
+              <p class="question-required">Required</p>
+            }
+            <div class="options">
+              @if (getQuestionType(question) === 'single') {
+                @for (option of getQuestionOptions(question); track option) {
+                  <label>
+                    <input
+                      type="radio"
+                      [name]="question.id"
+                      [value]="option"
+                      [checked]="singleAnswerMap()[question.id] === option"
+                      (change)="setSingleAnswer(question.id, option)"
+                    />
+                    {{ option }}
+                  </label>
+                }
+              } @else if (getQuestionType(question) === 'multi') {
+                @for (option of getQuestionOptions(question); track option) {
+                  <label>
+                    <input
+                      type="checkbox"
+                      [checked]="isMultiChecked(question.id, option)"
+                      (change)="toggleMultiAnswer(question.id, option, $any($event.target).checked)"
+                    />
+                    {{ option }}
+                  </label>
+                }
+              } @else {
+                <textarea
+                  rows="3"
+                  class="text-answer"
+                  [value]="textAnswerMap()[question.id]"
+                  (input)="setTextAnswer(question.id, $any($event.target).value)"
+                  placeholder="Write your answer"
+                ></textarea>
+              }
+            </div>
+          </div>
+        }
+      </div>
 
-    <div class="card">
-      <div class="card__title">TEST FORMAT</div>
-      <ul class="list">
-        <li>Grammar & vocabulary</li>
-        <li>Sentence structure</li>
-        <li>Multiple choice questions</li>
-      </ul>
-    </div>
+      <button type="button" class="cta" (click)="submitTest()" [disabled]="isSubmitting() || !canSubmit()">
+        {{ isSubmitting() ? 'Submitting...' : 'Submit Placement Test' }}
+      </button>
+      @if (!canSubmit()) {
+        <p class="helper-text">
+          Please answer all {{ questions().length }} questions before submitting.
+          @if (unansweredQuestionIds().length) {
+            (Remaining: {{ unansweredQuestionIds().length }})
+          }
+        </p>
+      }
+    </article>
+  }
 
-    <div class="card card--wide">
-      <div class="card__title">AFTER THE TEST</div>
-      <ul class="list">
-        <li>Level recommendation: Receive your CEFR level (A1–C1) based on test results</li>
-        <li>Schedule suggestion: Choose a suitable class time</li>
-        <li>Packages: Pick a package that best suits you</li>
-      </ul>
-    </div>
-  </div>
+  @if (submitResult(); as result) {
+    <article class="card card--highlight">
+      <h2 class="card__title">Attempt Submitted</h2>
+      <p class="helper-text">Result has been saved and shared with admins.</p>
+      <p><strong>Questions submitted:</strong> {{ result.answeredQuestions }}</p>
+    </article>
+  }
 </section>
 

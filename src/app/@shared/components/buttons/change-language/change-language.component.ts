@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, output, ViewEncapsulation } from '@angular/core';
+import { Component, computed, inject, output, ViewEncapsulation } from '@angular/core';
 import { MatMenuModule } from '@angular/material/menu';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { SystemService } from '@shared/services/system/system.service';
 import { ActionButtonComponent } from '../action-button/action-button.component';
 
@@ -18,20 +18,15 @@ import { ActionButtonComponent } from '../action-button/action-button.component'
   encapsulation: ViewEncapsulation.None,
 })
 export class ChangeLanguageComponent {
-  _systemService = inject(SystemService);
-  _translate = inject(TranslateService);
+  private _systemService = inject(SystemService);
 
   langChange = output<string>();
-
-  get currentLanguage(): string {
-    return this._systemService.currentLanguage;
-  }
-
-  get filteredSystemLanguages(): string[] {
-    return this._systemService.systemLanguages.filter(
-      (lang) => lang !== this._translate.currentLang
-    );
-  }
+  currentLanguage = computed(() => this._systemService.currentLanguage);
+  filteredSystemLanguages = computed(() =>
+    this._systemService
+      .systemLanguages
+      .filter((lang) => lang !== this._systemService.currentLocale),
+  );
 
   switchLanguage(lang: string) {
     this._systemService.switchSystemLanguage(lang);

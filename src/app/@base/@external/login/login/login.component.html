@@ -1,0 +1,75 @@
+<section class="auth-page">
+  <div class="auth-card">
+    <div class="brand-mark" aria-label="Fluentia English Academy">
+      <span class="brand-mark__name">Fluentia</span>
+      <span class="brand-mark__sub">English Academy</span>
+    </div>
+
+    <h1>Login</h1>
+    <h2>Secure sign in to continue your Fluentia journey</h2>
+
+    <form
+      cdkTrapFocus
+      [cdkTrapFocusAutoCapture]="true"
+      [formGroup]="form"
+      (ngSubmit)="onSubmit()"
+      novalidate
+    >
+      <p>Email address</p>
+      <realsoft-form-field>
+        <input
+          realsoftInput
+          cdkFocusInitial
+          type="email"
+          autocomplete="username"
+          formControlName="email"
+        />
+        <realsoft-error>
+          <app-form-errors [control]="form.controls.email" />
+        </realsoft-error>
+      </realsoft-form-field>
+
+      <p class="mt-1">Password</p>
+      <realsoft-form-field>
+        <input
+          formControlName="password"
+          realsoftInput
+          [type]="hide() ? 'password' : 'text'"
+          autocomplete="current-password"
+        />
+        <span
+          realsoft-icon-button
+          realsoftSuffix
+          (click)="onTogglePasswordClick($event)"
+          [attr.aria-label]="'Toggle password visibility'"
+          [attr.aria-pressed]="!hide()"
+          class="material-icons"
+        >
+          {{ hide() ? 'visibility_off' : 'visibility' }}
+        </span>
+        <realsoft-error>
+          <app-form-errors [control]="form.controls.password" />
+        </realsoft-error>
+      </realsoft-form-field>
+
+      <article class="auth-actions-row">
+        <realsoft-checkbox formControlName="rememberMe">Remember me</realsoft-checkbox>
+        <a routerLink="/external/reset-password">Reset password</a>
+      </article>
+
+      <app-action-button
+        (click)="authenticate()"
+        [text]="'Login'"
+        type="flat"
+        [isLoading]="_isLoading()"
+        [disabled]="form.invalid"
+        [fullWidth]="true"
+      />
+    </form>
+
+    <div class="switch-auth">
+      <span>New to Fluentia?</span>
+      <a routerLink="/external/register">Create account</a>
+    </div>
+  </div>
+</section>

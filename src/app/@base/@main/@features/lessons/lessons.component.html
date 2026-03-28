@@ -1,0 +1,49 @@
+<section class="learning-page">
+  <header class="learning-page__header">
+    <h1>Lessons</h1>
+    <p>Explore all available lessons and filter by course.</p>
+  </header>
+
+  <label class="filter-label" for="courseFilter">Filter by course</label>
+  <select
+    id="courseFilter"
+    class="filter-select"
+    [value]="selectedCourseId()"
+    (change)="setCourseFilter($any($event.target).value)"
+  >
+    <option value="all">All courses</option>
+    @for (course of availableCourseFilters(); track course.id) {
+      <option [value]="course.id">{{ course.title }}</option>
+    }
+  </select>
+
+  @if (isLoading()) {
+    <p class="state-text">Loading lessons...</p>
+  } @else if (!filteredLessons().length) {
+    <p class="state-text">No lessons found for this filter.</p>
+  } @else {
+    <div class="card-grid">
+      @for (lesson of filteredLessons(); track lesson.id) {
+        <article class="learning-card">
+          <h2>{{ lesson.title }}</h2>
+          <p>{{ lesson.content || 'No lesson content available.' }}</p>
+          <div class="meta-row">
+            <span>Course: {{ lesson.course.title }}</span>
+            <span>Order: {{ lesson.lessonOrder }}</span>
+          </div>
+          <a [routerLink]="['/main/lessons', lesson.id]">Open lesson</a>
+        </article>
+      }
+    </div>
+  }
+
+  <footer class="pager">
+    <button type="button" (click)="previousPage()" [disabled]="page() <= 1 || isLoading()">
+      Previous
+    </button>
+    <span>Page {{ page() }}</span>
+    <button type="button" (click)="nextPage()" [disabled]="!hasNextPage() || isLoading()">
+      Next
+    </button>
+  </footer>
+</section>

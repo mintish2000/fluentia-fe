@@ -1,0 +1,353 @@
+<section class="role-page" [dir]="_direction">
+  <header class="role-page__header">
+    <h1>Tutor Hub</h1>
+    <p>Welcome back, {{ displayName() }}</p>
+    <div class="role-page__sync">
+      <span>
+        Last synced:
+        {{ lastSyncedAt() ? (lastSyncedAt() | date: 'medium') : 'Not synced yet' }}
+      </span>
+      <button type="button" class="secondary" [disabled]="isLoading()" (click)="loadTutorOverview()">
+        Refresh
+      </button>
+    </div>
+  </header>
+
+  <section class="role-metrics">
+    <article class="metric-card">
+      <h3>My Students</h3>
+      <p>{{ tutorStudentsCount() }}</p>
+    </article>
+    <article class="metric-card">
+      <h3>My Courses</h3>
+      <p>{{ managedCoursesCount() }}</p>
+    </article>
+    <article class="metric-card">
+      <h3>My Lessons</h3>
+      <p>{{ managedLessonsCount() }}</p>
+    </article>
+    <article class="metric-card">
+      <h3>Bookings</h3>
+      <p>{{ tutorBookingsCount() }}</p>
+    </article>
+    <article class="metric-card">
+      <h3>Availability Slots</h3>
+      <p>{{ tutorAvailabilitiesCount() }}</p>
+    </article>
+  </section>
+
+  <section class="role-section role-section--compact">
+    <h2>Content Workspace</h2>
+    <p>Choose what you want to manage now.</p>
+    <div class="section-switcher">
+      <button
+        type="button"
+        [class.secondary]="activeSection() !== 'courses'"
+        (click)="setActiveSection('courses')"
+      >
+        Courses
+      </button>
+      <button
+        type="button"
+        [class.secondary]="activeSection() !== 'lessons'"
+        (click)="setActiveSection('lessons')"
+      >
+        Lessons
+      </button>
+      <button
+        type="button"
+        [class.secondary]="activeSection() !== 'students'"
+        (click)="setActiveSection('students')"
+      >
+        Students
+      </button>
+      <button
+        type="button"
+        [class.secondary]="activeSection() !== 'bookings'"
+        (click)="setActiveSection('bookings')"
+      >
+        Bookings
+      </button>
+    </div>
+  </section>
+
+  @if (activeSection() === 'courses') {
+  <section class="role-section">
+    <h2>Course Management</h2>
+    <p>Create or edit your courses directly.</p>
+
+    <div class="course-form">
+      <input type="text" [formControl]="courseTitle" placeholder="Course title" />
+      <input type="text" [formControl]="courseLevel" placeholder="Level (A1..C2)" />
+      <input type="number" [formControl]="coursePrice" placeholder="Price" />
+      <textarea [formControl]="courseDescription" rows="3" placeholder="Course description"></textarea>
+      <div class="course-form__actions">
+        <button
+          type="button"
+          (click)="saveCourse()"
+          [disabled]="courseTitle.invalid || courseLevel.invalid || isLoading()"
+        >
+          {{ editingCourseId() ? 'Update Course' : 'Create Course' }}
+        </button>
+        @if (editingCourseId()) {
+          <button type="button" class="secondary" (click)="resetCourseForm()">
+            Cancel Edit
+          </button>
+        }
+      </div>
+    </div>
+
+    @if (!tutorCourses().length) {
+      <p class="state-text">No tutor courses yet.</p>
+    } @else {
+      <div class="role-list">
+        @for (course of tutorCourses(); track course.id) {
+          <article class="role-item">
+            <div>
+              <h3>{{ course.title }}</h3>
+              <p>Level: {{ course.level }} | Price: {{ course.price ?? 0 }}</p>
+            </div>
+            <div class="role-item__actions">
+              <button type="button" class="secondary" (click)="editCourse(course)">Edit</button>
+              <button type="button" class="danger" (click)="deleteCourse(course.id)">Delete</button>
+            </div>
+          </article>
+        }
+      </div>
+    }
+  </section>
+  }
+
+  @if (activeSection() === 'lessons') {
+  <section class="role-section">
+    <h2>Lessons Management</h2>
+    <p>Add or edit lessons for your courses.</p>
+
+    <div class="course-form">
+      <select [formControl]="lessonCourseId">
+        <option value="">Select course</option>
+        @for (course of tutorCourses(); track course.id) {
+          <option [value]="course.id">{{ course.title }}</option>
+        }
+      </select>
+      <input type="text" [formControl]="lessonTitle" placeholder="Lesson title" />
+      <input type="number" [formControl]="lessonOrder" placeholder="Lesson order" />
+      <input type="text" [formControl]="lessonVideoUrl" placeholder="Video URL (optional)" />
+      <textarea [formControl]="lessonContent" rows="3" placeholder="Lesson content"></textarea>
+      <div class="course-form__actions">
+        <button
+          type="button"
+          (click)="saveLesson()"
+          [disabled]="lessonCourseId.invalid || lessonTitle.invalid || lessonOrder.invalid || isLoading()"
+        >
+          {{ editingLessonId() ? 'Update Lesson' : 'Create Lesson' }}
+        </button>
+        @if (editingLessonId()) {
+          <button type="button" class="secondary" (click)="resetLessonForm()">
+            Cancel Edit
+          </button>
+        }
+      </div>
+    </div>
+
+    @if (!tutorLessons().length) {
+      <p class="state-text">No lessons created yet.</p>
+    } @else {
+      <div class="role-list">
+        @for (lesson of tutorLessons(); track lesson.id) {
+          <article class="role-item">
+            <div>
+              <h3>{{ lesson.title }}</h3>
+              <p>
+                Course: {{ lesson.course.title }} | Order: {{ lesson.lessonOrder }}
+              </p>
+            </div>
+            <div class="role-item__actions">
+              <button type="button" class="secondary" (click)="editLesson(lesson)">Edit</button>
+              <button type="button" class="danger" (click)="deleteLesson(lesson.id)">Delete</button>
+            </div>
+          </article>
+        }
+      </div>
+    }
+  </section>
+  }
+
+  @if (activeSection() === 'students') {
+  <section class="role-section">
+    <h2>Students & enrollments</h2>
+    <p>
+      Each row is one enrollment: update progress and status, or move the student to another of your
+      courses.
+    </p>
+
+    @if (!tutorStudents().length) {
+      <p class="state-text">No students assigned to your courses yet.</p>
+    } @else {
+      <div class="role-list">
+        @for (student of tutorStudents(); track student.id) {
+          <article class="role-item role-item--stacked enrollment-card">
+            <header class="enrollment-card__header">
+              <h3>{{ student.name }}</h3>
+              <p>{{ student.email }}</p>
+              <p class="enrollment-card__meta">Average progress across courses: {{ student.averageProgress }}%</p>
+            </header>
+            <div class="sub-list enrollment-card__enrollments">
+              @for (enrollment of student.enrollments; track enrollment.id) {
+                <div class="sub-list__row enrollment-card__row" role="group" [attr.aria-label]="'Enrollment: ' + enrollment.course.title">
+                  <div class="enrollment-card__course">
+                    <span class="enrollment-card__label">Current course</span>
+                    <strong>{{ enrollment.course.title }}</strong>
+                  </div>
+                  <div class="enrollment-card__fields">
+                    <label class="enrollment-card__field">
+                      <span class="enrollment-card__label">Move to course</span>
+                      <select #courseInput [value]="enrollment.course.id" [attr.aria-label]="'Course for ' + enrollment.course.title">
+                        @for (course of tutorCourses(); track course.id) {
+                          <option [value]="course.id">{{ course.title }}</option>
+                        }
+                      </select>
+                    </label>
+                    <label class="enrollment-card__field">
+                      <span class="enrollment-card__label">Progress %</span>
+                      <input
+                        #progressInput
+                        type="number"
+                        min="0"
+                        max="100"
+                        [value]="enrollment.progress ?? 0"
+                        [attr.aria-label]="'Progress for ' + enrollment.course.title"
+                      />
+                    </label>
+                    <label class="enrollment-card__field">
+                      <span class="enrollment-card__label">Status</span>
+                      <select #statusInput [value]="enrollment.status" [attr.aria-label]="'Status for ' + enrollment.course.title">
+                        <option value="active">active</option>
+                        <option value="completed">completed</option>
+                        <option value="paused">paused</option>
+                      </select>
+                    </label>
+                  </div>
+                  <div class="enrollment-card__actions">
+                    <button
+                      type="button"
+                      class="secondary"
+                      (click)="updateEnrollmentGrade(enrollment.id, progressInput.value, statusInput.value)"
+                    >
+                      Save progress
+                    </button>
+                    <button
+                      type="button"
+                      class="secondary"
+                      (click)="reassignEnrollmentCourse(enrollment.id, courseInput.value)"
+                    >
+                      Move to selected course
+                    </button>
+                  </div>
+                </div>
+              }
+            </div>
+          </article>
+        }
+      </div>
+    }
+  </section>
+  }
+
+  @if (activeSection() === 'bookings') {
+  <section class="role-section">
+    <h2>Bookings Management</h2>
+    <p>Create 1:1 appointments for your students and manage session status.</p>
+
+    <div class="course-form">
+      <select [formControl]="bookingStudentId">
+        <option value="">Select student</option>
+        @for (student of tutorBookingStudents(); track student.id) {
+          <option [value]="student.id">{{ student.name }} ({{ student.email }})</option>
+        }
+      </select>
+      <input type="date" [formControl]="bookingDate" />
+      <input type="time" [formControl]="bookingStartTime" />
+      <select [formControl]="bookingMeetingProvider">
+        <option value="zoom">Zoom</option>
+        <option value="google_meet">Google Meet</option>
+      </select>
+      <input
+        type="url"
+        [formControl]="bookingMeetingLink"
+        placeholder="Meeting link (https://...)"
+      />
+      <div class="course-form__actions">
+        <button
+          type="button"
+          [disabled]="
+            bookingStudentId.invalid ||
+            bookingDate.invalid ||
+            bookingStartTime.invalid ||
+            bookingMeetingProvider.invalid ||
+            bookingMeetingLink.invalid ||
+            isLoading()
+          "
+          (click)="createTutorBooking()"
+        >
+          Create Appointment
+        </button>
+        <button type="button" class="secondary" (click)="resetTutorBookingForm()">
+          Reset
+        </button>
+      </div>
+    </div>
+
+    @if (!tutorBookings().length) {
+      <p class="state-text">No tutor bookings found.</p>
+    } @else {
+      <div class="role-list">
+        @for (booking of tutorBookings(); track booking.id) {
+          <article class="role-item">
+            <div>
+              <h3>{{ booking.student.firstName }} {{ booking.student.lastName }}</h3>
+              <p>
+                {{ booking.bookingDate | date: 'mediumDate' }} - {{ booking.startTime }} |
+                Status: {{ getBookingStatusLabel(booking) }}
+              </p>
+              @if (booking.meetingLink) {
+                <p>
+                  Meeting:
+                  <a [href]="booking.meetingLink" target="_blank" rel="noopener noreferrer">
+                    {{ booking.meetingProvider === 'google_meet' ? 'Google Meet' : 'Zoom' }}
+                  </a>
+                </p>
+              }
+            </div>
+            <div class="role-item__actions">
+              <button
+                type="button"
+                class="secondary"
+                [disabled]="!canAcceptBooking(booking) || isLoading()"
+                (click)="updateBookingStatus(booking.id, 'accepted')"
+              >
+                Accept
+              </button>
+              <button
+                type="button"
+                class="secondary"
+                [disabled]="!canRejectBooking(booking) || isLoading()"
+                (click)="updateBookingStatus(booking.id, 'rejected')"
+              >
+                Reject
+              </button>
+              <button
+                type="button"
+                [disabled]="!canCompleteBooking(booking) || isLoading()"
+                (click)="updateBookingStatus(booking.id, 'completed')"
+              >
+                Complete
+              </button>
+            </div>
+          </article>
+        }
+      </div>
+    }
+  </section>
+  }
+</section>

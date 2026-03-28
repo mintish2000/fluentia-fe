@@ -1,110 +1,78 @@
-import { Component, signal } from '@angular/core';
-import { CoreModule } from '@core/core.module';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { BaseComponent } from '@shared/components/base/base.component';
-import { MainPageWrapperComponent } from '@shared/components/wrappers/main-page-wrapper/main-page-wrapper.component';
-import {
-  ActivityCardData,
-  MosqueInfoData,
-  SermonCardData,
-  StatsCardData,
-} from './interfaces/dashboard.interfaces';
-import { MosqueCardComponent } from './mosque-card/mosque-card.component';
-import { ProfileCardComponent } from './profile-card/profile-card.component';
+import { Enrollment, Payment, StudentAnswer } from '@shared/interfaces/learning/learning.interface';
+import { EnrollmentsService } from '@shared/services/learning/enrollments.service';
+import { PaymentsService } from '@shared/services/learning/payments.service';
+import { StudentAnswersService } from '@shared/services/learning/student-answers.service';
+import { forkJoin } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss'],
-  imports: [
-    CoreModule,
-    MainPageWrapperComponent,
-    ProfileCardComponent,
-    MosqueCardComponent,
-  ],
+  styleUrl: './dashboard.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class DashboardComponent extends BaseComponent {
-  currentUser = this._userService.currentUser;
+  private _enrollmentsService = inject(EnrollmentsService);
+  private _studentAnswersService = inject(StudentAnswersService);
+  private _paymentsService = inject(PaymentsService);
 
-  // Dashboard stats
-  stats = signal<StatsCardData[]>([
-    {
-      icon: 'event',
-      label: 'pages.dashboard.stats.totalSermons',
-      value: 48,
-      color: 'bg-orange-100',
-    },
-    {
-      icon: 'people',
-      label: 'pages.dashboard.stats.audienceReach',
-      value: 2500,
-      color: 'bg-blue-100',
-    },
-    {
-      icon: 'feedback',
-      label: 'pages.dashboard.stats.pendingFeedback',
-      value: 12,
-      color: 'bg-red-100',
-    },
-  ]);
+  readonly currentUser = this._userService.currentUser;
+  readonly enrollments = signal<Enrollment[]>([]);
+  readonly answers = signal<StudentAnswer[]>([]);
+  readonly payments = signal<Payment[]>([]);
+  readonly isLoading = signal(false);
 
-  // Recent activities
-  recentActivities = signal<ActivityCardData[]>([
-    {
-      icon: 'add',
-      title: 'pages.dashboard.activities.newSermonAdded',
-      subtitle: '3 pages.dashboard.activities.timeAgo.days',
-      time: '',
-      color: 'bg-blue-100',
-    },
-    {
-      icon: 'feedback',
-      title: 'pages.dashboard.activities.feedbackReceived',
-      subtitle: '1 pages.dashboard.activities.timeAgo.hours',
-      time: '',
-      color: 'bg-green-100',
-    },
-    {
-      icon: 'update',
-      title: 'pages.dashboard.activities.profileUpdated',
-      subtitle: '2 pages.dashboard.activities.timeAgo.days',
-      time: '',
-      color: 'bg-purple-100',
-    },
-  ]);
+  readonly averageProgress = computed(() => {
+    const list = this.enrollments();
+    if (!list.length) {
+      return 0;
+    }
 
-  // Recent sermons
-  recentSermons = signal<SermonCardData[]>([
-    {
-      title: 'أهمية الصدق في حياة المسلم',
-      date: 'الجمعة 8 يونيو 2025',
-      views: 234,
-    },
-    {
-      title: 'الرحمة في الإسلام',
-      date: 'الجمعة 1 يونيو 2025',
-      views: 189,
-    },
-    {
-      title: 'الحياة الاجتماعية',
-      date: 'الجمعة 25 مايو 2025',
-      views: 156,
-    },
-  ]);
-
-  // Mosque/Community info
-  mosqueInfo = signal<MosqueInfoData>({
-    name: 'جامع الرحمن - الدوحة',
-    capacity: 800,
-    openedSince: 'منذ يناير 2010',
-    tag: 'خطبة الجمعة الأساسية',
+    const total = list.reduce((sum, item) => sum + Number(item.progress ?? 0), 0);
+    return Math.round(total / list.length);
   });
+
+  readonly completedEnrollments = computed(
+    () => this.enrollments().filter((item) => item.status === 'completed').length,
+  );
+  readonly correctAnswerRate = computed(() => {
+    const list = this.answers();
+    if (!list.length) {
+      return 0;
+    }
+
+    const correct = list.filter((answer) => answer.isCorrect).length;
+    return Math.round((correct / list.length) * 100);
+  });
+  readonly totalPaid = computed(() =>
+    this.payments().reduce((sum, payment) => sum + Number(payment.amount), 0),
+  );
 
   constructor() {
     super();
+    this.loadDashboardData();
   }
 
-  viewProfile() {
-    // Navigate to profile
-    console.log('Navigate to profile');
+  /**
+   * Loads dashboard aggregates from backend resources.
+   */
+  loadDashboardData(): void {
+    this.isLoading.set(true);
+
+    forkJoin({
+      enrollments: this._enrollmentsService.getEnrollments({ page: 1, limit: 50 }),
+      answers: this._studentAnswersService.getStudentAnswers({ page: 1, limit: 50 }),
+      payments: this._paymentsService.getMyPayments({ page: 1, limit: 50 }),
+    })
+      .pipe(finalize(() => this.isLoading.set(false)))
+      .subscribe({
+        next: ({ enrollments, answers, payments }) => {
+          this.enrollments.set(enrollments.data ?? []);
+          this.answers.set(answers.data ?? []);
+          this.payments.set(payments.data ?? []);
+        },
+      });
   }
 }

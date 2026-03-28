@@ -1,35 +1,69 @@
-.dashboard-container {
-    display: grid;
-    grid-template-columns: 1.5fr repeat(4, 1fr);
-    grid-template-rows: repeat(10, 1fr);
-    grid-column-gap: 25px;
-    grid-row-gap: 25px;
+.dashboard-page {
+  display: grid;
+  gap: 1rem;
+}
 
-    & .card {
-        border: 1px solid #eee;
-        border-radius: 8px;
-        padding: 16px;
-        background-color: #fff;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.dashboard-page__header h1 {
+  margin: 0;
+}
 
-        &.profile-card {
-            grid-area: 1 / 1 / 7 / 2;
-        }
+.dashboard-page__header p {
+  margin: 0.45rem 0 0;
+  color: #4b5563;
+}
 
-        &.mosque-card {
-            grid-area: 7 / 1 / 11 / 2;
-        }
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 0.8rem;
+}
 
-        &.statistics-cards {
-            grid-area: 1 / 2 / 2 / 6;
-        }
+.stat-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 0.85rem;
+  display: grid;
+  gap: 0.45rem;
+}
 
-        &.latest-activities-cards {
-            grid-area: 2 / 2 / 7 / 6;
-        }
+.stat-card h2 {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #374151;
+}
 
-        &.latest-sermons-cards {
-            grid-area: 7 / 2 / 11 / 6;
-        }
-    }
+.stat-card p {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.panel {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 1rem;
+}
+
+.panel h2 {
+  margin: 0 0 0.75rem;
+}
+
+.panel ul {
+  margin: 0;
+  padding-left: 1rem;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.panel li {
+  display: grid;
+  gap: 0.2rem;
+  color: #374151;
+}
+
+.state-text {
+  color: #6b7280;
 }

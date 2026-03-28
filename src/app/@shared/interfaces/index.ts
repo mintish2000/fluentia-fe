@@ -26,3 +26,5 @@ export interface PaginationFilter {
 export type CanDeactivateComponent = {
   canDeactivate: Observable<boolean>;
 };
+
+export * from './learning/learning.interface';

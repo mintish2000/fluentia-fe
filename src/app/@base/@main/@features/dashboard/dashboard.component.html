@@ -1,25 +1,50 @@
-<app-main-page-wrapper>
-    <ng-container app-wrapper-content>
-        <div class="dashboard-container">
-            <div class="card profile-card">
-                <app-profile-card [user]="currentUser()!"></app-profile-card>
-            </div>
+<section class="dashboard-page">
+  <header class="dashboard-page__header">
+    <h1>Learning Progress Dashboard</h1>
+    <p>Track your enrollments, test performance, and payment activity.</p>
+  </header>
 
-            <div class="card mosque-card">
-                <app-mosque-card [mosqueInfo]="mosqueInfo()!"></app-mosque-card>
-            </div>
+  @if (isLoading()) {
+    <p class="state-text">Loading dashboard data...</p>
+  } @else {
+    <div class="stats-grid">
+      <article class="stat-card">
+        <h2>Enrollments</h2>
+        <p>{{ enrollments().length }}</p>
+      </article>
+      <article class="stat-card">
+        <h2>Completed</h2>
+        <p>{{ completedEnrollments() }}</p>
+      </article>
+      <article class="stat-card">
+        <h2>Average Progress</h2>
+        <p>{{ averageProgress() }}%</p>
+      </article>
+      <article class="stat-card">
+        <h2>Correct Answers</h2>
+        <p>{{ correctAnswerRate() }}%</p>
+      </article>
+      <article class="stat-card">
+        <h2>Total Paid</h2>
+        <p>{{ totalPaid() }}</p>
+      </article>
+    </div>
 
-            <div class="card statistics-cards">
-                
-            </div>
-
-            <div class="card latest-activities-cards">
-
-            </div>
-
-            <div class="card latest-sermons-cards">
-
-            </div>
-        </div>
-    </ng-container>
-</app-main-page-wrapper>
+    <article class="panel">
+      <h2>Recent enrollments</h2>
+      @if (!enrollments().length) {
+        <p class="state-text">No enrollments yet.</p>
+      } @else {
+        <ul>
+          @for (enrollment of enrollments().slice(0, 8); track enrollment.id) {
+            <li>
+              <strong>{{ enrollment.course.title }}</strong>
+              <span>{{ enrollment.status }}</span>
+              <span>{{ enrollment.progress ?? 0 }}%</span>
+            </li>
+          }
+        </ul>
+      }
+    </article>
+  }
+</section>

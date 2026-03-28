@@ -1,4 +1,8 @@
 import { Routes } from '@angular/router';
+import { AdminGuard } from '@core/guards/admin.guard';
+import { StudentGuard } from '@core/guards/student.guard';
+import { TutorGuard } from '@core/guards/tutor.guard';
+import { UserGuard } from '@core/guards/user.guard';
 import { LayoutComponent } from '../layout/layout.component';
 
 export const featuresRoutes: Routes = [
@@ -10,6 +14,42 @@ export const featuresRoutes: Routes = [
         path: '',
         pathMatch: 'full',
         redirectTo: 'home',
+      },
+      {
+        path: 'dashboard',
+        canActivate: [UserGuard],
+        loadComponent: () => import('./dashboard/dashboard.component'),
+        title: 'pages.dashboard.title',
+      },
+      {
+        path: 'courses',
+        canActivate: [UserGuard],
+        loadComponent: () => import('./courses/courses.component'),
+        title: 'Courses',
+      },
+      {
+        path: 'courses/:id',
+        canActivate: [UserGuard],
+        loadComponent: () => import('./course-details/course-details.component'),
+        title: 'Course Details',
+      },
+      {
+        path: 'lessons',
+        canActivate: [UserGuard],
+        loadComponent: () => import('./lessons/lessons.component'),
+        title: 'Lessons',
+      },
+      {
+        path: 'lessons/:id',
+        canActivate: [UserGuard],
+        loadComponent: () => import('./lesson-details/lesson-details.component'),
+        title: 'Lesson Details',
+      },
+      {
+        path: 'bookings',
+        canActivate: [UserGuard],
+        loadComponent: () => import('./bookings/bookings.component'),
+        title: 'Bookings',
       },
       {
         path: 'home',
@@ -31,6 +71,7 @@ export const featuresRoutes: Routes = [
       },
       {
         path: 'placement-test',
+        canActivate: [UserGuard, StudentGuard],
         loadComponent: () => import('./placement-test/placement-test.component'),
         title: 'Placement Test',
       },
@@ -48,7 +89,25 @@ export const featuresRoutes: Routes = [
         path: 'contact',
         loadComponent: () => import('./contact/contact.component'),
         title: 'Contact',
-      }
+      },
+      {
+        path: 'admin',
+        canActivate: [UserGuard, AdminGuard],
+        loadChildren: () =>
+          import('../../@admin/admin.routes').then((m) => m.default),
+      },
+      {
+        path: 'tutor',
+        canActivate: [UserGuard, TutorGuard],
+        loadChildren: () =>
+          import('../../@tutor/tutor.routes').then((m) => m.default),
+      },
+      {
+        path: 'student',
+        canActivate: [UserGuard, StudentGuard],
+        loadChildren: () =>
+          import('../../@student/student.routes').then((m) => m.default),
+      },
     ],
   },
 ];

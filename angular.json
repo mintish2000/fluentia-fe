@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "musaed_al-khateeb": {
+    "fluentia": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "outputPath": "dist/musaed-al-khateeb",
+            "outputPath": "dist/fluentia",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": ["zone.js"],
@@ -72,10 +72,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "musaed_al-khateeb:build:production"
+              "buildTarget": "fluentia:build:production"
             },
             "development": {
-              "buildTarget": "musaed_al-khateeb:build:development"
+              "buildTarget": "fluentia:build:development"
             }
           },
           "defaultConfiguration": "development"

@@ -2,21 +2,54 @@
   <mat-toolbar class="website__toolbar">
     <div class="website__toolbar-inner">
       <a class="brand" [routerLink]="['/main/home']">
-        <span class="brand__name">FLUENTIA</span>
-        <span class="brand__sub">ENGLISH ACADEMY</span>
+        <span class="brand__name">Fluentia</span>
+        <span class="brand__sub">English Academy</span>
       </a>
 
       <nav class="nav">
-        <a routerLink="/main/about" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">About</a>
-        <a routerLink="/main/levels" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">English Levels</a>
-        <a routerLink="/main/placement-test" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Placement Test</a>
-        <a routerLink="/main/how-it-works" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">How it works</a>
-        <a routerLink="/main/pricing" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Schedule & Pricing</a>
-        <a routerLink="/main/contact" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Contact</a>
+        @if (shouldShowRoleNavbar()) {
+          @for (link of getPrivateNavbarLinks(); track link.path) {
+            <a
+              [routerLink]="link.path"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: link.exact ?? true }"
+            >
+              {{ link.label }}
+            </a>
+          }
+        } @else {
+          @for (link of publicNavbarLinks; track link.path) {
+            <a
+              [routerLink]="link.path"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: link.exact ?? true }"
+            >
+              {{ link.label }}
+            </a>
+          }
+        }
       </nav>
 
       <div class="toolbar-actions">
+        @if (isAuthenticated()) {
+          <span class="role-chip">{{ getCurrentRoleLabel() }}</span>
+          <a class="hub-link" [routerLink]="getRoleHubPath()">Go to Hub</a>
+        }
         <app-change-language class="navbar-language"></app-change-language>
+        @if (isAuthenticated()) {
+          <button type="button" class="auth-action auth-action--logout" (click)="logout()">
+            Logout
+          </button>
+        } @else {
+          <a
+            class="auth-action auth-action--login"
+            routerLink="/external/login"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            Login
+          </a>
+        }
       </div>
     </div>
   </mat-toolbar>
@@ -28,8 +61,13 @@
   <footer class="website__footer">
     <div class="website__footer-inner">
       <div class="footer-brand">
-        <div class="footer-brand__name">FLUENTIA</div>
-        <div class="footer-brand__tagline">WHERE FLUENCY BECOMES NATURAL</div>
+        <div class="footer-brand__name">Fluentia</div>
+        <div class="footer-brand__tagline">Where fluency becomes natural</div>
+        @if (isAuthenticated() && isStudentRole() && shouldShowPlacementFooterLink()) {
+          <a class="footer-placement-link" routerLink="/main/placement-test">
+            Start Placement Test
+          </a>
+        }
       </div>
       <div class="footer-copy">© 2026 Fluentia English Academy. All rights reserved.</div>
     </div>

@@ -1,5 +1,6 @@
 import { Direction } from '@angular/cdk/bidi';
-import { inject, Injectable } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { environment } from '@environments/environment';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -17,6 +18,26 @@ type AppLocals = {
 })
 export class SystemService {
   private _translate = inject(TranslateService);
+  private _currentLocale = signal<AppLanguages>('en');
+  private _availableLanguages = signal<string[]>([]);
+  readonly currentLocaleSignal = this._currentLocale.asReadonly();
+  readonly availableLanguagesSignal = this._availableLanguages.asReadonly();
+  readonly directionSignal = computed<Direction>(() =>
+    this._currentLocale() === 'en' ? 'ltr' : 'rtl',
+  );
+  readonly currentLanguageLabelSignal = computed(() =>
+    this._currentLocale() === 'en'
+      ? this._translate.instant('pages.layout.header.language.en')
+      : this._translate.instant('pages.layout.header.language.ar'),
+  );
+
+  constructor() {
+    this._translate.onLangChange
+      .pipe(takeUntilDestroyed())
+      .subscribe(({ lang }) => {
+        this._updateCurrentLocale(lang as AppLanguages);
+      });
+  }
 
   get isDevelopment(): boolean {
     return environment.production == false;
@@ -27,21 +48,19 @@ export class SystemService {
   }
 
   get systemLanguages(): string[] {
-    return this._translate.getLangs();
+    return this._availableLanguages();
   }
 
   get currentLanguage(): string {
-    return this._translate.currentLang == 'en'
-      ? this._translate.instant('pages.layout.header.language.en')
-      : this._translate.instant('pages.layout.header.language.ar');
+    return this.currentLanguageLabelSignal();
   }
 
   get currentLocale(): string {
-    return this._translate.currentLang;
+    return this._currentLocale();
   }
 
   get direction(): Direction {
-    return this._translate.currentLang == 'en' ? 'ltr' : 'rtl';
+    return this.directionSignal();
   }
 
   initLanguageConfig(
@@ -50,6 +69,7 @@ export class SystemService {
     locals: AppLocals,
   ): void {
     this._translate.addLangs(languages);
+    this._availableLanguages.set(languages);
     this.setTranslations(locals);
 
     let systemLanguage = this.getSystemLanguage();
@@ -61,6 +81,7 @@ export class SystemService {
 
     this._translate.setDefaultLang(systemLanguage);
     this._translate.use(systemLanguage);
+    this._updateCurrentLocale(systemLanguage as AppLanguages);
 
     this.reflectDirectionChanges(systemLanguage);
   }
@@ -85,6 +106,14 @@ export class SystemService {
   switchSystemLanguage(lang: string) {
     this.setSystemLanguage(lang);
     window.location.reload();
+  }
+
+  /**
+   * Synchronizes locale-dependent signals and direction attributes.
+   */
+  private _updateCurrentLocale(lang: AppLanguages): void {
+    this._currentLocale.set(lang);
+    this.reflectDirectionChanges(lang);
   }
 
   reflectDirectionChanges(lang: string) {

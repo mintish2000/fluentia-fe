@@ -1,5 +1,5 @@
 {
-  "name": "musaed-al-khateeb",
+  "name": "fluentia",
   "version": "0.0.0",
   "engines": {
     "node": ">=22.15.1"
@@ -20,11 +20,6 @@
     "@angular/router": "^19.2.14",
     "@ngx-translate/core": "^16.0.4",
     "bootstrap": "^5.3.7",
-    "moment": "^2.30.1",
-    "ng-otp-input": "^2.0.8",
-    "ngx-avatars": "^1.9.3",
-    "ngx-cookie-service": "^19.1.2",
-    "ngx-skeleton-loader": "^11.2.1",
     "realsoft-reusable-components": "^18.1.40",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

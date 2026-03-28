@@ -16,7 +16,6 @@ import { appHttpInterceptors } from '@core/interceptors';
 import { TranslateModule } from '@ngx-translate/core';
 import { materialProviders } from '@shared/utils/providers/material.provider';
 import { PageTitleStrategy } from '@shared/utils/strategies/page-title.strategy';
-import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { routes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
@@ -28,9 +27,6 @@ export const appConfig: ApplicationConfig = {
       BrowserAnimationsModule,
       TranslateModule.forRoot(),
       MatSnackBarModule,
-      NgxSkeletonLoaderModule.forRoot({
-        animation: 'progress',
-      }),
     ]),
     {
       provide: TitleStrategy,

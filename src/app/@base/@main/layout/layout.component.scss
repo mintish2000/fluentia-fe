@@ -36,16 +36,18 @@
 
 .brand__name {
   font-weight: 900;
-  letter-spacing: 0.08em;
-  font-size: 18px;
+  letter-spacing: 0.04em;
+  font-size: 24px;
+  text-transform: uppercase;
 }
 
 .brand__sub {
   font-weight: 700;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.16em;
   font-size: 10px;
-  color: rgba(11, 58, 102, 0.75);
+  color: rgba(212, 166, 42, 0.95);
   margin-top: 3px;
+  text-transform: uppercase;
 }
 
 .nav {
@@ -84,6 +86,63 @@
   gap: 10px;
 }
 
+.role-chip {
+  border: 1px solid rgba(11, 58, 102, 0.2);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  color: $brand-navy;
+  background: rgba(11, 58, 102, 0.08);
+}
+
+.hub-link {
+  text-decoration: none;
+  border: 1px solid rgba(11, 58, 102, 0.2);
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.03em;
+  color: $brand-navy;
+  background: rgba(11, 58, 102, 0.08);
+}
+
+.hub-link:hover {
+  background: rgba(11, 58, 102, 0.14);
+}
+
+.auth-action {
+  text-decoration: none;
+  border: 1px solid rgba(11, 58, 102, 0.18);
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+.auth-action--login {
+  color: $brand-navy;
+  background: rgba(212, 166, 42, 0.2);
+}
+
+.auth-action--login:hover {
+  background: rgba(212, 166, 42, 0.3);
+}
+
+.auth-action--logout {
+  color: #ffffff;
+  background: $brand-navy;
+}
+
+.auth-action--logout:hover {
+  background: rgba(11, 58, 102, 0.86);
+}
+
 .navbar-language {
   .language-button {
     span {
@@ -120,16 +179,35 @@
 
 .footer-brand__name {
   font-weight: 900;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.08em;
   color: $brand-navy;
+  text-transform: uppercase;
 }
 
 .footer-brand__tagline {
   margin-top: 4px;
   font-weight: 800;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   font-size: 11px;
-  color: rgba(11, 58, 102, 0.8);
+  color: rgba(11, 58, 102, 0.78);
+  text-transform: uppercase;
+}
+
+.footer-placement-link {
+  margin-top: 10px;
+  display: inline-flex;
+  text-decoration: none;
+  border: 1px solid rgba(11, 58, 102, 0.22);
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 800;
+  color: $brand-navy;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.footer-placement-link:hover {
+  background: rgba(255, 255, 255, 0.85);
 }
 
 .footer-copy {

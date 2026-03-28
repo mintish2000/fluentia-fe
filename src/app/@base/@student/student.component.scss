@@ -1,0 +1,63 @@
+@use '../@tutor/tutor.component.scss';
+
+.role-page__header {
+  border-left: 4px solid rgba(212, 166, 42, 0.7);
+}
+
+.role-section {
+  position: relative;
+}
+
+.role-section h2 {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.role-page__grid {
+  margin-top: 1.25rem;
+}
+
+.role-page__sync {
+  margin-top: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  color: rgba(11, 58, 102, 0.78);
+  font-weight: 700;
+}
+
+.status-chip {
+  margin-top: 0.4rem;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0.15rem 0.6rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #5c4500;
+  background: rgba(179, 136, 24, 0.16);
+  text-transform: capitalize;
+}
+
+.role-card {
+  border-top: 3px solid rgba(11, 58, 102, 0.2);
+}
+
+.role-card:nth-child(odd) {
+  border-top-color: rgba(0, 167, 216, 0.45);
+}
+
+.role-card:nth-child(even) {
+  border-top-color: rgba(212, 166, 42, 0.5);
+}
+
+.status-chip--active {
+  color: #0f5132;
+  background: rgba(25, 135, 84, 0.16);
+}
+
+.status-chip--completed {
+  color: #0b3a66;
+  background: rgba(11, 58, 102, 0.16);
+}

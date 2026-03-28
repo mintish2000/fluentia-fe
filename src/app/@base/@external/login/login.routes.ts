@@ -1,23 +1,22 @@
 import { Routes } from '@angular/router';
-import { queryParamValidityResolver } from '@core/resolvers/query-param-validity.resolver';
 
 const loginRoutes: Routes = [
   {
     path: '',
-    redirectTo: 'step-one',
+    redirectTo: 'login',
     pathMatch: 'full',
   },
   {
-    path: 'step-one',
-    loadComponent: () => import('./step-one/step-one.component'),
+    path: 'login',
+    loadComponent: () => import('./login/login.component'),
   },
   {
-    path: 'step-two',
-    loadComponent: () => import('./step-two/step-two.component'),
-    resolve: { queryParams: queryParamValidityResolver },
-    data: {
-      requiredQueryParams: ['username'],
-    },
+    path: 'register',
+    loadComponent: () => import('./register/register.component'),
+  },
+  {
+    path: 'reset-password',
+    loadComponent: () => import('./reset-password/reset-password.component'),
   },
 ];
 

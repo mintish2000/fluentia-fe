@@ -1,0 +1,488 @@
+<section class="admin-page" [dir]="_direction">
+  <header class="admin-page__header">
+    <div class="admin-page__header-main">
+      <div class="admin-page__title-block">
+        <p class="admin-page__eyebrow">Fluentia · Administration</p>
+        <h1>Admin Hub</h1>
+        <p class="admin-page__welcome">Welcome back, {{ displayName() }}</p>
+        <nav class="admin-page__quick-nav" aria-label="Quick navigation">
+          <a routerLink="/main/dashboard">Dashboard</a>
+          <a routerLink="/main/courses">Courses</a>
+        </nav>
+      </div>
+      <div class="admin-page__header-actions">
+        <div class="admin-page__sync-meta">
+          <span class="admin-page__sync-label">Last synced</span>
+          <span class="admin-page__sync-value">
+            {{ lastSyncedAt() ? (lastSyncedAt() | date: 'medium') : 'Not yet' }}
+          </span>
+        </div>
+        <button
+          type="button"
+          class="admin-page__refresh"
+          [disabled]="isLoading()"
+          (click)="loadAdminOverview()"
+        >
+          Refresh data
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <section class="admin-metrics">
+    <article class="metric-card">
+      <h3>Courses</h3>
+      <p>{{ coursesCount() }}</p>
+    </article>
+    <article class="metric-card">
+      <h3>Lessons</h3>
+      <p>{{ lessonsCount() }}</p>
+    </article>
+    <article class="metric-card">
+      <h3>Enrollments</h3>
+      <p>{{ enrollmentsCount() }}</p>
+    </article>
+    <article class="metric-card">
+      <h3>Bookings</h3>
+      <p>{{ bookingsCount() }}</p>
+    </article>
+    <article class="metric-card">
+      <h3>Active Users</h3>
+      <p>{{ activeUsersCount() }}</p>
+    </article>
+    <article class="metric-card">
+      <h3>Inactive Users</h3>
+      <p>{{ inactiveUsersCount() }}</p>
+    </article>
+    <article class="metric-card">
+      <h3>Students Without Course</h3>
+      <p>{{ studentsWithoutCoursesCount() }}</p>
+    </article>
+    <article class="metric-card">
+      <h3>Placement Attempts</h3>
+      <p>{{ placementAttemptsCount() }}</p>
+    </article>
+  </section>
+
+  @if (isLoading()) {
+    <p class="state-text">Syncing platform data from backend...</p>
+  }
+
+  <nav class="admin-workspace-switcher" aria-label="Admin sections">
+    <button
+      type="button"
+      role="tab"
+      [attr.aria-selected]="activeSection() === 'operations'"
+      [class.admin-workspace-switcher__tab--active]="activeSection() === 'operations'"
+      (click)="setActiveSection('operations')"
+    >
+      Operations
+    </button>
+    <button
+      type="button"
+      role="tab"
+      [attr.aria-selected]="activeSection() === 'placement'"
+      [class.admin-workspace-switcher__tab--active]="activeSection() === 'placement'"
+      (click)="setActiveSection('placement')"
+    >
+      Placement Test
+    </button>
+    <button
+      type="button"
+      role="tab"
+      [attr.aria-selected]="activeSection() === 'users'"
+      [class.admin-workspace-switcher__tab--active]="activeSection() === 'users'"
+      (click)="setActiveSection('users')"
+    >
+      Users
+    </button>
+  </nav>
+
+  @if (activeSection() === 'operations') {
+    <div class="admin-operations">
+      <h2 class="admin-operations__section-title">Student–course assignments</h2>
+      <p class="admin-operations__section-desc">
+        Link a student to a tutor’s course (new enrollment), or move an existing enrollment to a
+        different tutor-owned course. Placement test scoring stays under the Placement Test tab.
+      </p>
+
+      <div class="admin-operations__enrollment-row">
+        <article class="admin-panel">
+          <h3 class="admin-panel__title">New enrollment</h3>
+          <p class="admin-panel__desc">
+            Pick tutor, then student, then one of that tutor’s courses. This creates a new course
+            enrollment for the student.
+          </p>
+
+          <fieldset class="assignment-fieldset">
+            <legend class="assignment-fieldset__legend">Assign student to tutor course</legend>
+            <div class="assignment-form assignment-form--stacked">
+              <div class="assignment-form__field">
+                <label for="assignmentTutor">1. Tutor who owns the course</label>
+                <select
+                  id="assignmentTutor"
+                  [formControl]="selectedTutorId"
+                  (change)="onTutorChanged()"
+                >
+                  <option value="">Select tutor</option>
+                  @for (tutor of assignableTutors(); track tutor.id) {
+                    <option [value]="tutor.id">
+                      {{ getUserName(tutor) }}
+                    </option>
+                  }
+                </select>
+              </div>
+
+              <div class="assignment-form__field">
+                <label for="assignmentStudent">2. Student to enroll</label>
+                <select id="assignmentStudent" [formControl]="selectedStudentId">
+                  <option value="">Select student</option>
+                  @for (student of assignableStudents(); track student.id) {
+                    <option [value]="student.id">
+                      {{ getUserName(student) }}
+                    </option>
+                  }
+                </select>
+              </div>
+
+              <div class="assignment-form__field">
+                <label for="assignmentCourse">3. Course under that tutor</label>
+                <select id="assignmentCourse" [formControl]="selectedCourseId">
+                  <option value="">Select course</option>
+                  @for (course of coursesForSelectedTutor(); track course.id) {
+                    <option [value]="course.id">{{ course.title }}</option>
+                  }
+                </select>
+                @if (selectedTutorId.value && !coursesForSelectedTutor().length) {
+                  <p class="assignment-form__hint">This tutor has no courses yet.</p>
+                }
+              </div>
+
+              <button
+                type="button"
+                class="assignment-form__submit"
+                (click)="assignStudentToTutor()"
+                [disabled]="
+                  selectedTutorId.invalid ||
+                  selectedStudentId.invalid ||
+                  selectedCourseId.invalid ||
+                  isLoading()
+                "
+              >
+                Create enrollment
+              </button>
+            </div>
+          </fieldset>
+        </article>
+
+        <article class="admin-panel">
+          <h3 class="admin-panel__title">Change existing enrollment</h3>
+          <p class="admin-panel__desc">
+            Select the current enrollment, then the tutor and course the student should move to.
+            The enrollment record is updated to point at the new course.
+          </p>
+
+          <fieldset class="assignment-fieldset">
+            <legend class="assignment-fieldset__legend">Move student to another tutor course</legend>
+            <div class="assignment-form assignment-form--stacked">
+              <div class="assignment-form__field">
+                <label for="reassignEnrollment">1. Current enrollment</label>
+                <select id="reassignEnrollment" [formControl]="reassignEnrollmentId">
+                  <option value="">Select enrollment</option>
+                  @for (enrollment of enrollments(); track enrollment.id) {
+                    <option [value]="enrollment.id">
+                      {{ getUserName(enrollment.student) }} — {{ enrollment.course.title }}
+                    </option>
+                  }
+                </select>
+              </div>
+
+              <div class="assignment-form__field">
+                <label for="reassignTutor">2. Target tutor</label>
+                <select
+                  id="reassignTutor"
+                  [formControl]="reassignTutorId"
+                  (change)="onReassignTutorChanged()"
+                >
+                  <option value="">Select tutor</option>
+                  @for (tutor of assignableTutors(); track tutor.id) {
+                    <option [value]="tutor.id">{{ getUserName(tutor) }}</option>
+                  }
+                </select>
+              </div>
+
+              <div class="assignment-form__field">
+                <label for="reassignCourse">3. Target course</label>
+                <select id="reassignCourse" [formControl]="reassignCourseId">
+                  <option value="">Select course</option>
+                  @for (course of coursesForReassignTutor(); track course.id) {
+                    <option [value]="course.id">{{ course.title }}</option>
+                  }
+                </select>
+              </div>
+
+              <button
+                type="button"
+                class="assignment-form__submit"
+                (click)="reassignStudentTutor()"
+                [disabled]="
+                  reassignEnrollmentId.invalid ||
+                  reassignTutorId.invalid ||
+                  reassignCourseId.invalid ||
+                  isLoading()
+                "
+              >
+                Update enrollment course
+              </button>
+            </div>
+          </fieldset>
+        </article>
+      </div>
+    </div>
+  }
+
+  @if (activeSection() === 'placement') {
+    <section class="admin-card admin-card--full">
+    <h2>Placement Test Question Editor</h2>
+    <p>Manage the one-time 50-question placement test directly as admin.</p>
+
+    @if (!placementQuiz()) {
+      <p class="state-text">Placement quiz is not available. Create it first.</p>
+      <div class="assignment-form">
+        <label for="placementCourse">Placement course</label>
+        <select id="placementCourse" [formControl]="placementCourseId">
+          <option value="">Select course</option>
+          @for (course of courses(); track course.id) {
+            <option [value]="course.id">{{ course.title }}</option>
+          }
+        </select>
+        <button
+          type="button"
+          (click)="createPlacementQuiz()"
+          [disabled]="placementCourseId.invalid || isLoading()"
+        >
+          Create Placement Quiz
+        </button>
+      </div>
+    } @else {
+      <p class="state-text">
+        Quiz: {{ placementQuiz()!.title }} | Questions: {{ placementQuestions().length }}/50
+      </p>
+
+      <div class="assignment-form">
+        <label for="placementQuestionType">Question type</label>
+        <select
+          id="placementQuestionType"
+          [formControl]="placementQuestionType"
+          (change)="onPlacementQuestionTypeChanged()"
+        >
+          <option value="single">single answer</option>
+          <option value="multi">multi answer</option>
+          <option value="text">text answer</option>
+        </select>
+
+        <label for="placementQuestionPrompt">Question prompt</label>
+        <textarea
+          id="placementQuestionPrompt"
+          rows="2"
+          [formControl]="placementQuestionPrompt"
+          placeholder="Enter question prompt"
+        ></textarea>
+
+        @if (placementQuestionType.value !== 'text') {
+          <label for="placementOptionA">Option A</label>
+          <input id="placementOptionA" type="text" [formControl]="placementQuestionOptionA" />
+          <label for="placementOptionB">Option B</label>
+          <input id="placementOptionB" type="text" [formControl]="placementQuestionOptionB" />
+          <label for="placementOptionC">Option C</label>
+          <input id="placementOptionC" type="text" [formControl]="placementQuestionOptionC" />
+          <label for="placementOptionD">Option D</label>
+          <input id="placementOptionD" type="text" [formControl]="placementQuestionOptionD" />
+        }
+
+        @if (placementQuestionType.value === 'single') {
+          <label for="placementCorrectAnswerSingle">Correct answer</label>
+          <select
+            id="placementCorrectAnswerSingle"
+            [formControl]="placementQuestionCorrectAnswer"
+          >
+            <option value="">Select correct option</option>
+            @for (option of placementQuestionOptions(); track option) {
+              <option [value]="option">{{ option }}</option>
+            }
+          </select>
+        } @else if (placementQuestionType.value === 'multi') {
+          <label>Correct answers</label>
+          <div class="multi-correct-list">
+            @for (option of placementQuestionOptions(); track option) {
+              <label class="multi-correct-item">
+                <input
+                  type="checkbox"
+                  [checked]="isPlacementMultiCorrectAnswerSelected(option)"
+                  (change)="togglePlacementMultiCorrectAnswer(option, $any($event.target).checked)"
+                />
+                {{ option }}
+              </label>
+            }
+          </div>
+        } @else {
+          <label for="placementCorrectAnswerText">Correct answer</label>
+          <input
+            id="placementCorrectAnswerText"
+            type="text"
+            [formControl]="placementQuestionCorrectAnswer"
+            placeholder="Expected text answer"
+          />
+        }
+
+        <div class="editor-actions">
+          <button
+            type="button"
+            (click)="savePlacementQuestion()"
+            [disabled]="
+              placementQuestionPrompt.invalid ||
+              (placementQuestionType.value === 'multi'
+                ? !placementMultiCorrectAnswers().length
+                : placementQuestionCorrectAnswer.invalid) ||
+              (!editingPlacementQuestionId() && !canCreatePlacementQuestion()) ||
+              isLoading()
+            "
+          >
+            {{ editingPlacementQuestionId() ? 'Update Question' : 'Create Question' }}
+          </button>
+          <button type="button" class="secondary" (click)="resetPlacementQuestionForm()">
+            Reset Form
+          </button>
+          <button type="button" class="secondary" (click)="refreshPlacementWorkspace()">
+            Refresh Placement Data
+          </button>
+        </div>
+        @if (!editingPlacementQuestionId() && !canCreatePlacementQuestion()) {
+          <p class="state-text">
+            Placement test already has 50 questions. Edit existing questions only.
+          </p>
+        }
+      </div>
+
+      @if (!placementQuestions().length) {
+        <p class="state-text">No placement questions found.</p>
+      } @else {
+        <div class="user-list">
+          @for (question of placementQuestions(); track question.id; let index = $index) {
+            <article class="user-item">
+              <div>
+                <h3>Q{{ index + 1 }} - {{ getPlacementQuestionType(question) }}</h3>
+                <p>{{ question.prompt }}</p>
+                <p>
+                  Options: {{ parsePlacementQuestionOptions(question).join(' | ') || 'Text answer' }}
+                </p>
+                <p>Correct: {{ question.correctAnswer }}</p>
+              </div>
+              <div class="user-item__actions">
+                <button type="button" class="secondary" (click)="editPlacementQuestion(question)">
+                  Edit
+                </button>
+                <button
+                  type="button"
+                  class="danger"
+                  (click)="deletePlacementQuestion(question.id)"
+                >
+                  Delete
+                </button>
+              </div>
+            </article>
+          }
+        </div>
+      }
+    }
+    </section>
+
+    <section class="admin-card admin-card--full">
+    <h2>Placement Test Grades</h2>
+    <p>One-time placement assessment results (admin visibility only).</p>
+
+    @if (!placementResults().length) {
+      <p class="state-text">No placement test submissions available yet.</p>
+    } @else {
+      <div class="user-list">
+        @for (result of placementResults(); track result.studentId) {
+          <article class="user-item">
+            <div>
+              <h3>{{ result.studentName }}</h3>
+              <p>
+                {{ result.studentEmail }} | Score: {{ result.score }}% ({{
+                  result.correctAnswers
+                }}/{{ result.totalQuestions }}) |
+                {{ result.passed ? 'Passed' : 'Needs improvement' }}
+              </p>
+            </div>
+            <div class="user-item__actions">
+              <span>
+                {{
+                  result.submittedAt
+                    ? ('Submitted: ' + (result.submittedAt | date: 'medium'))
+                    : 'Submitted: -'
+                }}
+              </span>
+            </div>
+          </article>
+        }
+      </div>
+    }
+    </section>
+  }
+
+  @if (activeSection() === 'users') {
+    <section class="admin-card admin-card--full">
+    <h2>User Management</h2>
+    <p>Activate, deactivate, or delete users to keep the platform healthy.</p>
+
+    @if (!listedUsers().length) {
+      <p class="state-text">No users available for management.</p>
+    } @else {
+      <div class="user-list">
+        @for (user of listedUsers(); track user.id) {
+          <article class="user-item">
+            <div>
+              <h3>{{ getUserName(user) }}</h3>
+              <p>
+                {{ user.email || '-' }} | Role: {{ user.role?.name || 'user' }} | Status:
+                {{ getUserStatusLabel(user) }}
+                @if (!canManageUser(user)) {
+                  | Current Account
+                }
+              </p>
+            </div>
+            <div class="user-item__actions">
+              <button
+                type="button"
+                class="secondary"
+                [disabled]="!canManageUser(user) || isUserActive(user) || isLoading()"
+                (click)="setUserActiveState(user, true)"
+              >
+                Activate
+              </button>
+              <button
+                type="button"
+                class="secondary"
+                [disabled]="!canManageUser(user) || !isUserActive(user) || isLoading()"
+                (click)="setUserActiveState(user, false)"
+              >
+                Deactivate
+              </button>
+              <button
+                type="button"
+                class="danger"
+                [disabled]="!canManageUser(user) || isLoading()"
+                (click)="deleteUser(user)"
+              >
+                Delete
+              </button>
+            </div>
+          </article>
+        }
+      </div>
+    }
+    </section>
+  }
+</section>

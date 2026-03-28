@@ -1,0 +1,95 @@
+@use '_variables.scss' as *;
+
+.auth-page {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.auth-card {
+  width: min(520px, 100%);
+  background: #ffffff;
+  border: 1px solid rgba(11, 58, 102, 0.12);
+  border-radius: 14px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+  padding: 24px;
+}
+
+.brand-mark {
+  display: grid;
+  line-height: 1;
+  margin-bottom: 20px;
+}
+
+.brand-mark__name {
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  color: $brand-navy;
+  text-transform: uppercase;
+}
+
+.brand-mark__sub {
+  margin-top: 4px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  color: $brand-gold;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 0 0 8px 0;
+  font-size: 26px;
+  color: $brand-navy;
+}
+
+h2 {
+  margin: 0 0 16px 0;
+  font-size: 14px;
+  color: rgba(11, 58, 102, 0.72);
+}
+
+p {
+  margin: 0 0 6px 0;
+  font-size: 14px;
+  color: $description-color;
+}
+
+realsoft-form-field {
+  width: 100%;
+}
+
+form {
+  display: grid;
+  gap: 8px;
+}
+
+.auth-actions-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 4px 0 12px 0;
+}
+
+.auth-actions-row a,
+.switch-auth a {
+  color: $brand-navy;
+  text-decoration: none;
+  font-weight: 800;
+}
+
+.auth-actions-row a:hover,
+.switch-auth a:hover {
+  text-decoration: underline;
+}
+
+.switch-auth {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: rgba(11, 58, 102, 0.78);
+}

@@ -20,7 +20,7 @@ export class UserGuard implements CanActivate {
         const response = await lastValueFrom(
           this._authService.fetchCurrentUserData(),
         );
-        this._userService.setCurrentUser(response.userInfo);
+        this._userService.setCurrentUser(this._authService.mapBackendUser(response));
         return true;
       }
     } catch (error) {

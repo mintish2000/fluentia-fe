@@ -12,17 +12,31 @@ export const AuthInterceptor = (
   const translateService = inject(TranslateService);
   const currentLang = translateService.currentLang || 'en';
   const localStorageService = inject(LocalStorageService);
-
-  const acceptHeader = req.context.get(ACCEPT_HEADER);
-
-  const headersConfig = {
+  const acceptHeader = req.context.get(ACCEPT_HEADER) || 'application/json';
+  const isRefreshRequest = _isRefreshRequest(req.url);
+  const tokenKey = isRefreshRequest ? 'refresh-token' : 'access-token';
+  const token = localStorageService.getItem<string>(tokenKey);
+  const headersConfig: Record<string, string> = {
     Accept: acceptHeader,
     'Accept-Language': currentLang,
     'x-locale': currentLang,
-    Authorization: `Bearer ${localStorageService.getItem('access-token')}`,
   };
 
-  const clonedReq = req.clone({ setHeaders: headersConfig });
+  if (token) {
+    headersConfig['Authorization'] = `Bearer ${token}`;
+  }
+
+  const clonedReq = req.clone({
+    setHeaders: headersConfig,
+    withCredentials: false,
+  });
 
   return next(clonedReq);
 };
+
+/**
+ * Checks whether the request targets the refresh-token endpoint.
+ */
+function _isRefreshRequest(url: string): boolean {
+  return /\/auth\/refresh(?:\?.*)?$/.test(url);
+}
