@@ -67,6 +67,16 @@
       />
     </form>
 
+    <div class="guest-entry">
+      <app-action-button
+        (clicked)="continueAsGuest()"
+        [text]="'Continue as guest'"
+        type="stroked"
+        color="primary"
+        [fullWidth]="true"
+      />
+    </div>
+
     <div class="switch-auth">
       <span>New to Fluentia?</span>
       <a routerLink="/external/register">Create account</a>

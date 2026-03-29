@@ -2,11 +2,15 @@
   <mat-toolbar class="website__toolbar">
     <div class="website__toolbar-inner">
       <a class="brand" [routerLink]="['/main/home']">
-        <span class="brand__name">Fluentia</span>
-        <span class="brand__sub">English Academy</span>
+        <img
+          class="brand__logo"
+          src="/images/fluentia-logo.png"
+          alt="Fluentia English Academy Logo"
+          decoding="async"
+        />
       </a>
 
-      <nav class="nav">
+      <nav class="nav nav--desktop">
         @if (shouldShowRoleNavbar()) {
           @for (link of getPrivateNavbarLinks(); track link.path) {
             <a
@@ -30,10 +34,10 @@
         }
       </nav>
 
-      <div class="toolbar-actions">
+      <div class="toolbar-actions toolbar-actions--desktop">
         @if (isAuthenticated()) {
           <span class="role-chip">{{ getCurrentRoleLabel() }}</span>
-          <a class="hub-link" [routerLink]="getRoleHubPath()">Go to Hub</a>
+          <!-- <a class="hub-link" [routerLink]="getRoleHubPath()">Go to Hub</a> -->
         }
         <app-change-language class="navbar-language"></app-change-language>
         @if (isAuthenticated()) {
@@ -51,25 +55,126 @@
           </a>
         }
       </div>
+
+      <div class="toolbar-mobile">
+        <button
+          type="button"
+          mat-icon-button
+          class="toolbar-mobile__trigger"
+          (click)="openMobileNav()"
+          aria-label="Open navigation menu"
+        >
+          <mat-icon>menu</mat-icon>
+        </button>
+      </div>
     </div>
   </mat-toolbar>
 
-  <main class="website__content">
-    <router-outlet></router-outlet>
-  </main>
+  <mat-drawer-container class="website__drawer-container" [hasBackdrop]="true">
+    <mat-drawer
+      #mobileDrawer
+      class="fluentia-mobile-drawer"
+      mode="over"
+      position="end"
+      [autoFocus]="false"
+    >
+      <div class="fluentia-mobile-drawer__scroll">
+        <div class="fluentia-mobile-drawer__header">
+          <span class="fluentia-mobile-drawer__title">Menu</span>
+          <button
+            type="button"
+            mat-icon-button
+            class="fluentia-mobile-drawer__close"
+            (click)="closeMobileNav()"
+            aria-label="Close menu"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
 
-  <footer class="website__footer">
-    <div class="website__footer-inner">
-      <div class="footer-brand">
-        <div class="footer-brand__name">Fluentia</div>
-        <div class="footer-brand__tagline">Where fluency becomes natural</div>
-        @if (isAuthenticated() && isStudentRole() && shouldShowPlacementFooterLink()) {
-          <a class="footer-placement-link" routerLink="/main/placement-test">
-            Start Placement Test
-          </a>
-        }
+        <nav class="fluentia-mobile-drawer__nav" aria-label="Mobile navigation">
+          @if (shouldShowRoleNavbar()) {
+            @for (link of getPrivateNavbarLinks(); track link.path) {
+              <a
+                class="fluentia-mobile-drawer__link"
+                [routerLink]="link.path"
+                routerLinkActive="fluentia-mobile-drawer__link--active"
+                [routerLinkActiveOptions]="{ exact: link.exact ?? true }"
+                (click)="closeMobileNav()"
+              >
+                <mat-icon class="fluentia-mobile-drawer__icon" aria-hidden="true">{{ mobileNavIcon(link.path) }}</mat-icon>
+                <span>{{ link.label }}</span>
+              </a>
+            }
+          } @else {
+            @for (link of publicNavbarLinks; track link.path) {
+              <a
+                class="fluentia-mobile-drawer__link"
+                [routerLink]="link.path"
+                routerLinkActive="fluentia-mobile-drawer__link--active"
+                [routerLinkActiveOptions]="{ exact: link.exact ?? true }"
+                (click)="closeMobileNav()"
+              >
+                <mat-icon class="fluentia-mobile-drawer__icon" aria-hidden="true">{{ mobileNavIcon(link.path) }}</mat-icon>
+                <span>{{ link.label }}</span>
+              </a>
+            }
+          }
+        </nav>
+
+        <mat-divider class="fluentia-mobile-drawer__divider"></mat-divider>
+
+        <div class="fluentia-mobile-drawer__section">
+          @if (isAuthenticated()) {
+            <div class="fluentia-mobile-drawer__role">{{ getCurrentRoleLabel() }}</div>
+            <a class="fluentia-mobile-drawer__link" [routerLink]="getRoleHubPath()" (click)="closeMobileNav()">
+              <mat-icon class="fluentia-mobile-drawer__icon" aria-hidden="true">hub</mat-icon>
+              <span>Go to Hub</span>
+            </a>
+          }
+          <div class="fluentia-mobile-drawer__language">
+            <app-change-language class="navbar-language navbar-language--mobile-menu"></app-change-language>
+          </div>
+          @if (isAuthenticated()) {
+            <button type="button" class="fluentia-mobile-drawer__logout" (click)="onMobileLogout()">
+              <mat-icon class="fluentia-mobile-drawer__icon" aria-hidden="true">logout</mat-icon>
+              <span>Logout</span>
+            </button>
+          } @else {
+            <a
+              class="fluentia-mobile-drawer__link"
+              routerLink="/external/login"
+              routerLinkActive="fluentia-mobile-drawer__link--active"
+              [routerLinkActiveOptions]="{ exact: true }"
+              (click)="closeMobileNav()"
+            >
+              <mat-icon class="fluentia-mobile-drawer__icon" aria-hidden="true">{{ mobileNavIcon('/external/login') }}</mat-icon>
+              <span>Login</span>
+            </a>
+          }
+        </div>
       </div>
-      <div class="footer-copy">© 2026 Fluentia English Academy. All rights reserved.</div>
-    </div>
-  </footer>
+    </mat-drawer>
+
+    <mat-drawer-content class="website__drawer-content">
+      <main class="website__content">
+        <router-outlet></router-outlet>
+      </main>
+
+      <footer class="website__footer">
+        <div class="website__footer-inner">
+          <div class="footer-brand">
+            <div class="footer-brand__name">Fluentia</div>
+            <div class="footer-brand__tagline">Where fluency becomes natural</div>
+            @if (isAuthenticated() && isStudentRole() && shouldShowPlacementFooterLink()) {
+              <a class="footer-placement-link" routerLink="/main/placement-test">
+                Start Placement Test
+              </a>
+            }
+          </div>
+          <div class="footer-copy">© 2026 Fluentia English Academy. All rights reserved.</div>
+        </div>
+      </footer>
+    </mat-drawer-content>
+  </mat-drawer-container>
 </div>

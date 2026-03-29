@@ -7,7 +7,7 @@
 
   <nav class="level-jump" aria-label="Jump to level">
     @for (lvl of levels; track lvl.code) {
-      <a class="level-jump__item" href="#level-{{ lvl.code }}">
+      <a class="level-jump__item" >
         <span class="level-jump__code">{{ lvl.code }}</span>
         <span class="level-jump__text">{{ lvl.label }}</span>
       </a>

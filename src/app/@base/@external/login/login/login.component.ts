@@ -77,6 +77,13 @@ export default class LoginComponent extends BaseComponent {
   }
 
   /**
+   * Opens the public home page without signing in.
+   */
+  continueAsGuest(): void {
+    void this._router.navigateByUrl('/main/home');
+  }
+
+  /**
    * Authenticates user with email/password against backend.
    */
   authenticate() {

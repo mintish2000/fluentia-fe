@@ -7,7 +7,7 @@
         <p class="admin-page__welcome">Welcome back, {{ displayName() }}</p>
         <nav class="admin-page__quick-nav" aria-label="Quick navigation">
           <a routerLink="/main/dashboard">Dashboard</a>
-          <a routerLink="/main/courses">Courses</a>
+          <!-- <a routerLink="/main/courses">Courses</a> -->
         </nav>
       </div>
       <div class="admin-page__header-actions">
@@ -30,22 +30,22 @@
   </header>
 
   <section class="admin-metrics">
-    <article class="metric-card">
+    <!-- <article class="metric-card">
       <h3>Courses</h3>
       <p>{{ coursesCount() }}</p>
     </article>
     <article class="metric-card">
       <h3>Lessons</h3>
       <p>{{ lessonsCount() }}</p>
-    </article>
+    </article> -->
     <article class="metric-card">
       <h3>Enrollments</h3>
       <p>{{ enrollmentsCount() }}</p>
     </article>
-    <article class="metric-card">
+    <!-- <article class="metric-card">
       <h3>Bookings</h3>
       <p>{{ bookingsCount() }}</p>
-    </article>
+    </article> -->
     <article class="metric-card">
       <h3>Active Users</h3>
       <p>{{ activeUsersCount() }}</p>
