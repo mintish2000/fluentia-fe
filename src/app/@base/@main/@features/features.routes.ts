@@ -53,7 +53,8 @@ export const featuresRoutes: Routes = [
       },
       {
         path: 'home',
-        loadComponent: () => import('./home/home.component'),
+        loadComponent: () =>
+          import('./home/home.component').then((m) => m.HomePageComponent),
         title: 'pages.home.title',
         data: {
           description: 'pages.home.headerDescription',

@@ -16,6 +16,7 @@
       <p class="helper-text">
         You have already completed this one-time test. Your result is visible to admins.
       </p>
+      <a routerLink="/main/pricing" class="cta cta--link">View plans &amp; pricing</a>
     </article>
   } @else if (isLoadingQuestions()) {
     <article class="card">
@@ -99,6 +100,7 @@
       <h2 class="card__title">Attempt Submitted</h2>
       <p class="helper-text">Result has been saved and shared with admins.</p>
       <p><strong>Questions submitted:</strong> {{ result.answeredQuestions }}</p>
+      <a routerLink="/main/pricing" class="cta cta--link">Continue to plans &amp; pricing</a>
     </article>
   }
 </section>

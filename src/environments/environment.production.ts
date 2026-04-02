@@ -9,4 +9,7 @@ export const environment = {
     csv: 50 * 1024 * 1024, // 50MB
     pdf: 20 * 1024 * 1024, // 20MB
   },
+  paypalClientId: '',
+  paypalCurrency: 'USD',
+  paypalHostedCheckoutUrlByPlan: {} as Record<string, string>,
 };

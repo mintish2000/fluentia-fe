@@ -10,28 +10,23 @@ import { UserService } from '@shared/services/user/user.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink],
 })
-export default class HomePageComponent {
-  private _userService = inject(UserService);
-  constructor(private _router : Router){
+export class HomePageComponent {
+  private readonly _userService = inject(UserService);
+  private readonly _router = inject(Router);
 
-  }
-   get isUser(){
-    return this._userService.isStudent;
-  }
-
-
-  goToPayment(){
-    if(this.isUser){
-     return
-    }else
-    {
-      this._router.navigateByUrl('/external/login')
+  goToPayment(): void {
+    if (!this._userService.isAuthenticated()) {
+      void this._router.navigateByUrl('/external/login');
+      return;
     }
+    void this._router.navigateByUrl('/main/pricing');
   }
-  navigateToLogin(){
-     this._router.navigateByUrl('/external/login')
+
+  navigateToLogin(): void {
+    void this._router.navigateByUrl('/external/login');
   }
-  navigateToLevels(){
-     this._router.navigateByUrl('/main/levels')
+
+  navigateToLevels(): void {
+    void this._router.navigateByUrl('/main/levels');
   }
 }

@@ -5,7 +5,8 @@
     "node": ">=22.15.1"
   },
   "scripts": {
-    "start": "ng serve -o"
+    "start": "ng serve -o",
+    "build": "ng build --configuration production"
   },
   "private": true,
   "dependencies": {

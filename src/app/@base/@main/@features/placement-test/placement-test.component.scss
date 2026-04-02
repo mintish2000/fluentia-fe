@@ -77,6 +77,12 @@
   cursor: pointer;
 }
 
+a.cta--link {
+  display: inline-block;
+  text-decoration: none;
+  text-align: center;
+}
+
 .questions {
   display: grid;
   gap: 1rem;

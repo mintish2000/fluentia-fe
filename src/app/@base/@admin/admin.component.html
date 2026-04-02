@@ -68,10 +68,11 @@
     <p class="state-text">Syncing platform data from backend...</p>
   }
 
-  <nav class="admin-workspace-switcher" aria-label="Admin sections">
+  <nav class="admin-workspace-switcher" role="tablist" aria-label="Admin sections">
     <button
       type="button"
       role="tab"
+      class="admin-workspace-switcher__tab"
       [attr.aria-selected]="activeSection() === 'operations'"
       [class.admin-workspace-switcher__tab--active]="activeSection() === 'operations'"
       (click)="setActiveSection('operations')"
@@ -81,6 +82,7 @@
     <button
       type="button"
       role="tab"
+      class="admin-workspace-switcher__tab"
       [attr.aria-selected]="activeSection() === 'placement'"
       [class.admin-workspace-switcher__tab--active]="activeSection() === 'placement'"
       (click)="setActiveSection('placement')"
@@ -90,6 +92,7 @@
     <button
       type="button"
       role="tab"
+      class="admin-workspace-switcher__tab"
       [attr.aria-selected]="activeSection() === 'users'"
       [class.admin-workspace-switcher__tab--active]="activeSection() === 'users'"
       (click)="setActiveSection('users')"

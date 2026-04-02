@@ -4,6 +4,25 @@
     <p class="page__subtitle">Flexible packages designed to fit your goals and budget</p>
   </header>
 
+  @if (checkoutPlan(); as planId) {
+    <div
+      class="checkout-backdrop"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="checkout-title"
+      (click)="closeCheckout()"
+    >
+      <div class="checkout-dialog" (click)="$event.stopPropagation()">
+        <button type="button" class="checkout-close" (click)="closeCheckout()" aria-label="Close">
+          ×
+        </button>
+        <h2 id="checkout-title" class="checkout-dialog__title">Pay with PayPal</h2>
+        <p class="checkout-dialog__summary">{{ planSummary(planId) }}</p>
+        <div #paypalHost class="paypal-host"></div>
+      </div>
+    </div>
+  }
+
   <div class="schedule">
     <div class="schedule__title">GROUP CLASSES SCHEDULE</div>
     <div class="schedule__grid">
@@ -39,7 +58,7 @@
           <li>4 sessions/week</li>
           <li>Digital materials</li>
         </ul>
-        <button (click)="goToPayment()"  type="button" class="cta cta--gold">Buy Now</button>
+        <button type="button" class="cta cta--gold" (click)="buyNow('group-1m')">Buy Now</button>
       </article>
 
       <article class="card card--featured">
@@ -51,7 +70,7 @@
           <li>4 sessions/week</li>
           <li>Progress tracking</li>
         </ul>
-        <button type="button" class="cta cta--blue" (click)="goToPayment()">Buy Now</button>
+        <button type="button" class="cta cta--blue" (click)="buyNow('group-3m')">Buy Now</button>
       </article>
 
       <article class="card">
@@ -63,7 +82,7 @@
           <li>4 sessions/week</li>
           <li>Digital materials</li>
         </ul>
-        <button type="button" class="cta cta--gold" (click)="goToPayment()">Buy Now</button>
+        <button type="button" class="cta cta--gold" (click)="buyNow('group-6m')">Buy Now</button>
       </article>
     </div>
   </div>
@@ -73,20 +92,65 @@
     <div class="private__grid">
       <article class="mini-card">
         <div class="mini-card__title">30-minute private classes</div>
-        <div class="mini-card__row"><span>One session</span><strong>$15</strong></div>
-        <div class="mini-card__row"><span>Four sessions</span><strong>$50</strong></div>
-        <div class="mini-card__row"><span>Eight sessions</span><strong>$100</strong></div>
-        <button type="button" class="cta cta--gold" (click)="goToPayment()">Buy Now</button>
+        <div class="mini-card__row">
+          <span>One session</span>
+          <span class="mini-card__row-right">
+            <strong>$15</strong>
+            <button type="button" class="cta cta--gold cta--inline" (click)="buyNow('private-30-1')">
+              Buy
+            </button>
+          </span>
+        </div>
+        <div class="mini-card__row">
+          <span>Four sessions</span>
+          <span class="mini-card__row-right">
+            <strong>$50</strong>
+            <button type="button" class="cta cta--gold cta--inline" (click)="buyNow('private-30-4')">
+              Buy
+            </button>
+          </span>
+        </div>
+        <div class="mini-card__row">
+          <span>Eight sessions</span>
+          <span class="mini-card__row-right">
+            <strong>$100</strong>
+            <button type="button" class="cta cta--gold cta--inline" (click)="buyNow('private-30-8')">
+              Buy
+            </button>
+          </span>
+        </div>
       </article>
 
       <article class="mini-card">
         <div class="mini-card__title">60-minute private classes</div>
-        <div class="mini-card__row"><span>One session</span><strong>$20</strong></div>
-        <div class="mini-card__row"><span>Four sessions</span><strong>$70</strong></div>
-        <div class="mini-card__row"><span>Eight sessions</span><strong>$140</strong></div>
-        <button type="button" class="cta cta--gold" (click)="goToPayment()">Buy Now</button>
+        <div class="mini-card__row">
+          <span>One session</span>
+          <span class="mini-card__row-right">
+            <strong>$20</strong>
+            <button type="button" class="cta cta--gold cta--inline" (click)="buyNow('private-60-1')">
+              Buy
+            </button>
+          </span>
+        </div>
+        <div class="mini-card__row">
+          <span>Four sessions</span>
+          <span class="mini-card__row-right">
+            <strong>$70</strong>
+            <button type="button" class="cta cta--gold cta--inline" (click)="buyNow('private-60-4')">
+              Buy
+            </button>
+          </span>
+        </div>
+        <div class="mini-card__row">
+          <span>Eight sessions</span>
+          <span class="mini-card__row-right">
+            <strong>$140</strong>
+            <button type="button" class="cta cta--gold cta--inline" (click)="buyNow('private-60-8')">
+              Buy
+            </button>
+          </span>
+        </div>
       </article>
     </div>
   </div>
 </section>
-

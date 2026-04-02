@@ -15,11 +15,12 @@ import {
 import { PlacementTestService } from '@shared/services/learning/placement-test.service';
 import { QuizzesService } from '@shared/services/learning/quizzes.service';
 import { parseQuestionMeta } from '@shared/utils/learning/quiz.utils';
+import { RouterLink } from '@angular/router';
 import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-placement-test',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './placement-test.component.html',
   styleUrl: './placement-test.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

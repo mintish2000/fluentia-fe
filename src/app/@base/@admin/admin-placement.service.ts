@@ -1,6 +1,6 @@
 import { DestroyRef, Injectable, computed, inject, signal } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import {
   Question,
   Quiz,
@@ -12,7 +12,7 @@ import {
   normalizeComparableAnswer,
   parseQuestionMeta,
 } from '@shared/utils/learning/quiz.utils';
-import { finalize, forkJoin } from 'rxjs';
+import { finalize, forkJoin, map, merge, startWith } from 'rxjs';
 
 @Injectable()
 export class AdminPlacementService {
@@ -63,13 +63,25 @@ export class AdminPlacementService {
   });
   readonly editingPlacementQuestionId = signal<string | null>(null);
   readonly placementMultiCorrectAnswers = signal<string[]>([]);
-  readonly placementQuestionOptions = computed(() =>
-    [
-      this.placementQuestionOptionA.value.trim(),
-      this.placementQuestionOptionB.value.trim(),
-      this.placementQuestionOptionC.value.trim(),
-      this.placementQuestionOptionD.value.trim(),
-    ].filter(Boolean),
+  /** Built from option controls' valueChanges — not a plain computed over .value (forms are not signals). */
+  readonly placementQuestionOptions = toSignal(
+    merge(
+      this.placementQuestionOptionA.valueChanges,
+      this.placementQuestionOptionB.valueChanges,
+      this.placementQuestionOptionC.valueChanges,
+      this.placementQuestionOptionD.valueChanges,
+    ).pipe(
+      startWith(null),
+      map(() =>
+        [
+          this.placementQuestionOptionA.value.trim(),
+          this.placementQuestionOptionB.value.trim(),
+          this.placementQuestionOptionC.value.trim(),
+          this.placementQuestionOptionD.value.trim(),
+        ].filter(Boolean),
+      ),
+    ),
+    { initialValue: [] as string[] },
   );
   readonly canCreatePlacementQuestion = computed(
     () => this.placementQuestions().length < 50,

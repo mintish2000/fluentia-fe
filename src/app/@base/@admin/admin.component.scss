@@ -1,13 +1,30 @@
 @use '_variables.scss' as *;
 
+/*
+ * Full-bleed solid surface: main.website__content has padding; without this, the photo shows
+ * in the padding gutters and behind “transparent” gaps. Negative margin + matching padding
+ * paints a continuous panel edge-to-edge in the content column.
+ */
+:host {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: calc(100dvh - 76px);
+  margin: -28px -16px -44px;
+  padding: 28px 16px 48px;
+  background: linear-gradient(165deg, #f5f8fc 0%, #e8eef5 45%, #dfe8f0 100%);
+  border-bottom: 1px solid rgba(11, 58, 102, 0.08);
+}
+
 .admin-page {
   min-height: calc(100vh - 140px);
   padding: 1.5rem;
   max-width: 1440px;
   margin: 0 auto;
-  background:
-    radial-gradient(1200px 380px at 10% -5%, rgba(0, 167, 216, 0.1), transparent 60%),
-    radial-gradient(980px 320px at 95% -20%, rgba(212, 166, 42, 0.12), transparent 60%);
+  width: 100%;
+  box-sizing: border-box;
+  background: transparent;
+  border-radius: 0;
 }
 
 .admin-page__header {
@@ -164,56 +181,96 @@
 }
 
 .admin-workspace-switcher {
-  margin-top: 1.15rem;
-  display: inline-flex;
+  margin-top: 1.25rem;
+  display: flex;
   flex-wrap: wrap;
-  gap: 0;
-  padding: 0.25rem;
+  gap: 0.65rem;
+  padding: 0.75rem;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 16px;
+  background: #ffffff;
+  border: 1px solid rgba(11, 58, 102, 0.18);
+  box-shadow: 0 12px 32px rgba(11, 58, 102, 0.1);
+}
+
+/* Class on each tab — beats global `button` / Material rules */
+.admin-workspace-switcher__tab {
+  flex: 1 1 auto;
+  min-width: min(160px, 100%);
+  min-height: 50px;
+  appearance: none;
+  -webkit-appearance: none;
   border-radius: 12px;
-  background: rgba(11, 58, 102, 0.06);
-  border: 1px solid rgba(11, 58, 102, 0.1);
-}
-
-.admin-workspace-switcher button {
-  border: none;
-  border-radius: 9px;
-  padding: 0.5rem 1rem;
+  padding: 0.65rem 1.1rem;
   font-weight: 800;
-  font-size: 0.88rem;
-  color: rgba(11, 58, 102, 0.72);
-  background: transparent;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  text-transform: none;
   cursor: pointer;
-  transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    box-shadow 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.12s ease;
+  color: #041c33;
+  background: #f0f4f8;
+  border: 2px solid #1a4d7a;
+  box-shadow: inset 0 -2px 0 rgba(11, 58, 102, 0.06);
 }
 
-.admin-workspace-switcher button:hover {
-  color: $brand-navy;
-  background: rgba(255, 255, 255, 0.65);
+.admin-workspace-switcher__tab:hover:not(.admin-workspace-switcher__tab--active) {
+  color: #021018;
+  background: #ffffff;
+  border-color: #0b3a66;
+  box-shadow: 0 4px 14px rgba(11, 58, 102, 0.12);
+}
+
+.admin-workspace-switcher__tab:focus-visible {
+  outline: 3px solid #00a7d8;
+  outline-offset: 2px;
 }
 
 .admin-workspace-switcher__tab--active {
-  color: $brand-navy !important;
-  background: #ffffff !important;
-  box-shadow: 0 2px 8px rgba(31, 42, 55, 0.08);
+  color: #ffffff;
+  background: linear-gradient(165deg, #115a94 0%, #0b3a66 55%, #082f52 100%);
+  border-color: #041a2e;
+  box-shadow:
+    0 10px 26px rgba(11, 58, 102, 0.38),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.admin-workspace-switcher__tab--active:hover {
+  color: #ffffff;
+  background: linear-gradient(165deg, #1a6bad 0%, #0d4578 100%);
 }
 
 .admin-operations {
   margin-top: 1.35rem;
+  padding: 1.35rem 1.25rem 1.5rem;
+  border-radius: 16px;
+  background: #ffffff;
+  border: 1px solid rgba(11, 58, 102, 0.14);
+  box-shadow: 0 12px 32px rgba(11, 58, 102, 0.1);
 }
 
 .admin-operations__section-title {
   margin: 0;
-  font-size: 1.15rem;
-  color: $brand-navy;
-  font-weight: 800;
+  font-size: 1.2rem;
+  color: #0b3a66;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  text-shadow: none;
 }
 
 .admin-operations__section-desc {
-  margin: 0.35rem 0 1rem 0;
+  margin: 0.5rem 0 1.1rem 0;
   max-width: 52rem;
-  color: rgba(11, 58, 102, 0.72);
-  font-size: 0.92rem;
-  line-height: 1.45;
+  color: #1a3a52;
+  font-size: 0.98rem;
+  line-height: 1.55;
+  font-weight: 600;
 }
 
 .admin-operations__enrollment-row {
@@ -257,10 +314,10 @@
 
 .admin-card {
   background: #ffffff;
-  border-radius: 14px;
-  border: 1px solid rgba(11, 58, 102, 0.12);
-  box-shadow: 0 12px 28px rgba(31, 42, 55, 0.08);
-  padding: 1.05rem;
+  border-radius: 16px;
+  border: 1px solid rgba(11, 58, 102, 0.14);
+  box-shadow: 0 14px 36px rgba(11, 58, 102, 0.1);
+  padding: 1.25rem 1.35rem;
 }
 
 .admin-card--full {
@@ -279,13 +336,18 @@
 
 .admin-card h2 {
   margin: 0 0 0.5rem 0;
-  color: $brand-navy;
-  font-size: 1.1rem;
+  color: #082a45;
+  font-size: 1.15rem;
+  font-weight: 900;
+  letter-spacing: 0.02em;
 }
 
 .admin-card p {
   margin: 0 0 0.75rem 0;
-  color: rgba(11, 58, 102, 0.76);
+  color: #1e3d52;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  font-weight: 600;
 }
 
 .admin-card a {
