@@ -14,10 +14,17 @@ import { BaseComponent } from '@shared/components/base/base.component';
 import { BackendUser, Question } from '@shared/interfaces/learning/learning.interface';
 import { AdminHubService } from './admin-hub.service';
 import { AdminPlacementService } from './admin-placement.service';
+import { ScrollRevealContainerDirective } from '@shared/directives/scroll-reveal-container.directive';
 
 @Component({
   selector: 'app-admin',
-  imports: [CommonModule, CoreModule, RouterLink, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    CoreModule,
+    RouterLink,
+    ReactiveFormsModule,
+    ScrollRevealContainerDirective,
+  ],
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

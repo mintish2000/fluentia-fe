@@ -1,25 +1,28 @@
 <section class="page">
-  <header class="hero">
-    <p class="hero__eyebrow"><span class="fluentia-word">Fluentia</span> Learning Path</p>
-    <h1 class="hero__title">ENGLISH LEVELS</h1>
-    <p class="hero__subtitle">Clear outcomes from A1 to C1 with practical speaking-focused progress.</p>
-  </header>
+  <!-- Split reveals: top (hero + jump) vs each level card (articles need a host whose direct children are articles). -->
+  <div class="levels-reveal-top" appScrollRevealContainer>
+    <header class="hero">
+      <p class="hero__eyebrow"><span class="fluentia-word">Fluentia</span> Learning Path</p>
+      <h1 class="hero__title">ENGLISH LEVELS</h1>
+      <p class="hero__subtitle">Progress step by step from beginner to advanced</p>
+    </header>
 
-  <nav class="level-jump" aria-label="Jump to level">
-    @for (lvl of levels; track lvl.code) {
-      <a
-        [class]="'level-jump__item level-jump__item--' + lvl.code"
-        [href]="levelJumpHref(lvl.code)"
-        (click)="onLevelJumpClick($event, lvl.code)"
-        [attr.aria-label]="'Jump to ' + lvl.code + ' ' + lvl.label + ' section'"
-      >
-        <span class="level-jump__code">{{ lvl.code }}</span>
-        <span class="level-jump__text">{{ lvl.label }}</span>
-      </a>
-    }
-  </nav>
+    <nav class="level-jump" aria-label="Jump to level">
+      @for (lvl of levels; track lvl.code) {
+        <a
+          [class]="'level-jump__item level-jump__item--' + lvl.code"
+          [href]="levelJumpHref(lvl.code)"
+          (click)="onLevelJumpClick($event, lvl.code)"
+          [attr.aria-label]="'Jump to ' + lvl.code + ' ' + lvl.label + ' section'"
+        >
+          <span class="level-jump__code">{{ lvl.code }}</span>
+          <span class="level-jump__text">{{ lvl.label }}</span>
+        </a>
+      }
+    </nav>
+  </div>
 
-  <div class="timeline">
+  <div class="timeline" appScrollRevealContainer>
     @for (lvl of levels; track lvl.code; let i = $index) {
       <article [class]="'level-card level-card--' + lvl.code" id="level-{{ lvl.code }}">
         <div class="level-card__head">
@@ -35,11 +38,11 @@
 
         <div class="level-card__intro">
           <div class="panel">
-            <div class="panel__title">Who it's for</div>
+            <div class="panel__title">Who It's For</div>
             <div class="panel__text">{{ lvl.who }}</div>
           </div>
           <div class="panel">
-            <div class="panel__title">Expected progress outcome</div>
+            <div class="panel__title">Expected Progress Outcome</div>
             <div class="panel__text">{{ lvl.outcome }}</div>
           </div>
         </div>

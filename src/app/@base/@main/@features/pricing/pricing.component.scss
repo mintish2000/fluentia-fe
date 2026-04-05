@@ -31,9 +31,16 @@
   line-height: 1.45;
 }
 
+.page__subtitle--mixed {
+  text-transform: none;
+  letter-spacing: 0.03em;
+  font-weight: 700;
+}
+
 .schedule,
 .pricing,
-.private {
+.private,
+.private-schedule {
   margin-top: 18px;
   background: #fff;
   border-radius: 16px;
@@ -44,11 +51,64 @@
 
 .schedule__title,
 .pricing__title,
-.private__title {
+.private__title,
+.private-schedule__title {
   font-weight: 900;
   letter-spacing: 0.06em;
   color: $brand-navy;
   margin-bottom: 12px;
+}
+
+.schedule__note {
+  margin: -4px 0 10px;
+  font-weight: 800;
+  font-size: 13px;
+  color: rgba(11, 58, 102, 0.65);
+}
+
+.schedule__subtitle {
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(11, 58, 102, 0.55);
+  margin-bottom: 12px;
+}
+
+.private-schedule__text {
+  margin: 0 0 12px;
+  font-weight: 700;
+  line-height: 1.5;
+  color: rgba(11, 58, 102, 0.78);
+}
+
+.private-schedule__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.private-schedule__tag {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(0, 167, 216, 0.12);
+  color: $brand-navy;
+}
+
+.private__title {
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.mini-card__lead {
+  margin: -6px 0 12px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.4;
+  color: rgba(11, 58, 102, 0.72);
 }
 
 .schedule__grid {
@@ -77,12 +137,6 @@
   color: rgba(11, 58, 102, 0.78);
 }
 
-.schedule__note {
-  margin-top: 10px;
-  font-weight: 800;
-  color: rgba(11, 58, 102, 0.65);
-}
-
 .pricing__grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -90,6 +144,7 @@
 }
 
 .card {
+  position: relative;
   border-radius: 16px;
   border: 1px solid rgba(11, 58, 102, 0.12);
   padding: 16px;
@@ -102,6 +157,24 @@
 .card--featured {
   border-color: rgba(0, 167, 216, 0.35);
   box-shadow: 0 18px 45px rgba(0, 167, 216, 0.12);
+}
+
+.card__badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: $brand-cyan;
+}
+
+.card__extra {
+  margin: 0 0 10px;
+  font-size: 13px;
+  font-weight: 800;
+  color: rgba(11, 58, 102, 0.72);
 }
 
 .card__title {

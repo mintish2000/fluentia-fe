@@ -131,8 +131,8 @@
 :root,
 :host {
   /* core typography tokens are not generating css variables, hence below */
-  --mat-sys-brand-font-family: 'URW DIN Arabic';
-  --mat-sys-plain-font-family: 'URW DIN Arabic Medium';
+  --mat-sys-brand-font-family: 'Montserrat', sans-serif;
+  --mat-sys-plain-font-family: 'Montserrat', sans-serif;
   --mat-sys-bold-font-weight: 700;
   --mat-sys-medium-font-weight: 500;
   --mat-sys-regular-font-weight: 400;
@@ -140,8 +140,8 @@
 
   @include mat.theme-overrides(
     (
-      brand-family: 'URW DIN Arabic',
-      plain-family: 'URW DIN Arabic Medium',
+      brand-family: 'Montserrat',
+      plain-family: 'Montserrat',
       bold-weight: 700,
       medium-weight: 500,
       regular-weight: 400,

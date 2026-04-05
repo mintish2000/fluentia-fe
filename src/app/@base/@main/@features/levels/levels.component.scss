@@ -30,6 +30,11 @@ $level-palette: (
   ),
 );
 
+/* Keeps hero + jump nav in one reveal group without affecting `.page` layout */
+.levels-reveal-top {
+  display: contents;
+}
+
 .page {
   padding: 24px 20px 32px;
   border-radius: 20px;
@@ -354,6 +359,18 @@ $level-palette: (
   .level-card__body,
   .skills-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* Fixed mobile header in layout — jump links / hash scroll must clear toolbar (+ html scroll-padding) */
+@media (max-width: 980px) {
+  .level-card {
+    scroll-margin-top: calc(var(--layout-mobile-toolbar-offset, 96px) + 20px);
+  }
+
+  .hero,
+  .level-jump {
+    scroll-margin-top: calc(var(--layout-mobile-toolbar-offset, 96px) + 8px);
   }
 }
 

@@ -159,14 +159,16 @@
 
     <mat-drawer-content class="website__drawer-content">
       <main class="website__content">
-        <router-outlet></router-outlet>
+        <div class="website__router-host" [@routerAnimations]="prepareRoute(outlet)">
+          <router-outlet #outlet="outlet" />
+        </div>
       </main>
 
       <footer class="website__footer">
         <div class="website__footer-inner">
           <div class="footer-brand">
             <div class="footer-brand__name"><span class="fluentia-word">Fluentia</span></div>
-            <div class="footer-brand__tagline">Where fluency becomes natural</div>
+            <div class="footer-brand__tagline">where fluency becomes natural</div>
             @if (isAuthenticated() && isStudentRole() && shouldShowPlacementFooterLink()) {
               <a class="footer-placement-link" routerLink="/main/placement-test">
                 Start Placement Test

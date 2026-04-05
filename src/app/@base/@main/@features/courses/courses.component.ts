@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { ScrollRevealContainerDirective } from '@shared/directives/scroll-reveal-container.directive';
 import { Course } from '@shared/interfaces/learning/learning.interface';
 import { CoursesService } from '@shared/services/learning/courses.service';
 import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-courses',
-  imports: [RouterLink],
+  imports: [RouterLink, ScrollRevealContainerDirective],
   templateUrl: './courses.component.html',
   styleUrl: './courses.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

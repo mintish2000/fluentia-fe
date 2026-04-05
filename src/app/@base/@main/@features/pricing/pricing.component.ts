@@ -16,6 +16,7 @@ import {
 } from '@shared/constants/pricing-plans';
 import { PaypalCheckoutService } from '@shared/services/paypal/paypal-checkout.service';
 import { ToastService } from '@shared/services/toast/toast.service';
+import { ScrollRevealContainerDirective } from '@shared/directives/scroll-reveal-container.directive';
 import { UserService } from '@shared/services/user/user.service';
 
 @Component({
@@ -24,6 +25,7 @@ import { UserService } from '@shared/services/user/user.service';
   templateUrl: './pricing.component.html',
   styleUrl: './pricing.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [ScrollRevealContainerDirective],
 })
 export default class PricingComponent {
   private readonly _userService = inject(UserService);

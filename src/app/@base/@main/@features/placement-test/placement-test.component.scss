@@ -25,6 +25,20 @@
   color: rgba(11, 58, 102, 0.7);
 }
 
+.page__subtitle--mixed {
+  text-transform: none;
+  letter-spacing: 0.03em;
+  font-weight: 700;
+  color: rgba(11, 58, 102, 0.78);
+}
+
+.page__lede {
+  margin: 10px 0 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(11, 58, 102, 0.62);
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

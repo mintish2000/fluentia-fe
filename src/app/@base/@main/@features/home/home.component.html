@@ -1,7 +1,7 @@
-<div class="landing">
+<div class="landing" appScrollRevealContainer>
   <section class="hero" id="top">
     <div class="hero__content">
-      <h1 class="hero__title">START YOUR <span class="fluentia-word">FLUENTIA</span> ENGLISH JOURNEY TODAY!</h1>
+      <h1 class="hero__title">START YOUR ENGLISH<br />JOURNEY TODAY!</h1>
       <ul class="hero__bullets">
         <li>Professional online English lessons tailored to your goals</li>
         <li>Small groups and 1-on-1 classes available</li>
@@ -20,8 +20,8 @@
   </section>
 
   <section class="tagline" id="how">
-    <div class="tagline__eyebrow">ENGLISH LEARNING, ALL IN ONE PLACE</div>
-    <div class="tagline__heading">WHY LEARN WITH US?</div>
+    <div class="tagline__eyebrow tagline__eyebrow--title-case">English Learning, All in One Place</div>
+    <div class="tagline__heading">why learn with us</div>
   </section>
 
   <section class="features">
@@ -33,12 +33,12 @@
 
       <div class="feature">
         <span class="material-icons">groups</span>
-        <div class="feature__label">SMALL GROUPS</div>
+        <div class="feature__label">small groups</div>
       </div>
 
       <div class="feature">
         <span class="material-icons">verified</span>
-        <div class="feature__label">CERTIFIED TEACHERS</div>
+        <div class="feature__label">CRETIFIED TEACHERS</div>
       </div>
 
       <div class="feature">
@@ -49,51 +49,60 @@
   </section>
 
   <section class="levels" id="levels">
-    <div class="section-title">ALL LEVELS AVAILABLE</div>
-    <div class="levels__subtitle">FOCUSED LEARNING. FLEXIBLE SUPPORT</div>
+    <div class="section-title">All Levels Available</div>
+    <div class="levels__subtitle levels__subtitle--mixed">Focused learning. Flexible support</div>
 
     <div class="levels__row">
-      <div class="level">A1 <span>BEGINNER</span></div>
-      <div class="level">A2 <span>ELEMENTARY</span></div>
-      <div class="level">B1 <span>INTERMEDIATE</span></div>
-      <div class="level">B2 <span>UPPER-INTERMEDIATE</span></div>
-      <div class="level">C1 <span>ADVANCED</span></div>
+      <div class="level">A1 <span>BIGGINNER</span></div>
+      <div class="level">A2 <span>Elementary</span></div>
+      <div class="level">B1 <span>Intermediate</span></div>
+      <div class="level">B2 <span>Upper-Intermediate</span></div>
+      <div class="level">C1 <span>Advanced</span></div>
     </div>
   </section>
 
   <section class="steps" id="test">
-    <div class="section-title">PLACEMENT TEST</div>
-    <div class="steps__subtitle">DISCOVER YOUR ENGLISH LEVEL WITH OUR COMPREHENSIVE ASSESSMENT</div>
+    <div class="section-title">Placement Test</div>
+    <div class="steps__subtitle steps__subtitle--mixed">Discover your English level with our comprehensive assessment</div>
+
+    <div class="cta-row cta-row--pair">
+      <button type="button" class="cta cta--gold" (click)="navigateToLogin()">Take Free Placement Test</button>
+      <a routerLink="/main/pricing" class="cta cta--blue">Book Your Online Class</a>
+    </div>
+
+    <div class="how-start">
+      <div class="how-start__eyebrow">How to get Started</div>
+      <div class="how-start__title">THREE SIMPLE STEPS TO BEGIN YOUR ENGLISH LEARNING JOURNEY</div>
+    </div>
 
     <div class="steps__list">
       <div class="step">
         <div class="step__number">01</div>
         <div class="step__card">
-          <div class="step__title">HOW IT WORKS</div>
-          <p class="step__desc">Online & free. Duration up to 20 minutes. Covers A1 to C1 levels.</p>
+          <div class="step__title">TAKE THE LEVEL TEST</div>
+          <p class="step__desc">Complete our placement test to determine your current English level</p>
         </div>
       </div>
 
       <div class="step">
         <div class="step__number">02</div>
         <div class="step__card">
-          <div class="step__title">WHY A PLACEMENT TEST?</div>
-          <p class="step__desc">Determines proficiency, ensures correct placement, and gives personalized recommendations.</p>
+          <div class="step__title">Get Your Level</div>
+          <p class="step__desc">Receive your level assessment and level recommendations</p>
         </div>
       </div>
 
       <div class="step">
         <div class="step__number">03</div>
         <div class="step__card">
-          <div class="step__title">AFTER THE TEST</div>
-          <p class="step__desc">Receive your CEFR level (A1–C1), schedule suggestion, and package recommendation.</p>
+          <div class="step__title">Start Learning</div>
+          <p class="step__desc">Choose your package and time, and then begin your journey!</p>
         </div>
       </div>
     </div>
 
     <div class="cta-row">
       <button type="button" class="cta cta--gold" (click)="navigateToLogin()">Login to take free Placement Test</button>
-      <!-- <button type="button" class="cta cta--blue">Book Your Online Class</button> -->
       <button type="button" class="cta cta--blue" (click)="navigateToLevels()">Check Our Levels</button>
     </div>
   </section>
@@ -102,60 +111,47 @@
     <div class="section-title">ABOUT US</div>
     <div class="steps__subtitle">WHO WE ARE</div>
 
-    <p class="home-preview__lead">
-      We help students at every level learn English in a practical, engaging way — with certified
-      teachers, clear goals, and lessons built around real communication.
-    </p>
+    <div class="home-founders" aria-label="Fluentia co-founders">
+      <article class="home-founders__card">
+        <div class="home-founders__visual">
+          <div class="home-founders__frame">
+            <div class="home-founders__photo-wrap">
+              <img
+                class="home-founders__photo"
+                src="/images/about-lina-odeh.png"
+                width="400"
+                height="500"
+                alt="Lina Odeh"
+                loading="lazy"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="home-founders__copy">
+          <h2 class="home-founders__name">Lina Odeh</h2>
+        </div>
+      </article>
 
-    <div class="home-preview__pill-row">
-      <div class="home-preview__pill">
-        <span class="home-preview__pill-k">Goal-oriented</span>
-        <span class="home-preview__pill-v">Clear objectives in every lesson</span>
-      </div>
-      <div class="home-preview__pill">
-        <span class="home-preview__pill-k">Student-centered</span>
-        <span class="home-preview__pill-v">Teaching adapted to your needs</span>
-      </div>
-      <div class="home-preview__pill">
-        <span class="home-preview__pill-k">Interactive</span>
-        <span class="home-preview__pill-v">Maximum speaking practice</span>
-      </div>
-      <div class="home-preview__pill">
-        <span class="home-preview__pill-k">Professional</span>
-        <span class="home-preview__pill-v">Proven methods &amp; materials</span>
-      </div>
+      <article class="home-founders__card">
+        <div class="home-founders__visual">
+          <div class="home-founders__frame">
+            <div class="home-founders__photo-wrap">
+              <img
+                class="home-founders__photo"
+                src="/images/about-natally-al-balbeisi.png"
+                width="400"
+                height="500"
+                alt="Natally Al-Balbeisi"
+                loading="lazy"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="home-founders__copy">
+          <h2 class="home-founders__name">Natally Al-Balbeisi</h2>
+        </div>
+      </article>
     </div>
-
-    <!-- <div class="about__grid">
-      <div class="about__card">
-        <div class="about__name">NATALLY AL-BALBEISI</div>
-        <div class="about__role">Co-founder & Certified English Instructor</div>
-      </div>
-      <div class="about__card">
-        <div class="about__name">LINA ODEH</div>
-        <div class="about__role">Co-founder & Certified English Instructor</div>
-      </div>
-    </div>
-
-    <div class="about__two-cols">
-      <div class="about__box">
-        <div class="about__box-title">WHO WE WORK WITH</div>
-        <ul>
-          <li>Adults and professionals</li>
-          <li>University students</li>
-          <li>Intermediate to advanced learners</li>
-          <li>Students preparing for exams, work, or relocation</li>
-        </ul>
-      </div>
-      <div class="about__box">
-        <div class="about__box-title">OUR EXPERTISE AREAS</div>
-        <ul>
-          <li>General English (A1–C1)</li>
-          <li>Writing and critical thinking</li>
-          <li>Speaking-focused & communicative learning</li>
-        </ul>
-      </div>
-    </div> -->
 
     <div class="home-preview__footer">
       <a routerLink="/main/about" class="home-preview__cta">
@@ -166,31 +162,34 @@
   </section>
 
   <section class="pricing" id="pricing">
-    <div class="section-title">SCHEDULE & PRICING</div>
-    <div class="steps__subtitle">FLEXIBLE PACKAGES DESIGNED TO FIT YOUR GOALS</div>
+    <div class="section-title">Schedule &amp; Pricing</div>
+    <div class="steps__subtitle steps__subtitle--mixed">
+      Flexible packages designed to fit your learning goals and budget
+    </div>
 
     <p class="home-preview__lead">
-      Group classes run on a fixed weekly timetable. One-to-one private sessions are priced
-      separately — everything is detailed on the pricing page.
+      Group classes run on a fixed weekly timetable. One-to-one private sessions are priced separately —
+      everything is detailed on the pricing page.
     </p>
 
     <div class="home-schedule-snapshot" aria-label="Group classes schedule summary">
       <div class="home-schedule-snapshot__head">
         <span class="material-icons" aria-hidden="true">calendar_month</span>
-        <span>Group classes snapshot (GMT+3)</span>
+        <span>Group Classes Schedule</span>
       </div>
+      <p class="home-schedule-snapshot__note">*All times shown in (GMT+3)</p>
       <div class="home-schedule-snapshot__grid">
         <div class="home-schedule-snapshot__cell">
           <span class="home-schedule-snapshot__k">Days</span>
-          <span class="home-schedule-snapshot__v">Mon – Thu</span>
+          <span class="home-schedule-snapshot__v">Monday - Thursday</span>
         </div>
         <div class="home-schedule-snapshot__cell">
           <span class="home-schedule-snapshot__k">Morning</span>
-          <span class="home-schedule-snapshot__v">10:00 – 11:00</span>
+          <span class="home-schedule-snapshot__v">10:00 AM – 11:00 AM</span>
         </div>
         <div class="home-schedule-snapshot__cell">
           <span class="home-schedule-snapshot__k">Evening</span>
-          <span class="home-schedule-snapshot__v">18:00 – 19:00</span>
+          <span class="home-schedule-snapshot__v">6:00 PM – 7:00 PM</span>
         </div>
         <div class="home-schedule-snapshot__cell">
           <span class="home-schedule-snapshot__k">Levels</span>
@@ -198,42 +197,6 @@
         </div>
       </div>
     </div>
-
-    <!-- <div class="pricing__grid">
-      <div class="price-card">
-        <div class="price-card__title">One month</div>
-        <div class="price-card__price">$100</div>
-        <ul>
-          <li>60-minute sessions</li>
-          <li>Max 6 students</li>
-          <li>4 sessions/week</li>
-          <li>Digital materials</li>
-        </ul>
-        <button type="button" class="cta cta--gold cta--small" (click)="goToPayment()">Buy Now</button>
-      </div>
-      <div class="price-card price-card--featured">
-        <div class="price-card__title">Three months</div>
-        <div class="price-card__price">$250</div>
-        <ul>
-          <li>60-minute sessions</li>
-          <li>Max 6 students</li>
-          <li>4 sessions/week</li>
-          <li>Progress tracking</li>
-        </ul>
-        <button type="button" class="cta cta--blue cta--small" (click)="goToPayment()">Buy Now</button>
-      </div>
-      <div class="price-card">
-        <div class="price-card__title">Six months</div>
-        <div class="price-card__price">$420</div>
-        <ul>
-          <li>60-minute sessions</li>
-          <li>Max 6 students</li>
-          <li>4 sessions/week</li>
-          <li>Digital materials</li>
-        </ul>
-        <button type="button" class="cta cta--gold cta--small" (click)="goToPayment()">Buy Now</button>
-      </div>
-    </div> -->
 
     <div class="home-preview__footer">
       <a routerLink="/main/pricing" class="home-preview__cta">
@@ -245,32 +208,14 @@
 
   <section class="contact" id="contact">
     <div class="section-title">CONTACT US</div>
-    <div class="steps__subtitle">READY TO START? GET IN TOUCH WITH US TODAY</div>
+    <div class="steps__subtitle steps__subtitle--mixed">
+      Ready to start your English journey? Get in touch with us today!
+    </div>
 
     <p class="home-preview__lead">
-      Questions about levels, schedules, or enrollment? Reach out by email or Instagram — we reply
-      as soon as we can.
+      Questions about levels, schedules, or enrollment? Reach out by email or Instagram — we reply as soon
+      as we can.
     </p>
-
-    <!-- <div class="contact__grid">
-      <div class="contact__box">
-        <div class="contact__item">
-          <span class="material-icons">mail</span>
-          <div>
-            <div class="contact__label">EMAIL</div>
-            <div class="contact__value">fluentiaacademy&#64;outlook.com</div>
-          </div>
-        </div>
-        <div class="contact__item">
-          <span class="material-icons">camera_alt</span>
-          <div>
-            <div class="contact__label">INSTAGRAM</div>
-            <div class="contact__value">&#64;fluentiaacademy2026</div>
-          </div>
-        </div>
-      </div>
-      <div class="contact__art" aria-hidden="true"></div>
-    </div> -->
 
     <div class="home-preview__footer">
       <a routerLink="/main/contact" class="home-preview__cta">

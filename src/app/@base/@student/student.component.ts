@@ -15,11 +15,12 @@ import { BookingsService } from '@shared/services/learning/bookings.service';
 import { EnrollmentsService } from '@shared/services/learning/enrollments.service';
 import { PlacementTestService } from '@shared/services/learning/placement-test.service';
 import { PaymentsService } from '@shared/services/learning/payments.service';
+import { ScrollRevealContainerDirective } from '@shared/directives/scroll-reveal-container.directive';
 import { finalize, forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-student',
-  imports: [CoreModule, RouterLink],
+  imports: [CoreModule, RouterLink, ScrollRevealContainerDirective],
   templateUrl: './student.component.html',
   styleUrl: './student.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

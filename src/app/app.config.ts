@@ -10,7 +10,6 @@ import {
   provideRouter,
   TitleStrategy,
   withComponentInputBinding,
-  withViewTransitions,
 } from '@angular/router';
 import { appHttpInterceptors } from '@core/interceptors';
 import { TranslateModule } from '@ngx-translate/core';
@@ -21,7 +20,7 @@ import { routes } from './app.routes';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes, withComponentInputBinding(), withViewTransitions()),
+    provideRouter(routes, withComponentInputBinding()),
     provideHttpClient(withInterceptors(appHttpInterceptors)),
     importProvidersFrom([
       BrowserAnimationsModule,

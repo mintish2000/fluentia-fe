@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { ScrollRevealContainerDirective } from '@shared/directives/scroll-reveal-container.directive';
 import { UserService } from '@shared/services/user/user.service';
 
 @Component({
@@ -8,7 +9,7 @@ import { UserService } from '@shared/services/user/user.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink],
+  imports: [RouterLink, ScrollRevealContainerDirective],
 })
 export class HomePageComponent {
   private readonly _userService = inject(UserService);

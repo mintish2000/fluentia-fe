@@ -2,12 +2,13 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Booking } from '@shared/interfaces/learning/learning.interface';
+import { ScrollRevealContainerDirective } from '@shared/directives/scroll-reveal-container.directive';
 import { BookingsService } from '@shared/services/learning/bookings.service';
 import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-bookings',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, ScrollRevealContainerDirective],
   templateUrl: './bookings.component.html',
   styleUrl: './bookings.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

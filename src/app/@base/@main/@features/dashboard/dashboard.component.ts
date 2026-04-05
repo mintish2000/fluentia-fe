@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { BaseComponent } from '@shared/components/base/base.component';
+import { ScrollRevealContainerDirective } from '@shared/directives/scroll-reveal-container.directive';
 import { Enrollment, Payment, StudentAnswer } from '@shared/interfaces/learning/learning.interface';
 import { EnrollmentsService } from '@shared/services/learning/enrollments.service';
 import { PaymentsService } from '@shared/services/learning/payments.service';
@@ -9,6 +10,8 @@ import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-dashboard',
+  standalone: true,
+  imports: [ScrollRevealContainerDirective],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

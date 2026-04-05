@@ -11,10 +11,11 @@ import { CoreModule } from '@core/core.module';
 import { BaseComponent } from '@shared/components/base/base.component';
 import { Booking, Course, Lesson } from '@shared/interfaces/learning/learning.interface';
 import { TutorHubService } from './tutor-hub.service';
+import { ScrollRevealContainerDirective } from '@shared/directives/scroll-reveal-container.directive';
 
 @Component({
   selector: 'app-tutor',
-  imports: [CommonModule, CoreModule, ReactiveFormsModule],
+  imports: [CommonModule, CoreModule, ReactiveFormsModule, ScrollRevealContainerDirective],
   templateUrl: './tutor.component.html',
   styleUrl: './tutor.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

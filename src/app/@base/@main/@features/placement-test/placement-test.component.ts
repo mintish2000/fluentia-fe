@@ -16,11 +16,12 @@ import { PlacementTestService } from '@shared/services/learning/placement-test.s
 import { QuizzesService } from '@shared/services/learning/quizzes.service';
 import { parseQuestionMeta } from '@shared/utils/learning/quiz.utils';
 import { RouterLink } from '@angular/router';
+import { ScrollRevealContainerDirective } from '@shared/directives/scroll-reveal-container.directive';
 import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-placement-test',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, ScrollRevealContainerDirective],
   templateUrl: './placement-test.component.html',
   styleUrl: './placement-test.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

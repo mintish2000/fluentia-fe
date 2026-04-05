@@ -112,6 +112,12 @@ $secondary-color: #2E5984;
   letter-spacing: 0.06em;
 }
 
+.tagline__eyebrow--title-case {
+  text-transform: none;
+  letter-spacing: 0.04em;
+  font-weight: 800;
+}
+
 .features {
   margin: 6px 0 20px 0;
   padding: 20px 16px 22px;
@@ -183,6 +189,40 @@ $secondary-color: #2E5984;
   line-height: 1.45;
 }
 
+.levels__subtitle--mixed,
+.steps__subtitle--mixed {
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-weight: 700;
+}
+
+.how-start {
+  text-align: center;
+  margin: 22px 0 6px;
+}
+
+.how-start__eyebrow {
+  font-size: 16px;
+  font-weight: 800;
+  color: $brand-navy;
+  margin-bottom: 8px;
+}
+
+.how-start__title {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1.45;
+  color: #1a3348;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.cta-row--pair {
+  margin-top: 4px;
+  margin-bottom: 8px;
+}
+
 .levels__row {
   display: flex;
   gap: 12px;
@@ -228,19 +268,22 @@ $secondary-color: #2E5984;
 }
 
 .step {
-  position: relative;
-  padding-left: 84px;
+  display: grid;
+  grid-template-columns: minmax(4.75rem, 5.5rem) minmax(0, 1fr);
+  gap: 12px 18px;
+  align-items: center;
+  padding-left: 0;
   overflow: visible;
 }
 
 .step__number {
-  position: absolute;
-  left: 0;
-  top: -18px;
   font-size: 72px;
   font-weight: 900;
+  font-variant-numeric: tabular-nums;
   color: $brand-navy;
   line-height: 1;
+  text-align: left;
+  min-width: 0;
   text-shadow:
     0 0 24px rgba(255, 255, 255, 1),
     0 0 8px rgba(255, 255, 255, 0.95),
@@ -254,6 +297,7 @@ $secondary-color: #2E5984;
   box-shadow: 0 14px 35px rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(11, 58, 102, 0.08);
   max-width: 720px;
+  min-width: 0;
 }
 
 .step__title {
@@ -295,6 +339,13 @@ $secondary-color: #2E5984;
   color: #ffffff;
 }
 
+a.cta {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* New sections — shared frosted band */
 .about,
 .pricing,
@@ -307,6 +358,92 @@ $secondary-color: #2E5984;
   -webkit-backdrop-filter: blur(14px);
   border: 1px solid rgba(255, 255, 255, 0.55);
   box-shadow: 0 14px 44px rgba(11, 58, 102, 0.1);
+}
+
+/* Homepage About — founders: gradient frame, fixed crop; Natally (2nd) scaled to match Lina’s face size */
+.home-founders {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  max-width: min(38rem, 100%);
+  margin: 10px auto 28px;
+  align-items: stretch;
+}
+
+.home-founders__card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+  overflow: hidden;
+  background: linear-gradient(165deg, rgba(255, 255, 255, 0.99) 0%, rgba(240, 248, 252, 0.95) 55%, rgba(255, 255, 255, 0.96) 100%);
+  border: 1px solid rgba(11, 58, 102, 0.1);
+  box-shadow:
+    0 22px 56px rgba(11, 58, 102, 0.11),
+    inset 0 1px 0 rgba(255, 255, 255, 0.85);
+}
+
+.home-founders__visual {
+  padding: 12px 12px 0;
+}
+
+.home-founders__frame {
+  border-radius: 18px;
+  padding: 3px;
+  background: linear-gradient(
+    140deg,
+    rgba(0, 167, 216, 0.45) 0%,
+    rgba(212, 166, 42, 0.42) 42%,
+    rgba(11, 58, 102, 0.22) 100%
+  );
+  box-shadow: 0 16px 44px rgba(11, 58, 102, 0.14);
+}
+
+.home-founders__card:nth-child(2) .home-founders__frame {
+  background: linear-gradient(
+    220deg,
+    rgba(212, 166, 42, 0.44) 0%,
+    rgba(0, 167, 216, 0.38) 48%,
+    rgba(11, 58, 102, 0.2) 100%
+  );
+}
+
+/* Same box + cover for both → matching zoom / fill */
+.home-founders__photo-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  border-radius: 14px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #eef5fb 0%, #e2ecf5 100%);
+}
+
+.home-founders__photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 22%;
+}
+
+/* Wider shot in asset → scale up so face size matches Lina (1st card) */
+.home-founders__card:nth-child(2) .home-founders__photo {
+  transform: scale(1.22);
+  transform-origin: center 26%;
+}
+
+.home-founders__copy {
+  padding: 14px 14px 18px;
+  text-align: center;
+}
+
+.home-founders__name {
+  margin: 0;
+  font-size: clamp(1.2rem, 2.2vw, 1.5rem);
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  color: $brand-navy;
+  line-height: 1.2;
+  text-wrap: balance;
 }
 
 .about__grid {
@@ -592,6 +729,14 @@ $secondary-color: #2E5984;
   }
 }
 
+.home-schedule-snapshot__note {
+  margin: -6px 0 12px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(11, 58, 102, 0.65);
+}
+
 .home-schedule-snapshot__grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -639,12 +784,12 @@ $secondary-color: #2E5984;
   }
 
   .step {
-    padding-left: 70px;
+    grid-template-columns: minmax(3.5rem, 4.25rem) minmax(0, 1fr);
+    gap: 10px 14px;
   }
 
   .step__number {
     font-size: 56px;
-    top: -14px;
   }
 
   .step__card {
@@ -660,6 +805,13 @@ $secondary-color: #2E5984;
 
   .home-preview__pill-row {
     grid-template-columns: 1fr;
+  }
+
+  .home-founders {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    max-width: 18.5rem;
+    margin-inline: auto;
   }
 
   .home-schedule-snapshot__grid {

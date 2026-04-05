@@ -5,6 +5,7 @@ import {
   computed,
   DestroyRef,
   inject,
+  signal,
   viewChild,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -13,7 +14,12 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { NavigationEnd, RouterModule } from '@angular/router';
+import {
+  NavigationEnd,
+  RouterModule,
+  RouterOutlet,
+} from '@angular/router';
+import { routerAnimations } from '@shared/animations/route-animations';
 import { filter } from 'rxjs';
 import { CoreModule } from '@core/core.module';
 
@@ -32,9 +38,14 @@ type NavbarLink = {
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [routerAnimations],
+  host: {
+    '[style.--layout-landing-bg]': 'landingBackgroundUrl()',
+  },
   imports: [
     CoreModule,
     RouterModule,
+    RouterOutlet,
     MatButtonModule,
     MatDividerModule,
     MatIconModule,
@@ -43,10 +54,30 @@ type NavbarLink = {
   ],
 })
 export class LayoutComponent extends BaseComponent {
+  /**
+   * Public marketing routes in navbar order — each step cycles landing-bg-1…3.
+   * Other /main/* segments get a stable pseudo-random pick from the same set.
+   */
+  private static readonly LANDING_BG_SEGMENTS = [
+    'home',
+    'about',
+    'levels',
+    'how-it-works',
+    'pricing',
+    'contact',
+  ] as const;
+
   private readonly _placementTestService = inject(PlacementTestService);
   private readonly _destroyRef = inject(DestroyRef);
   private readonly _document = inject(DOCUMENT);
   private _bodyScrollY = 0;
+
+  private readonly _landingBgIndex = signal(0);
+
+  /** CSS `url(...)` for `:host::before` (see layout.component.scss). */
+  readonly landingBackgroundUrl = computed(
+    () => `url('/images/landing-bg-${this._landingBgIndex() + 1}.png')`,
+  );
 
   /** Mobile slide-out navigation (Material drawer). */
   readonly mobileDrawer = viewChild<MatDrawer>('mobileDrawer');
@@ -75,12 +106,12 @@ export class LayoutComponent extends BaseComponent {
   ];
 
   readonly publicNavbarLinks: NavbarLink[] = [
-    { path: '/main/home', label: 'Home', exact: true },
-    { path: '/main/about', label: 'About', exact: true },
-    { path: '/main/levels', label: 'English Levels', exact: true },
-    { path: '/main/how-it-works', label: 'How it works', exact: true },
-    { path: '/main/pricing', label: 'Schedule & Pricing', exact: true },
-    { path: '/main/contact', label: 'Contact', exact: true },
+    { path: '/main/home', label: 'HOME', exact: true },
+    { path: '/main/about', label: 'ABOUT US', exact: true },
+    { path: '/main/levels', label: 'ENGLISH LEVELS', exact: true },
+    { path: '/main/how-it-works', label: 'HOW IT WORKS', exact: true },
+    { path: '/main/pricing', label: 'SCHEDULE & PRICING', exact: true },
+    { path: '/main/contact', label: 'CONTACT US', exact: true },
   ];
   readonly shouldShowPlacementFooterLink = computed(
     () => this._userService.isStudent && this._placementTestService.shouldShowPlacementEntry(),
@@ -107,12 +138,37 @@ export class LayoutComponent extends BaseComponent {
   constructor() {
     super();
     this._placementTestService.refreshStatus();
+    this._landingBgIndex.set(this.resolveLandingBgIndex(this._router.url));
     this._router.events
       .pipe(
         filter((e): e is NavigationEnd => e instanceof NavigationEnd),
         takeUntilDestroyed(this._destroyRef),
       )
-      .subscribe(() => this.closeMobileNav());
+      .subscribe((e) => {
+        this.closeMobileNav();
+        this._landingBgIndex.set(this.resolveLandingBgIndex(e.urlAfterRedirects));
+      });
+  }
+
+  private resolveLandingBgIndex(rawUrl: string): number {
+    const path = (rawUrl.split(/[?#]/)[0] ?? '').replace(/\/+$/, '');
+    const mainMarker = '/main/';
+    const mainIdx = path.indexOf(mainMarker);
+    const segment =
+      mainIdx >= 0
+        ? (path.slice(mainIdx + mainMarker.length).split('/')[0] ?? '')
+        : (path.split('/').filter(Boolean).pop() ?? '');
+    const orderIdx = LayoutComponent.LANDING_BG_SEGMENTS.indexOf(
+      segment as (typeof LayoutComponent.LANDING_BG_SEGMENTS)[number],
+    );
+    if (orderIdx >= 0) {
+      return orderIdx % 3;
+    }
+    let h = 0;
+    for (let i = 0; i < segment.length; i++) {
+      h = (Math.imul(31, h) + segment.charCodeAt(i)) | 0;
+    }
+    return Math.abs(h) % 3;
   }
 
   /**
@@ -200,7 +256,13 @@ export class LayoutComponent extends BaseComponent {
     const win = doc.defaultView;
 
     if (opened) {
-      this._bodyScrollY = win?.scrollY ?? 0;
+      /*
+       * Use window + documentElement for scroll position (iOS / some emulators differ).
+       * Global `html, body { height: 100% }` makes body viewport-tall; with `position: fixed`
+       * that clips the document to ~100vh so the visible “window” goes blank after scrolling.
+       * `height: auto` lets the fixed body span full content height while `top` preserves scroll.
+       */
+      this._bodyScrollY = win?.scrollY ?? html.scrollTop ?? body.scrollTop ?? 0;
       html.style.overflow = 'hidden';
       body.style.overflow = 'hidden';
       body.style.overscrollBehavior = 'none';
@@ -209,6 +271,8 @@ export class LayoutComponent extends BaseComponent {
       body.style.left = '0';
       body.style.right = '0';
       body.style.width = '100%';
+      body.style.height = 'auto';
+      body.style.minHeight = '100%';
     } else {
       html.style.removeProperty('overflow');
       body.style.removeProperty('overflow');
@@ -218,6 +282,8 @@ export class LayoutComponent extends BaseComponent {
       body.style.removeProperty('left');
       body.style.removeProperty('right');
       body.style.removeProperty('width');
+      body.style.removeProperty('height');
+      body.style.removeProperty('min-height');
       win?.scrollTo(0, this._bodyScrollY);
     }
   }
@@ -232,5 +298,10 @@ export class LayoutComponent extends BaseComponent {
    */
   mobileNavIcon(path: string): string {
     return this._mobileMenuIcons[path] ?? 'chevron_right';
+  }
+
+  /** Route transition state for `@routerAnimations` (see route `data.animation`). */
+  prepareRoute(outlet: RouterOutlet): string {
+    return (outlet.activatedRouteData['animation'] as string | undefined) ?? 'routeDefault';
   }
 }

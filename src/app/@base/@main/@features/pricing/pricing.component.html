@@ -1,7 +1,9 @@
-<section class="page">
+<section class="page" appScrollRevealContainer>
   <header class="page__header">
-    <h1 class="page__title">SCHEDULE & PRICING</h1>
-    <p class="page__subtitle">Flexible packages designed to fit your goals and budget</p>
+    <h1 class="page__title">Schedule &amp; Pricing</h1>
+    <p class="page__subtitle page__subtitle--mixed">
+      Flexible packages designed to fit your learning goals and budget
+    </p>
   </header>
 
   @if (checkoutPlan(); as planId) {
@@ -24,11 +26,13 @@
   }
 
   <div class="schedule">
-    <div class="schedule__title">GROUP CLASSES SCHEDULE</div>
+    <div class="schedule__title">Schedule &amp; Time Slots</div>
+    <div class="schedule__note">*All times shown in (GMT+3)</div>
+    <div class="schedule__subtitle">Group Classes Schedule</div>
     <div class="schedule__grid">
       <div class="schedule__item">
         <div class="k">Days</div>
-        <div class="v">Monday – Thursday</div>
+        <div class="v">Monday - Thursday</div>
       </div>
       <div class="schedule__item">
         <div class="k">Morning</div>
@@ -40,14 +44,25 @@
       </div>
       <div class="schedule__item">
         <div class="k">Levels</div>
-        <div class="v">A1–B1 & B2–C1</div>
+        <div class="v">A1–B1 &amp; B2–C1</div>
       </div>
     </div>
-    <div class="schedule__note">All times shown in (GMT+3)</div>
+  </div>
+
+  <div class="private-schedule">
+    <div class="private-schedule__title">Private Classes Scheduling</div>
+    <p class="private-schedule__text">
+      All levels offered morning and evening. Same curriculum, different teachers. 4 sessions per week.
+      Each session 60 minutes.
+    </p>
+    <div class="private-schedule__row">
+      <div class="private-schedule__tag">Fully flexible</div>
+      <div class="private-schedule__tag">30 or 60 minutes</div>
+    </div>
   </div>
 
   <div class="pricing">
-    <div class="pricing__title">GROUP CLASSES PRICING</div>
+    <div class="pricing__title">Group Classes Pricing</div>
     <div class="pricing__grid">
       <article class="card">
         <div class="card__title">One month</div>
@@ -57,17 +72,20 @@
           <li>Max 6 students</li>
           <li>4 sessions/week</li>
           <li>Digital materials</li>
+          <li>Progress tracking</li>
         </ul>
         <button type="button" class="cta cta--gold" (click)="buyNow('group-1m')">Buy Now</button>
       </article>
 
       <article class="card card--featured">
+        <div class="card__badge">most popular</div>
         <div class="card__title">Three months</div>
         <div class="card__price">$250</div>
         <ul class="list">
           <li>60-minute sessions</li>
           <li>Max 6 students</li>
           <li>4 sessions/week</li>
+          <li>Digital materials</li>
           <li>Progress tracking</li>
         </ul>
         <button type="button" class="cta cta--blue" (click)="buyNow('group-3m')">Buy Now</button>
@@ -81,17 +99,22 @@
           <li>Max 6 students</li>
           <li>4 sessions/week</li>
           <li>Digital materials</li>
+          <li>Progress tracking</li>
         </ul>
+        <p class="card__extra">Includes 2 bonus 1-to-1 classes</p>
         <button type="button" class="cta cta--gold" (click)="buyNow('group-6m')">Buy Now</button>
       </article>
     </div>
   </div>
 
   <div class="private">
-    <div class="private__title">(1-TO-1) PRIVATE CLASSES</div>
+    <div class="private__title">
+      (1-to-1): Private 'General English, IELTS preparation, or SAT 1 (Reading &amp; Writing)' Classes
+    </div>
     <div class="private__grid">
       <article class="mini-card">
-        <div class="mini-card__title">30-minute private classes</div>
+        <div class="mini-card__title">30-Minute Private Classes</div>
+        <p class="mini-card__lead">1-on-1 instruction, fully customized lessons, flexible scheduling</p>
         <div class="mini-card__row">
           <span>One session</span>
           <span class="mini-card__row-right">
@@ -122,7 +145,8 @@
       </article>
 
       <article class="mini-card">
-        <div class="mini-card__title">60-minute private classes</div>
+        <div class="mini-card__title">60-Minute Private Classes</div>
+        <p class="mini-card__lead">1-on-1 instruction, fully customized lessons, flexible scheduling</p>
         <div class="mini-card__row">
           <span>One session</span>
           <span class="mini-card__row-right">

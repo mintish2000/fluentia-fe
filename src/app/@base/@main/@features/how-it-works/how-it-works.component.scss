@@ -31,6 +31,49 @@
   line-height: 1.45;
 }
 
+.page__subtitle--mixed {
+  text-transform: none;
+  letter-spacing: 0.03em;
+  font-weight: 700;
+}
+
+.formats-intro {
+  text-align: center;
+  margin: 0 0 16px;
+  display: grid;
+  gap: 6px;
+}
+
+.formats-intro__line {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: $brand-navy;
+}
+
+.page__subtitle--mixed {
+  text-transform: none;
+  letter-spacing: 0.03em;
+  font-weight: 700;
+}
+
+.formats-eyebrow {
+  margin: 0 0 6px;
+  text-align: center;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  color: $brand-navy;
+}
+
+.formats-sub {
+  margin: 0 0 16px;
+  text-align: center;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #1a3348;
+}
+
 .two {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
