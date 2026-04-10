@@ -99,6 +99,13 @@ export const featuresRoutes: Routes = [
         data: { animation: 'routePricing' },
       },
       {
+        path: 'payments',
+        canActivate: [UserGuard],
+        loadComponent: () => import('./pricing/pricing.component'),
+        title: 'Payments',
+        data: { animation: 'routePayments' },
+      },
+      {
         path: 'contact',
         loadComponent: () => import('./contact/contact.component'),
         title: 'Contact',

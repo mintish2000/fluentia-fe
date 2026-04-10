@@ -84,7 +84,7 @@ export class LayoutComponent extends BaseComponent {
   private readonly _studentNavbarLinks: NavbarLink[] = [
     { path: '/main/student', label: 'Student Hub', exact: true },
     { path: '/main/dashboard', label: 'Dashboard', exact: true },
-    // { path: '/main/courses', label: 'Courses', exact: true },
+    { path: '/main/payments', label: 'Payments', exact: true },
     // { path: '/main/lessons', label: 'Lessons', exact: true },
     // { path: '/main/bookings', label: 'Bookings', exact: true },
   ];

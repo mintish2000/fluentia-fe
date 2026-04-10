@@ -13,6 +13,7 @@ export const routes: Routes = [
   { path: 'admin', pathMatch: 'full', redirectTo: 'main/admin' },
   { path: 'tutor', pathMatch: 'full', redirectTo: 'main/tutor' },
   { path: 'student', pathMatch: 'full', redirectTo: 'main/student' },
+  
   {
     path: '',
     pathMatch: 'full',

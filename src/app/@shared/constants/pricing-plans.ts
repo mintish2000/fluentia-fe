@@ -1,8 +1,10 @@
 /** Keys sent to PayPal as custom_id and used for optional hosted checkout URLs. */
 export type PricingPlanId =
   | 'group-1m'
+  | 'group-2m'
   | 'group-3m'
   | 'group-6m'
+  | 'group-12m'
   | 'private-30-1'
   | 'private-30-4'
   | 'private-30-8'
@@ -18,6 +20,10 @@ export const PRICING_PLAN_DETAILS: Record<
     amount: '100.00',
     description: 'Fluentia — Group classes (1 month)',
   },
+  'group-2m': {
+    amount: '180.00',
+    description: 'Fluentia — Group classes (2 months)',
+  },
   'group-3m': {
     amount: '250.00',
     description: 'Fluentia — Group classes (3 months)',
@@ -25,6 +31,10 @@ export const PRICING_PLAN_DETAILS: Record<
   'group-6m': {
     amount: '420.00',
     description: 'Fluentia — Group classes (6 months)',
+  },
+  'group-12m': {
+    amount: '780.00',
+    description: 'Fluentia — Group classes (12 months)',
   },
   'private-30-1': {
     amount: '15.00',

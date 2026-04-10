@@ -58,13 +58,22 @@
 
     <div class="private-schedule">
       <div class="private-schedule__title">Private Classes Scheduling</div>
-      <p class="private-schedule__text">
-        All levels offered morning and evening. Same curriculum, different teachers. 4 sessions per week.
-        Each session 60 minutes.
-      </p>
-      <div class="private-schedule__row">
-        <div class="private-schedule__tag">Fully flexible</div>
-        <div class="private-schedule__tag">30 or 60 minutes</div>
+      <div class="private-schedule__cards">
+        <article class="private-schedule__card">
+          <div class="private-schedule__card-title">Private Class Availability</div>
+          <p class="private-schedule__text">
+            All levels offered morning and evening. Same curriculum, different teachers. 4 sessions per
+            week. Each session 60 minutes.
+          </p>
+        </article>
+
+        <article class="private-schedule__card private-schedule__card--tags">
+          <div class="private-schedule__card-title">Private Class Options</div>
+          <div class="private-schedule__row">
+            <div class="private-schedule__tag">Fully flexible</div>
+            <div class="private-schedule__tag">30 or 60 minutes</div>
+          </div>
+        </article>
       </div>
     </div>
 
@@ -73,7 +82,10 @@
       <div class="pricing__grid">
         <article class="card">
           <div class="card__title">One month</div>
-          <div class="card__price">$100</div>
+          <div class="card__price-wrap">
+            <span class="card__old-price card__old-price--spacer" aria-hidden="true">$000</span>
+            <div class="card__price">$100</div>
+          </div>
           <ul class="list">
             <li>60-minute sessions</li>
             <li>Max 6 students</li>
@@ -86,8 +98,27 @@
 
         <article class="card card--featured">
           <div class="card__badge">most popular</div>
+          <div class="card__title">Two months</div>
+          <div class="card__price-wrap">
+            <span class="card__old-price">$200</span>
+            <div class="card__price">$180</div>
+          </div>
+          <ul class="list">
+            <li>60-minute sessions</li>
+            <li>Max 6 students</li>
+            <li>4 sessions/week</li>
+            <li>Digital materials</li>
+            <li>Progress tracking</li>
+          </ul>
+          <button type="button" class="cta cta--gold" (click)="buyNow('group-2m')">Buy Now</button>
+        </article>
+
+        <article class="card card--featured">
           <div class="card__title">Three months</div>
-          <div class="card__price">$250</div>
+          <div class="card__price-wrap">
+            <span class="card__old-price">$300</span>
+            <div class="card__price">$250</div>
+          </div>
           <ul class="list">
             <li>60-minute sessions</li>
             <li>Max 6 students</li>
@@ -100,7 +131,10 @@
 
         <article class="card">
           <div class="card__title">Six months</div>
-          <div class="card__price">$420</div>
+          <div class="card__price-wrap">
+            <span class="card__old-price">$600</span>
+            <div class="card__price">$420</div>
+          </div>
           <ul class="list">
             <li>60-minute sessions</li>
             <li>Max 6 students</li>
@@ -110,6 +144,24 @@
           </ul>
           <p class="card__extra">Includes 2 bonus 1-to-1 classes</p>
           <button type="button" class="cta cta--gold" (click)="buyNow('group-6m')">Buy Now</button>
+        </article>
+
+        <article class="card card--featured">
+          <div class="card__badge">most popular</div>
+          <div class="card__title">Twelve months</div>
+          <div class="card__price-wrap">
+            <span class="card__old-price">$1200</span>
+            <div class="card__price">$780</div>
+          </div>
+          <ul class="list">
+            <li>60-minute sessions</li>
+            <li>Max 6 students</li>
+            <li>4 sessions/week</li>
+            <li>Digital materials</li>
+            <li>Progress tracking</li>
+          </ul>
+          <p class="card__extra">Includes 5 bonus 1-to-1 classes</p>
+          <button type="button" class="cta cta--gold" (click)="buyNow('group-12m')">Buy Now</button>
         </article>
       </div>
     </div>
