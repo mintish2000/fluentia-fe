@@ -15,12 +15,25 @@
       (click)="closeCheckout()"
     >
       <div class="checkout-dialog" (click)="$event.stopPropagation()">
-        <button type="button" class="checkout-close" (click)="closeCheckout()" aria-label="Close">
-          ×
+        <div class="checkout-dialog__accent" aria-hidden="true"></div>
+        <button type="button" class="checkout-close" (click)="closeCheckout()" aria-label="Close checkout">
+          <span class="material-icons" aria-hidden="true">close</span>
         </button>
-        <h2 id="checkout-title" class="checkout-dialog__title">Pay with PayPal</h2>
-        <p class="checkout-dialog__summary">{{ planSummary(planId) }}</p>
+        <div class="checkout-dialog__header">
+          <div class="checkout-dialog__icon-wrap" aria-hidden="true">
+            <span class="material-icons">lock</span>
+          </div>
+          <div class="checkout-dialog__headlines">
+            <p class="checkout-dialog__eyebrow">Secure checkout</p>
+            <h2 id="checkout-title" class="checkout-dialog__title">Pay with PayPal</h2>
+          </div>
+        </div>
+        <div class="checkout-dialog__summary-card">
+          <span class="checkout-dialog__summary-label">Your order</span>
+          <p class="checkout-dialog__summary">{{ planSummary(planId) }}</p>
+        </div>
         <div #paypalHost class="paypal-host"></div>
+        <p class="checkout-dialog__footnote">Encrypted payment · Powered by PayPal</p>
       </div>
     </div>
   }

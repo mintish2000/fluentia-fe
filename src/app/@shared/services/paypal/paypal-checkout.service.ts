@@ -79,7 +79,13 @@ export class PaypalCheckoutService {
     const currency = environment.paypalCurrency ?? 'USD';
 
     const buttons = paypal.Buttons({
-      style: { layout: 'vertical', shape: 'rect', label: 'paypal' },
+      style: {
+        layout: 'vertical',
+        shape: 'pill',
+        label: 'paypal',
+        height: 48,
+        borderRadius: 14,
+      },
       createOrder: (_data: unknown, actions: PayPalActions) =>
         actions.order.create({
           intent: 'CAPTURE',
