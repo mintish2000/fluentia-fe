@@ -1,0 +1,34 @@
+<h2 mat-dialog-title>{{ isEditMode ? 'Edit group' : 'Create group' }}</h2>
+
+<mat-dialog-content class="group-dialog__content" [formGroup]="form">
+  <mat-form-field class="group-dialog__field">
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="name" autocomplete="organization" />
+    @if (form.controls.name.hasError('required') && form.controls.name.touched) {
+      <mat-error>Name is required</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="group-dialog__field">
+    <mat-label>Description</mat-label>
+    <textarea matInput formControlName="description" rows="4"></textarea>
+  </mat-form-field>
+
+  <mat-form-field class="group-dialog__field">
+    <mat-label>Link</mat-label>
+    <input matInput type="url" formControlName="link" placeholder="https://..." />
+    @if (form.controls.link.hasError('required') && form.controls.link.touched) {
+      <mat-error>Link is required</mat-error>
+    }
+    @if (form.controls.link.hasError('pattern') && form.controls.link.touched) {
+      <mat-error>Enter a valid http(s) URL</mat-error>
+    }
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close type="button">Cancel</button>
+  <button mat-flat-button color="primary" type="button" (click)="submit()">
+    {{ isEditMode ? 'Save changes' : 'Create group' }}
+  </button>
+</mat-dialog-actions>

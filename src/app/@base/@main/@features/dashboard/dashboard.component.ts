@@ -1,80 +1,84 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { finalize } from 'rxjs';
 import { BaseComponent } from '@shared/components/base/base.component';
 import { ScrollRevealContainerDirective } from '@shared/directives/scroll-reveal-container.directive';
-import { Enrollment, Payment, StudentAnswer } from '@shared/interfaces/learning/learning.interface';
-import { EnrollmentsService } from '@shared/services/learning/enrollments.service';
-import { PaymentsService } from '@shared/services/learning/payments.service';
-import { StudentAnswersService } from '@shared/services/learning/student-answers.service';
-import { forkJoin } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { DashboardMockService } from './dashboard-mock.service';
+import { DashboardMockResponse } from './dashboard.models';
+
+/**
+ * Builds a `conic-gradient` background for the group distribution donut from mock slices.
+ */
+function buildGroupConicGradient(data: DashboardMockResponse | null): string {
+  const items = data?.studentsByGroup ?? [];
+  const total = items.reduce((sum, item) => sum + item.count, 0);
+  if (total <= 0) {
+    return 'conic-gradient(#e2e8f0 0% 100%)';
+  }
+  let acc = 0;
+  const stops: string[] = [];
+  for (const item of items) {
+    const startPct = (acc / total) * 100;
+    acc += item.count;
+    const endPct = (acc / total) * 100;
+    stops.push(`${item.color} ${startPct}% ${endPct}%`);
+  }
+  return `conic-gradient(${stops.join(', ')})`;
+}
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [ScrollRevealContainerDirective],
+  imports: [CommonModule, ScrollRevealContainerDirective],
+  providers: [DashboardMockService],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class DashboardComponent extends BaseComponent {
-  private _enrollmentsService = inject(EnrollmentsService);
-  private _studentAnswersService = inject(StudentAnswersService);
-  private _paymentsService = inject(PaymentsService);
+  private readonly _dashboardMock = inject(DashboardMockService);
 
-  readonly currentUser = this._userService.currentUser;
-  readonly enrollments = signal<Enrollment[]>([]);
-  readonly answers = signal<StudentAnswer[]>([]);
-  readonly payments = signal<Payment[]>([]);
-  readonly isLoading = signal(false);
+  readonly payload = this._dashboardMock.payload;
+  readonly isLoading = signal(true);
+  readonly loadError = signal<string | null>(null);
 
-  readonly averageProgress = computed(() => {
-    const list = this.enrollments();
-    if (!list.length) {
-      return 0;
-    }
+  readonly groupDonutBackground = computed(() => buildGroupConicGradient(this.payload()));
 
-    const total = list.reduce((sum, item) => sum + Number(item.progress ?? 0), 0);
-    return Math.round(total / list.length);
+  readonly placementMaxCount = computed(() => {
+    const bands = this.payload()?.placementScoreDistribution ?? [];
+    return Math.max(1, ...bands.map((b) => b.count));
   });
 
-  readonly completedEnrollments = computed(
-    () => this.enrollments().filter((item) => item.status === 'completed').length,
-  );
-  readonly correctAnswerRate = computed(() => {
-    const list = this.answers();
-    if (!list.length) {
-      return 0;
-    }
-
-    const correct = list.filter((answer) => answer.isCorrect).length;
-    return Math.round((correct / list.length) * 100);
+  readonly revenueMaxAmount = computed(() => {
+    const rows = this.payload()?.revenueByMonth ?? [];
+    return Math.max(1, ...rows.map((r) => r.amountUsd));
   });
-  readonly totalPaid = computed(() =>
-    this.payments().reduce((sum, payment) => sum + Number(payment.amount), 0),
-  );
+
+  readonly statusTotal = computed(() => {
+    const rows = this.payload()?.studentsByStatus ?? [];
+    return rows.reduce((sum, r) => sum + r.count, 0) || 1;
+  });
 
   constructor() {
     super();
-    this.loadDashboardData();
+    this._reload();
   }
 
-  /**
-   * Loads dashboard aggregates from backend resources.
-   */
-  loadDashboardData(): void {
-    this.isLoading.set(true);
+  /** Refetches JSON from `/assets/mock/dashboard.json`. */
+  refreshDashboard(): void {
+    this._reload(true);
+  }
 
-    forkJoin({
-      enrollments: this._enrollmentsService.getEnrollments({ page: 1, limit: 50 }),
-      answers: this._studentAnswersService.getStudentAnswers({ page: 1, limit: 50 }),
-      payments: this._paymentsService.getMyPayments({ page: 1, limit: 50 }),
-    })
+  private _reload(force = false): void {
+    this.isLoading.set(true);
+    this.loadError.set(null);
+    this._dashboardMock
+      .loadDashboard(force)
       .pipe(finalize(() => this.isLoading.set(false)))
       .subscribe({
-        next: ({ enrollments, answers, payments }) => {
-          this.enrollments.set(enrollments.data ?? []);
-          this.answers.set(answers.data ?? []);
-          this.payments.set(payments.data ?? []);
+        next: () => {},
+        error: () => {
+          this.loadError.set('Could not load dashboard data. Check /assets/mock/dashboard.json.');
         },
       });
   }

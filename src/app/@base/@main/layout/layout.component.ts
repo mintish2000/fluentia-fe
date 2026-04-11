@@ -83,7 +83,6 @@ export class LayoutComponent extends BaseComponent {
   readonly mobileDrawer = viewChild<MatDrawer>('mobileDrawer');
   private readonly _studentNavbarLinks: NavbarLink[] = [
     { path: '/main/student', label: 'Student Hub', exact: true },
-    { path: '/main/dashboard', label: 'Dashboard', exact: true },
     { path: '/main/payments', label: 'Payments', exact: true },
     // { path: '/main/lessons', label: 'Lessons', exact: true },
     // { path: '/main/bookings', label: 'Bookings', exact: true },
@@ -91,7 +90,6 @@ export class LayoutComponent extends BaseComponent {
 
   private readonly _tutorNavbarLinks: NavbarLink[] = [
     { path: '/main/tutor', label: 'Tutor Hub', exact: true },
-    { path: '/main/dashboard', label: 'Dashboard', exact: true },
     // { path: '/main/courses', label: 'Courses', exact: true },
     // { path: '/main/lessons', label: 'Lessons', exact: true },
     // { path: '/main/bookings', label: 'Bookings', exact: true },
@@ -123,9 +121,6 @@ export class LayoutComponent extends BaseComponent {
     '/main/student': 'school',
     '/main/tutor': 'co_present',
     '/main/dashboard': 'space_dashboard',
-    '/main/courses': 'menu_book',
-    '/main/lessons': 'play_circle',
-    '/main/bookings': 'event_available',
     '/main/home': 'home',
     '/main/about': 'info',
     '/main/levels': 'trending_up',

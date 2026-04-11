@@ -1,5 +1,87 @@
 @use '../@tutor/tutor.component.scss';
 
+.placement-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  background: rgba(11, 58, 102, 0.55);
+  backdrop-filter: blur(2px);
+}
+
+.placement-gate__panel {
+  max-width: 26rem;
+  width: 100%;
+  border-radius: 0.75rem;
+  padding: 1.5rem 1.35rem;
+  background: #fff;
+  box-shadow: 0 12px 40px rgba(11, 58, 102, 0.25);
+  text-align: center;
+}
+
+.placement-gate__panel h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.15rem;
+  color: #0b3a66;
+}
+
+.placement-gate__panel p {
+  margin: 0 0 1.1rem;
+  color: rgba(11, 58, 102, 0.85);
+  line-height: 1.45;
+}
+
+.placement-gate__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  justify-content: center;
+}
+
+.placement-gate__primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  border-radius: 0.55rem;
+  font-weight: 700;
+  text-decoration: none;
+  color: #fff;
+  background: #0b3a66;
+  border: 1px solid #0b3a66;
+}
+
+.placement-gate__primary:hover {
+  filter: brightness(1.06);
+}
+
+.role-section--dimmed {
+  opacity: 0.35;
+  pointer-events: none;
+  user-select: none;
+}
+
+.info-card {
+  margin-top: 0.65rem;
+  padding: 0.85rem 1rem;
+  border-radius: 0.55rem;
+  background: rgba(11, 58, 102, 0.06);
+  border: 1px solid rgba(11, 58, 102, 0.12);
+}
+
+.info-card h3 {
+  margin: 0 0 0.35rem;
+  font-size: 1rem;
+  color: #0b3a66;
+}
+
+.info-card--inline {
+  margin-top: 1rem;
+}
+
 .role-page__header {
   border-left: 4px solid rgba(212, 166, 42, 0.7);
 }
@@ -14,10 +96,6 @@
   gap: 0.4rem;
 }
 
-.role-page__grid {
-  margin-top: 1.25rem;
-}
-
 .role-page__sync {
   margin-top: 0.75rem;
   display: flex;
@@ -25,63 +103,4 @@
   gap: 0.65rem;
   color: rgba(11, 58, 102, 0.78);
   font-weight: 700;
-}
-
-.status-chip {
-  margin-top: 0.4rem;
-  display: inline-flex;
-  align-items: center;
-  border-radius: 999px;
-  padding: 0.15rem 0.6rem;
-  font-size: 0.72rem;
-  font-weight: 800;
-  color: #5c4500;
-  background: rgba(179, 136, 24, 0.16);
-  text-transform: capitalize;
-}
-
-.role-card {
-  border-top: 3px solid rgba(11, 58, 102, 0.2);
-}
-
-.role-card:nth-child(odd) {
-  border-top-color: rgba(0, 167, 216, 0.45);
-}
-
-.role-card:nth-child(even) {
-  border-top-color: rgba(212, 166, 42, 0.5);
-}
-
-.status-chip--active {
-  color: #0f5132;
-  background: rgba(25, 135, 84, 0.16);
-}
-
-.status-chip--completed {
-  color: #0b3a66;
-  background: rgba(11, 58, 102, 0.16);
-}
-
-.enrollment-cta-row {
-  margin-top: 0.75rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-}
-
-.enrollment-cta {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.45rem 0.85rem;
-  border-radius: 0.6rem;
-  text-decoration: none;
-  font-weight: 700;
-  color: #0b3a66;
-  background: rgba(11, 58, 102, 0.1);
-  border: 1px solid rgba(11, 58, 102, 0.22);
-}
-
-.enrollment-cta:hover {
-  background: rgba(11, 58, 102, 0.16);
 }

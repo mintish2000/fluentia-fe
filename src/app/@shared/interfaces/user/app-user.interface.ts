@@ -10,6 +10,4 @@ export interface AppUser {
   lastName?: string | null;
   phoneNumber?: string;
   profilePicture?: string;
-  englishLevel?: string | null;
-  learningGoals?: string | null;
 }

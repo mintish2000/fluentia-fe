@@ -10,13 +10,11 @@ import { RouterLink } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CoreModule } from '@core/core.module';
 import { BaseComponent } from '@shared/components/base/base.component';
-import { Booking, Enrollment } from '@shared/interfaces/learning/learning.interface';
-import { BookingsService } from '@shared/services/learning/bookings.service';
-import { EnrollmentsService } from '@shared/services/learning/enrollments.service';
 import { PlacementTestService } from '@shared/services/learning/placement-test.service';
-import { PaymentsService } from '@shared/services/learning/payments.service';
 import { ScrollRevealContainerDirective } from '@shared/directives/scroll-reveal-container.directive';
-import { finalize, forkJoin } from 'rxjs';
+import { finalize } from 'rxjs';
+import { StudentHubService } from './student-hub.service';
+import { StudentHubPayload } from './student-hub.models';
 
 @Component({
   selector: 'app-student',
@@ -26,112 +24,81 @@ import { finalize, forkJoin } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class StudentComponent extends BaseComponent {
-  private _enrollmentsService = inject(EnrollmentsService);
-  private _bookingsService = inject(BookingsService);
-  private _paymentsService = inject(PaymentsService);
-  private _placementTestService = inject(PlacementTestService);
-  private _destroyRef = inject(DestroyRef);
+  private readonly _placementTestService = inject(PlacementTestService);
+  private readonly _studentHub = inject(StudentHubService);
+  private readonly _destroyRef = inject(DestroyRef);
 
   readonly currentUser = this._userService.currentUser;
   readonly displayName = computed(() => this.currentUser()?.name || 'Student');
   readonly isLoading = this._isLoading;
   readonly lastSyncedAt = signal<Date | null>(null);
-  readonly studentEnrollments = signal<Enrollment[]>([]);
-  readonly studentBookings = signal<Booking[]>([]);
-  readonly hasEnrollments = computed(() => this.studentEnrollments().length > 0);
-  readonly hasBookings = computed(() => this.studentBookings().length > 0);
-  readonly activeEnrollmentsCount = computed(
-    () =>
-      this.studentEnrollments().filter(
-        (enrollment) => (enrollment.status || '').toLowerCase() === 'active',
-      ).length,
-  );
-  readonly enrolledCoursesCount = signal(0);
-  readonly activeBookingsCount = signal(0);
-  readonly completedEnrollmentsCount = signal(0);
-  readonly averageProgress = signal(0);
-  readonly paymentsCount = signal(0);
-  readonly shouldShowPlacementEntry = this._placementTestService.shouldShowPlacementEntry;
+  readonly hub = signal<StudentHubPayload | null>(null);
+  readonly hubLoadError = signal<string | null>(null);
+
   readonly hasCompletedPlacement = this._placementTestService.hasCompletedPlacement;
   readonly isPlacementStatusLoaded = this._placementTestService.isStatusLoaded;
-  readonly shouldShowPurchaseCtas = computed(
+
+  /**
+   * True when hub payload or live quiz attempt indicates placement is completed.
+   */
+  readonly placementDone = computed(
     () =>
-      !this.hasEnrollments() &&
+      this.hasCompletedPlacement() || !!this.hub()?.placementCompleted,
+  );
+
+  /**
+   * Full-screen gate until placement is done (logout or take test only).
+   * Skipped when hub JSON failed to load so the user can still read the error.
+   */
+  readonly showPlacementGate = computed(
+    () =>
+      !this.hubLoadError() &&
+      this.hub() !== null &&
       this.isPlacementStatusLoaded() &&
-      this.hasCompletedPlacement(),
+      !this.placementDone(),
   );
 
   constructor() {
     super();
     this._placementTestService.refreshStatus();
-    this._loadStudentOverview();
+    this._loadHub();
   }
 
   /**
-   * Loads student overview counters from existing APIs.
+   * Loads {@code GET /student/hub} per FRONTEND_API.md.
    */
-  private _loadStudentOverview() {
-    const studentId = this.currentUser()?.id;
-    if (!studentId) {
-      return;
-    }
-
+  private _loadHub() {
     this._isLoading.set(true);
-
-    forkJoin({
-      enrollments: this._enrollmentsService.getEnrollments(),
-      bookings: this._bookingsService.getBookings(),
-      payments: this._paymentsService.getMyPayments(),
-    })
+    this.hubLoadError.set(null);
+    this._studentHub
+      .getHub()
       .pipe(
         takeUntilDestroyed(this._destroyRef),
         finalize(() => this._isLoading.set(false)),
       )
       .subscribe({
-        next: (response) => {
-          const studentEnrollments = response.enrollments.data.filter(
-            (enrollment) => String(enrollment.student?.id) === String(studentId),
-          );
-          const studentBookings = response.bookings.data.filter(
-            (booking) => String(booking.student?.id) === String(studentId),
-          );
-          const completedEnrollments = studentEnrollments.filter(
-            (enrollment) => (enrollment.status || '').toLowerCase() === 'completed',
-          );
-          const progressValues = studentEnrollments
-            .map((enrollment) => Number(enrollment.progress ?? 0))
-            .filter((progress) => !Number.isNaN(progress));
-          const progressAverage = progressValues.length
-            ? Math.round(
-                progressValues.reduce((sum, value) => sum + value, 0) /
-                  progressValues.length,
-              )
-            : 0;
-
-          this.enrolledCoursesCount.set(studentEnrollments.length);
-          this.studentEnrollments.set(
-            studentEnrollments
-              .slice()
-              .sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt)),
-          );
-          this.studentBookings.set(
-            studentBookings
-              .slice()
-              .sort((a, b) => Date.parse(b.bookingDate) - Date.parse(a.bookingDate)),
-          );
-          this.activeBookingsCount.set(studentBookings.length);
-          this.completedEnrollmentsCount.set(completedEnrollments.length);
-          this.averageProgress.set(progressAverage);
-          this.paymentsCount.set(response.payments.data.length);
+        next: (payload) => {
+          this.hub.set(payload);
           this.lastSyncedAt.set(new Date());
+        },
+        error: () => {
+          this.hubLoadError.set('Could not load student data.');
         },
       });
   }
 
   /**
-   * Reloads student overview data from backend.
+   * Reloads student hub from the API.
    */
   refreshOverview() {
-    this._loadStudentOverview();
+    this._loadHub();
+    this._placementTestService.refreshStatus();
+  }
+
+  /**
+   * Ends the session (used from placement gate).
+   */
+  logout() {
+    this._authService.kickOut();
   }
 }

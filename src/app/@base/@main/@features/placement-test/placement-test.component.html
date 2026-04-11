@@ -4,10 +4,14 @@
     <p class="page__subtitle page__subtitle--mixed">
       Discover your English level with our comprehensive assessment.
     </p>
-    <p class="page__lede">One-time timed assessment (50 questions).</p>
+    <p class="page__lede">One-time timed assessment (up to 50 questions).</p>
   </header>
 
-  @if (!placementQuiz()) {
+  @if (isLoadingPlacement()) {
+    <article class="card">
+      <p class="helper-text">Loading placement test…</p>
+    </article>
+  } @else if (!placementQuiz()) {
     <article class="card">
       <p class="helper-text">Placement test is not configured yet.</p>
     </article>
@@ -19,11 +23,11 @@
       </p>
       <a routerLink="/main/pricing" class="cta cta--link">View plans &amp; pricing</a>
     </article>
-  } @else if (isLoadingQuestions()) {
+  } @else if (!hasQuestions()) {
     <article class="card">
-      <p class="helper-text">Loading test questions...</p>
+      <p class="helper-text">No questions are available for this placement test yet.</p>
     </article>
-  } @else if (hasQuestions()) {
+  } @else {
     <article class="card card--highlight">
       <h2 class="card__title">{{ placementQuiz()!.title }}</h2>
       <p><strong>Questions:</strong> {{ questions().length }} / 50</p>
@@ -95,14 +99,4 @@
       }
     </article>
   }
-
-  @if (submitResult(); as result) {
-    <article class="card card--highlight">
-      <h2 class="card__title">Attempt Submitted</h2>
-      <p class="helper-text">Result has been saved and shared with admins.</p>
-      <p><strong>Questions submitted:</strong> {{ result.answeredQuestions }}</p>
-      <a routerLink="/main/pricing" class="cta cta--link">Continue to plans &amp; pricing</a>
-    </article>
-  }
 </section>
-

@@ -6,7 +6,7 @@ import { BackendUser } from '@shared/interfaces/learning/learning.interface';
 import { AppUser } from '@shared/interfaces/user/app-user.interface';
 import { ApiService } from '@shared/services/api/api.service';
 import { LocalStorageService } from '@shared/services/local-storage/local-storage.service';
-import { map, Observable, take } from 'rxjs';
+import { lastValueFrom, map, Observable, take } from 'rxjs';
 import { UserService } from '../user/user.service';
 
 @Injectable({
@@ -17,6 +17,9 @@ export class AuthService {
   private _localStorageService = inject(LocalStorageService);
   private _apiService = inject(ApiService);
   private _userService = inject(UserService);
+
+  /** In-flight promise so parallel {@code UserGuard} runs share one {@code GET /auth/me}. */
+  private _hydrateUserPromise: Promise<void> | null = null;
 
   isLoggedIn() {
     return this._localStorageService.getItem('access-token');
@@ -47,6 +50,27 @@ export class AuthService {
     return this._apiService.get<BackendUser>({
       path: '/auth/me',
     });
+  }
+
+  /**
+   * Loads the current user from the API when a token exists but the in-memory profile is empty.
+   * Rejects when there is no access token; concurrent callers await the same request.
+   */
+  ensureCurrentUserHydrated(): Promise<void> {
+    if (this._userService.isAuthenticated()) {
+      return Promise.resolve();
+    }
+    if (!this.isLoggedIn()) {
+      return Promise.reject(new Error('NO_SESSION'));
+    }
+    this._hydrateUserPromise ??= lastValueFrom(this.fetchCurrentUserData())
+      .then((response) => {
+        this._userService.setCurrentUser(this.mapBackendUser(response));
+      })
+      .finally(() => {
+        this._hydrateUserPromise = null;
+      });
+    return this._hydrateUserPromise;
   }
 
   kickOut(options: { redirectToLogin?: boolean } = { redirectToLogin: true }) {
@@ -125,8 +149,6 @@ export class AuthService {
       name: fullName || user.email || 'Student',
       userRole: roleId,
       role: roleName,
-      englishLevel: user.englishLevel ?? null,
-      learningGoals: user.learningGoals ?? null,
     };
   }
 

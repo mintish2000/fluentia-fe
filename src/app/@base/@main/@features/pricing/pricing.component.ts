@@ -18,9 +18,13 @@ import {
   type PricingPlanId,
 } from '@shared/constants/pricing-plans';
 import { PaypalCheckoutService } from '@shared/services/paypal/paypal-checkout.service';
+import {
+  PaymentsService,
+  type RecordMyPaymentPayload,
+} from '@shared/services/learning/payments.service';
 import { ToastService } from '@shared/services/toast/toast.service';
 import { ScrollRevealContainerDirective } from '@shared/directives/scroll-reveal-container.directive';
-import { EnrollmentsService } from '@shared/services/learning/enrollments.service';
+import { StudentHubService } from '@base/@student/student-hub.service';
 import { PlacementTestService } from '@shared/services/learning/placement-test.service';
 import { UserService } from '@shared/services/user/user.service';
 
@@ -37,13 +41,16 @@ export default class PricingComponent {
   private readonly _router = inject(Router);
   private readonly _toast = inject(ToastService);
   private readonly _paypal = inject(PaypalCheckoutService);
-  private readonly _enrollmentsService = inject(EnrollmentsService);
+  private readonly _paymentsService = inject(PaymentsService);
+  private readonly _studentHubService = inject(StudentHubService);
   private readonly _placementTestService = inject(PlacementTestService);
   private readonly _destroyRef = inject(DestroyRef);
 
   readonly checkoutPlan = signal<PricingPlanId | null>(null);
   readonly isCheckingStudentCourses = signal(false);
   readonly hasStudentEnrollments = signal(true);
+  readonly paymentSaveError = signal<string | null>(null);
+  readonly isRetryingPaymentSave = signal(false);
   readonly shouldShowPlacementEntry = this._placementTestService.shouldShowPlacementEntry;
   readonly shouldShowNoCoursesMessage = computed(
     () =>
@@ -57,10 +64,11 @@ export default class PricingComponent {
 
   private _mountedPlan: PricingPlanId | null = null;
   private _mountedEl: HTMLElement | null = null;
+  private _pendingPaymentPayload = signal<RecordMyPaymentPayload | null>(null);
 
   constructor() {
     this._placementTestService.refreshStatus();
-    this._loadStudentEnrollments();
+    this._loadStudentHubForPricing();
 
     effect(() => {
       const plan = this.checkoutPlan();
@@ -83,11 +91,17 @@ export default class PricingComponent {
       untracked(() => {
         void this._paypal
           .renderButtons(el, plan, {
-            onSuccess: () => {
-              this._toast.showSuccess('Payment successful. Thank you!');
-              this.checkoutPlan.set(null);
-              this._mountedPlan = null;
-              this._mountedEl = null;
+            onSuccess: (ctx) => {
+              const planDetail = PRICING_PLAN_DETAILS[plan];
+              if (!planDetail) {
+                this._toast.showError('Unknown product.');
+                return;
+              }
+              this.persistPaymentRecord({
+                amount: Number.parseFloat(planDetail.amount),
+                currency: environment.paypalCurrency ?? 'USD',
+                providerReference: ctx.providerReference,
+              });
             },
           })
           .catch(() =>
@@ -99,7 +113,10 @@ export default class PricingComponent {
     });
   }
 
-  private _loadStudentEnrollments(): void {
+  /**
+   * Uses {@code GET /student/hub} — group assignment replaces legacy enrollment listing.
+   */
+  private _loadStudentHubForPricing(): void {
     const user = this._userService.currentUser();
     if (!user || !this._userService.isStudentSignal()) {
       this.hasStudentEnrollments.set(true);
@@ -107,15 +124,12 @@ export default class PricingComponent {
     }
 
     this.isCheckingStudentCourses.set(true);
-    this._enrollmentsService
-      .getEnrollments()
+    this._studentHubService
+      .getHub()
       .pipe(takeUntilDestroyed(this._destroyRef))
       .subscribe({
-        next: (response) => {
-          const hasEnrollments = response.data.some(
-            (enrollment) => String(enrollment.student?.id) === String(user.id),
-          );
-          this.hasStudentEnrollments.set(hasEnrollments);
+        next: (hub) => {
+          this.hasStudentEnrollments.set(hub.group != null);
           this.isCheckingStudentCourses.set(false);
         },
         error: () => {
@@ -134,17 +148,23 @@ export default class PricingComponent {
 
   closeCheckout(): void {
     this.checkoutPlan.set(null);
+    this.paymentSaveError.set(null);
+    this.isRetryingPaymentSave.set(false);
+    this._pendingPaymentPayload.set(null);
     this._mountedPlan = null;
     this._mountedEl = null;
   }
 
-  buyNow(planId: PricingPlanId): void {
-    if (this.shouldShowNoCoursesMessage()) {
-      this._toast.showWarning(
-        'You are not enrolled in any course yet. Once admin assigns a course, it appears here.',
-      );
+  retrySavePayment(): void {
+    const payload = this._pendingPaymentPayload();
+    if (!payload || this.isRetryingPaymentSave()) {
       return;
     }
+
+    this.persistPaymentRecord(payload, { isRetry: true });
+  }
+
+  buyNow(planId: PricingPlanId): void {
 
     if (!this._userService.isAuthenticated()) {
       void this._router.navigateByUrl('/external/login');
@@ -164,6 +184,44 @@ export default class PricingComponent {
       return;
     }
 
+    this.paymentSaveError.set(null);
+    this.isRetryingPaymentSave.set(false);
+    this._pendingPaymentPayload.set(null);
     this.checkoutPlan.set(planId);
+  }
+
+  private persistPaymentRecord(
+    payload: RecordMyPaymentPayload,
+    options: { isRetry?: boolean } = {},
+  ): void {
+    const isRetry = options.isRetry === true;
+    this.paymentSaveError.set(null);
+    this.isRetryingPaymentSave.set(isRetry);
+
+    this._paymentsService
+      .recordMyPayment(payload)
+      .pipe(takeUntilDestroyed(this._destroyRef))
+      .subscribe({
+        next: () => {
+          this.paymentSaveError.set(null);
+          this.isRetryingPaymentSave.set(false);
+          this._pendingPaymentPayload.set(null);
+          this._toast.showSuccess('Payment successful. Thank you!');
+          this.checkoutPlan.set(null);
+          this._mountedPlan = null;
+          this._mountedEl = null;
+          this._loadStudentHubForPricing();
+        },
+        error: () => {
+          this.isRetryingPaymentSave.set(false);
+          this._pendingPaymentPayload.set(payload);
+          this.paymentSaveError.set(
+            'Payment went through PayPal, but we could not save your receipt yet.',
+          );
+          this._toast.showError(
+            'Payment went through PayPal, but we could not save your receipt. Please retry now or contact support with your PayPal confirmation.',
+          );
+        },
+      });
   }
 }

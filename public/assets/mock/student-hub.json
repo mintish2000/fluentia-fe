@@ -1,0 +1,34 @@
+{
+  "placementCompleted": true,
+  "placement": {
+    "score": 84,
+    "totalQuestions": 50,
+    "correctAnswers": 42,
+    "submittedAt": "2026-04-05T08:30:00.000Z"
+  },
+  "group": {
+    "id": "g_001",
+    "name": "Morning Advanced",
+    "description": "Weekday morning cohort for B2+ learners. Focus on fluency and IELTS-style speaking.",
+    "link": "https://example.com/groups/morning-advanced"
+  },
+  "payments": [
+    {
+      "id": "p_001",
+      "amount": 120,
+      "currency": "USD",
+      "paidAt": "2026-03-02T09:00:00.000Z",
+      "status": "paid"
+    },
+    {
+      "id": "p_002",
+      "amount": 120,
+      "currency": "USD",
+      "paidAt": "2026-04-02T09:00:00.000Z",
+      "status": "paid"
+    }
+  ],
+  "nextPaymentDate": "2026-05-02T09:00:00.000Z",
+  "nextPaymentAmount": 120,
+  "nextPaymentCurrency": "USD"
+}

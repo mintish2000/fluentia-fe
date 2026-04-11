@@ -1,4 +1,19 @@
 <section class="role-page" appScrollRevealContainer [dir]="_direction">
+  @if (showPlacementGate()) {
+    <div class="placement-gate" role="dialog" aria-modal="true" aria-labelledby="placement-gate-title">
+      <div class="placement-gate__panel">
+        <h2 id="placement-gate-title">Placement test required</h2>
+        <p>
+          You must complete the placement test before using the hub. Log out or start the test below.
+        </p>
+        <div class="placement-gate__actions">
+          <button type="button" class="secondary" (click)="logout()">Log out</button>
+          <a routerLink="/main/placement-test" class="placement-gate__primary">Take placement test</a>
+        </div>
+      </div>
+    </div>
+  }
+
   <header class="role-page__header">
     <h1>Student Hub</h1>
     <p>Welcome back, {{ displayName() }}</p>
@@ -13,134 +28,83 @@
     </div>
   </header>
 
-  <section class="role-metrics">
-    <article class="metric-card">
-      <h3>Enrolled Courses</h3>
-      <p>{{ enrolledCoursesCount() }}</p>
-    </article>
-    <article class="metric-card">
-      <h3>Completed Courses</h3>
-      <p>{{ completedEnrollmentsCount() }}</p>
-    </article>
-    <article class="metric-card">
-      <h3>Bookings</h3>
-      <p>{{ activeBookingsCount() }}</p>
-    </article>
-    <article class="metric-card">
-      <h3>Payments</h3>
-      <p>{{ paymentsCount() }}</p>
-    </article>
-    <article class="metric-card">
-      <h3>Average Progress</h3>
-      <p>{{ averageProgress() }}%</p>
-    </article>
-    <article class="metric-card">
-      <h3>Active Courses</h3>
-      <p>{{ activeEnrollmentsCount() }}</p>
-    </article>
-  </section>
-
-  @if (isLoading()) {
-    <p class="state-text">Syncing your learning data from backend...</p>
+  @if (hubLoadError()) {
+    <p class="state-text">{{ hubLoadError() }}</p>
   }
 
-  <section class="role-section">
-    <h2>My Courses</h2>
-    <p>Courses assigned to your account by admin enrollment.</p>
+  @if (isLoading()) {
+    <p class="state-text">Loading your data...</p>
+  }
 
-    @if (!hasEnrollments()) {
-      <p class="state-text">
-        You are not enrolled in any course yet. Once admin assigns a course, it appears here.
-      </p>
-      @if (shouldShowPurchaseCtas()) {
-        <p class="state-text">
-          You completed your placement test. Choose your plan and enroll in the course that fits you.
+  @if (placementDone() && hub()?.placement) {
+    <section class="role-section" [class.role-section--dimmed]="showPlacementGate()">
+      <h2>Placement result</h2>
+      <p>Your placement test score (one attempt).</p>
+      <div class="info-card">
+        <p>
+          <strong>Score:</strong> {{ hub()!.placement!.score }}%
         </p>
-        <div class="enrollment-cta-row">
-          <a routerLink="/main/courses" class="enrollment-cta">Open Courses</a>
-          <a routerLink="/main/pricing" class="enrollment-cta">Open Pricing</a>
-        </div>  
+        @if (hub()!.placement!.correctAnswers != null && hub()!.placement!.totalQuestions != null) {
+          <p>
+            <strong>Correct:</strong>
+            {{ hub()!.placement!.correctAnswers }} / {{ hub()!.placement!.totalQuestions }}
+          </p>
+        }
+        @if (hub()!.placement!.submittedAt) {
+          <p>
+            <strong>Submitted:</strong>
+            {{ hub()!.placement!.submittedAt | date: 'medium' }}
+          </p>
+        }
+      </div>
+    </section>
+  }
+
+  @if (placementDone() && hub()) {
+    <section class="role-section" [class.role-section--dimmed]="showPlacementGate()">
+      <h2>Payments</h2>
+      @if (!hub()!.payments.length) {
+        <p class="state-text">No payments recorded yet.</p>
+      } @else {
+        <div class="role-list">
+          @for (payment of hub()!.payments; track payment.id) {
+            <article class="role-item">
+              <div>
+                <h3>{{ payment.amount }} {{ payment.currency }}</h3>
+                <p>{{ payment.paidAt | date: 'mediumDate' }} — {{ payment.status }}</p>
+              </div>
+            </article>
+          }
+        </div>
       }
-    } @else {
-      <div class="role-list">
-        @for (enrollment of studentEnrollments(); track enrollment.id) {
-          <article class="role-item">
-            <div>
-              <h3>{{ enrollment.course.title }}</h3>
-              <p>
-                Level: {{ enrollment.course.level }} | Progress:
-                {{ enrollment.progress ?? 0 }}%
-              </p>
-              <span
-                class="status-chip"
-                [class.status-chip--completed]="(enrollment.status || '').toLowerCase() === 'completed'"
-                [class.status-chip--active]="(enrollment.status || '').toLowerCase() === 'active'"
-              >
-                {{ enrollment.status }}
-              </span>
-            </div>
-          </article>
+      <div class="info-card info-card--inline">
+        <p>
+          <strong>Next payment:</strong>
+          @if (hub()!.nextPaymentDate && hub()!.nextPaymentAmount != null) {
+            {{ hub()!.nextPaymentAmount }} {{ hub()!.nextPaymentCurrency }} on
+            {{ hub()!.nextPaymentDate | date: 'mediumDate' }}
+          } @else {
+            Not scheduled
+          }
+        </p>
+      </div>
+    </section>
+  }
+
+  @if (placementDone() && hub()?.group) {
+    <section class="role-section" [class.role-section--dimmed]="showPlacementGate()">
+      <h2>Your group</h2>
+      <div class="info-card">
+        <h3>{{ hub()!.group!.name }}</h3>
+        @if (hub()!.group!.description) {
+          <p>{{ hub()!.group!.description }}</p>
+        }
+        @if (hub()!.group!.link) {
+          <p>
+            <a [href]="hub()!.group!.link" target="_blank" rel="noopener noreferrer">Group link</a>
+          </p>
         }
       </div>
-    }
-  </section>
-
-  <section class="role-section">
-    <h2>My Sessions</h2>
-    <p>Upcoming and past sessions booked with tutors.</p>
-
-    @if (!hasBookings()) {
-      <p class="state-text">No sessions booked yet. Use Bookings to schedule your first session.</p>
-    } @else {
-      <div class="role-list">
-        @for (booking of studentBookings(); track booking.id) {
-          <article class="role-item">
-            <div>
-              <h3>{{ booking.tutor.firstName }} {{ booking.tutor.lastName }}</h3>
-              <p>
-                {{ booking.bookingDate | date: 'mediumDate' }} - {{ booking.startTime }}
-              </p>
-              @if (booking.meetingLink) {
-                <p>
-                  Meeting:
-                  <a [href]="booking.meetingLink" target="_blank" rel="noopener noreferrer">
-                    {{ booking.meetingProvider === 'google_meet' ? 'Google Meet' : 'Zoom' }}
-                  </a>
-                </p>
-              }
-              <span class="status-chip">{{ booking.status }}</span>
-            </div>
-          </article>
-        }
-      </div>
-    }
-  </section>
-
-  <div class="role-page__grid">
-    <article class="role-card">
-      <h2>Learning Dashboard</h2>
-      <p>Track progress, completed lessons, and your study momentum.</p>
-      <a routerLink="/main/dashboard">Open Dashboard</a>
-    </article>
-
-    <article class="role-card">
-      <h2>Course Catalog</h2>
-      <p>Explore courses by level and choose your next English path.</p>
-      <a routerLink="/main/courses">Open Courses</a>
-    </article>
-
-    <article class="role-card">
-      <h2>Practice Sessions</h2>
-      <p>Book and manage your live sessions with tutors.</p>
-      <a routerLink="/main/bookings">Open Bookings</a>
-    </article>
-
-    @if (shouldShowPlacementEntry()) {
-      <article class="role-card">
-        <h2>Placement & Assessment</h2>
-        <p>Take your one-time placement test to unlock your starting level.</p>
-        <a routerLink="/main/placement-test">Open Placement Test</a>
-      </article>
-    }
-  </div>
+    </section>
+  }
 </section>

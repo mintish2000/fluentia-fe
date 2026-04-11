@@ -13,8 +13,13 @@ export class AdminGuard implements CanActivate {
     if (this._userService.isAdmin) {
       return true;
     }
-    
-    this._router.navigateByUrl('/main/dashboard');
+
+    if (this._userService.isTutor) {
+      this._router.navigateByUrl('/main/tutor');
+      return false;
+    }
+
+    this._router.navigateByUrl('/main/student');
     return false;
   }
 }

@@ -7,40 +7,40 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
 import {
   Question,
-  SubmitQuizResult,
+  SubmitPlacementAnswersPayload,
 } from '@shared/interfaces/learning/learning.interface';
 import { PlacementTestService } from '@shared/services/learning/placement-test.service';
-import { QuizzesService } from '@shared/services/learning/quizzes.service';
 import { parseQuestionMeta } from '@shared/utils/learning/quiz.utils';
 import { RouterLink } from '@angular/router';
 import { ScrollRevealContainerDirective } from '@shared/directives/scroll-reveal-container.directive';
+import { MatDialog } from '@angular/material/dialog';
 import { finalize } from 'rxjs';
+import {
+  PlacementResultDialogComponent,
+  type PlacementResultDialogData,
+} from './placement-result-dialog.component';
 
 @Component({
   selector: 'app-placement-test',
-  imports: [ReactiveFormsModule, RouterLink, ScrollRevealContainerDirective],
+  imports: [RouterLink, ScrollRevealContainerDirective],
   templateUrl: './placement-test.component.html',
   styleUrl: './placement-test.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class PlacementTestComponent implements OnDestroy {
-  private readonly _quizzesService = inject(QuizzesService);
   private readonly _placementTestService = inject(PlacementTestService);
+  private readonly _dialog = inject(MatDialog);
   private _timerHandle: ReturnType<typeof setInterval> | null = null;
-  private readonly _durationSeconds = 50 * 60;
 
-  readonly isLoadingQuestions = signal(false);
+  readonly isLoadingPlacement = this._placementTestService.isLoadingStatus;
   readonly isSubmitting = signal(false);
-  readonly timerSecondsLeft = signal(this._durationSeconds);
-  readonly loadedQuizId = signal('');
+  readonly timerSecondsLeft = signal(0);
   readonly questions = signal<Question[]>([]);
   readonly singleAnswerMap = signal<Record<string, string>>({});
   readonly multiAnswerMap = signal<Record<string, string[]>>({});
   readonly textAnswerMap = signal<Record<string, string>>({});
-  readonly submitResult = signal<SubmitQuizResult | null>(null);
   readonly placementQuiz = this._placementTestService.placementQuiz;
   readonly hasCompletedPlacement = this._placementTestService.hasCompletedPlacement;
   readonly hasQuestions = computed(() => this.questions().length > 0);
@@ -74,13 +74,27 @@ export default class PlacementTestComponent implements OnDestroy {
   constructor() {
     this._placementTestService.refreshStatus();
     effect(() => {
-      const quizId = this.placementQuiz()?.id ?? '';
-      if (!quizId || this.hasCompletedPlacement() || this.loadedQuizId() === quizId) {
+      const completed = this.hasCompletedPlacement();
+      const qs = this._placementTestService.placementQuestions();
+      if (completed) {
+        this.questions.set([]);
+        this._stopTimer();
         return;
       }
-
-      this.loadedQuizId.set(quizId);
-      this.loadPlacementQuestions();
+      this.singleAnswerMap.set({});
+      this.multiAnswerMap.set({});
+      this.textAnswerMap.set({});
+      this.questions.set(qs);
+      if (qs.length) {
+        const seconds = this._placementTestService.examDurationSeconds();
+        this.timerSecondsLeft.set(seconds);
+        if (!this._timerHandle) {
+          this._startTimer(seconds);
+        }
+      } else {
+        this._stopTimer();
+        this.timerSecondsLeft.set(0);
+      }
     });
   }
 
@@ -89,34 +103,6 @@ export default class PlacementTestComponent implements OnDestroy {
    */
   ngOnDestroy(): void {
     this._stopTimer();
-  }
-
-  /**
-   * Loads and trims placement questions to 50 max.
-   */
-  loadPlacementQuestions(): void {
-    const quiz = this.placementQuiz();
-    if (!quiz || this.hasCompletedPlacement()) {
-      this.questions.set([]);
-      return;
-    }
-
-    this.submitResult.set(null);
-    this.singleAnswerMap.set({});
-    this.multiAnswerMap.set({});
-    this.textAnswerMap.set({});
-    this.isLoadingQuestions.set(true);
-    this._quizzesService
-      .getQuizQuestions(quiz.id)
-      .pipe(finalize(() => this.isLoadingQuestions.set(false)))
-      .subscribe({
-        next: (response) => {
-          this.questions.set((response ?? []).slice(0, 50));
-          if (this.questions().length) {
-            this._startTimer();
-          }
-        },
-      });
   }
 
   /**
@@ -171,43 +157,54 @@ export default class PlacementTestComponent implements OnDestroy {
   }
 
   /**
-   * Submits placement answers once and locks future attempts.
+   * Submits placement answers in one request (PLACEMENT_SUBMISSION.md).
    */
   submitTest(): void {
-    const quiz = this.placementQuiz();
-    if (!quiz || !this.questions().length || !this.canSubmit()) {
+    const placementId = this._placementTestService.placementId();
+    if (!placementId || !this.questions().length || !this.canSubmit()) {
       return;
     }
 
-    const answers = this.questions()
-      .map((question) => {
-        const type = this.getQuestionType(question);
-        if (type === 'multi') {
-          const multiAnswer = this.multiAnswerMap()[question.id] ?? [];
-          return {
-            questionId: question.id,
-            answer: multiAnswer.slice().sort().join('||'),
-          };
-        }
-        if (type === 'text') {
-          return {
-            questionId: question.id,
-            answer: this.textAnswerMap()[question.id]?.trim() ?? '',
-          };
-        }
+    const answers = this.questions().map((question) => {
+      const type = this.getQuestionType(question);
+      if (type === 'multi') {
+        const multiAnswer = this.multiAnswerMap()[question.id] ?? [];
         return {
           questionId: question.id,
-          answer: this.singleAnswerMap()[question.id] ?? '',
+          answer: multiAnswer.slice().sort().join('||'),
         };
-      });
+      }
+      if (type === 'text') {
+        return {
+          questionId: question.id,
+          answer: this.textAnswerMap()[question.id]?.trim() ?? '',
+        };
+      }
+      return {
+        questionId: question.id,
+        answer: this.singleAnswerMap()[question.id] ?? '',
+      };
+    });
+
+    const payload: SubmitPlacementAnswersPayload = { answers };
+    const questionsSnapshot = [...this.questions()];
 
     this.isSubmitting.set(true);
-    this._quizzesService
-      .submitQuiz(quiz.id, { answers })
+    this._placementTestService
+      .submitPlacementAnswers(placementId, payload)
       .pipe(finalize(() => this.isSubmitting.set(false)))
       .subscribe({
         next: (result) => {
-          this.submitResult.set(result);
+          const data: PlacementResultDialogData = {
+            result,
+            questions: questionsSnapshot,
+          };
+          this._dialog.open(PlacementResultDialogComponent, {
+            width: 'min(560px, 100vw)',
+            maxHeight: '90vh',
+            autoFocus: 'dialog',
+            data,
+          });
           this._placementTestService.markCompleted();
           this._stopTimer();
         },
@@ -238,9 +235,10 @@ export default class PlacementTestComponent implements OnDestroy {
   /**
    * Starts countdown timer for placement attempt.
    */
-  private _startTimer(): void {
+  private _startTimer(totalSeconds: number) {
     this._stopTimer();
-    this.timerSecondsLeft.set(this._durationSeconds);
+    const safe = Math.max(1, totalSeconds);
+    this.timerSecondsLeft.set(safe);
     this._timerHandle = setInterval(() => {
       this.timerSecondsLeft.update((current) => {
         if (current <= 1) {
@@ -275,6 +273,4 @@ export default class PlacementTestComponent implements OnDestroy {
     const seconds = safeSeconds % 60;
     return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
   }
-
 }
-

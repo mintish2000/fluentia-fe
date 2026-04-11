@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import {
+  afterNextRender,
   ChangeDetectionStrategy,
   Component,
   computed,
@@ -7,182 +8,335 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
-import { CoreModule } from '@core/core.module';
+import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
 import { BaseComponent } from '@shared/components/base/base.component';
-import { BackendUser, Question } from '@shared/interfaces/learning/learning.interface';
-import { AdminHubService } from './admin-hub.service';
-import { AdminPlacementService } from './admin-placement.service';
+import { Question } from '@shared/interfaces/learning/learning.interface';
 import { ScrollRevealContainerDirective } from '@shared/directives/scroll-reveal-container.directive';
+import { GroupDialogComponent } from './dialogs/group-dialog/group-dialog.component';
+import { PlacementQuestionDialogComponent } from './dialogs/placement-question-dialog/placement-question-dialog.component';
+import { StudentDialogComponent } from './dialogs/student-dialog/student-dialog.component';
+import { GroupDialogResult, StudentGroup } from './models/admin-group.models';
+import { PlacementQuestionDialogResult } from './models/admin-placement.models';
+import {
+  AdminStudent,
+  AdminStudentDialogResult,
+  StudentMistakeDetail,
+  StudentPaymentRecord,
+} from './models/admin-student.models';
+import { AdminGroupStoreService } from './services/admin-group-store.service';
+import { AdminGroupService } from './services/admin-group.service';
+import { AdminHubService } from './services/admin-hub.service';
+import { AdminPlacementWorkspaceService } from './services/admin-placement-workspace.service';
+import { AdminPlacementService } from './services/admin-placement.service';
+import { AdminStudentStoreService } from './services/admin-student-store.service';
+
+const STUDENT_LIST_PAGE_SIZE = 10;
+const STUDENT_DETAIL_COLLAPSE_AT = 8;
 
 @Component({
   selector: 'app-admin',
   imports: [
     CommonModule,
-    CoreModule,
-    RouterLink,
-    ReactiveFormsModule,
+    FormsModule,
     ScrollRevealContainerDirective,
+    MatButtonModule,
+    MatIconModule,
+    MatMenuModule,
   ],
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [AdminHubService, AdminPlacementService],
+  providers: [
+    AdminHubService,
+    AdminStudentStoreService,
+    AdminPlacementWorkspaceService,
+    AdminPlacementService,
+    AdminGroupStoreService,
+    AdminGroupService,
+  ],
 })
 export default class AdminComponent extends BaseComponent {
   private readonly _hub = inject(AdminHubService);
   private readonly _placement = inject(AdminPlacementService);
+  private readonly _groups = inject(AdminGroupService);
+  private readonly _dialog = inject(MatDialog);
 
-  readonly currentUser = this._hub.currentUser;
   readonly displayName = this._hub.displayName;
-  readonly users = this._hub.users;
-  readonly courses = this._hub.courses;
-  readonly enrollments = this._hub.enrollments;
-  readonly tutors = this._hub.tutors;
-  readonly students = this._hub.students;
-  readonly assignableTutors = this._hub.assignableTutors;
-  readonly assignableStudents = this._hub.assignableStudents;
-  readonly studentsWithoutCoursesCount = this._hub.studentsWithoutCoursesCount;
-  readonly listedUsers = this._hub.listedUsers;
-  readonly activeUsersCount = this._hub.activeUsersCount;
-  readonly inactiveUsersCount = this._hub.inactiveUsersCount;
+  readonly students = this._hub.listedStudents;
+  readonly selectedStudent = this._hub.selectedStudent;
+  readonly activeStudentsCount = this._hub.activeStudentsCount;
+  readonly inactiveStudentsCount = this._hub.inactiveStudentsCount;
+  readonly totalPaidAmount = this._hub.totalPaidAmount;
   readonly lastSyncedAt = this._hub.lastSyncedAt;
-  readonly coursesForSelectedTutor = this._hub.coursesForSelectedTutor;
-  readonly selectedTutorId = this._hub.selectedTutorId;
-  readonly selectedStudentId = this._hub.selectedStudentId;
-  readonly selectedCourseId = this._hub.selectedCourseId;
-  readonly reassignEnrollmentId = this._hub.reassignEnrollmentId;
-  readonly reassignTutorId = this._hub.reassignTutorId;
-  readonly reassignCourseId = this._hub.reassignCourseId;
-  readonly coursesForReassignTutor = this._hub.coursesForReassignTutor;
-  readonly coursesCount = this._hub.coursesCount;
-  readonly lessonsCount = this._hub.lessonsCount;
-  readonly enrollmentsCount = this._hub.enrollmentsCount;
-  readonly bookingsCount = this._hub.bookingsCount;
-  readonly placementResults = this._placement.placementResults;
-  readonly placementAttemptsCount = this._placement.placementAttemptsCount;
+
+  readonly groups = this._groups.groups;
+
   readonly placementQuiz = this._placement.placementQuiz;
   readonly placementQuestions = this._placement.placementQuestions;
-  readonly placementCourseId = this._placement.placementCourseId;
-  readonly editingPlacementQuestionId = this._placement.editingPlacementQuestionId;
-  readonly placementQuestionType = this._placement.placementQuestionType;
-  readonly placementQuestionPrompt = this._placement.placementQuestionPrompt;
-  readonly placementQuestionOptionA = this._placement.placementQuestionOptionA;
-  readonly placementQuestionOptionB = this._placement.placementQuestionOptionB;
-  readonly placementQuestionOptionC = this._placement.placementQuestionOptionC;
-  readonly placementQuestionOptionD = this._placement.placementQuestionOptionD;
-  readonly placementQuestionCorrectAnswer = this._placement.placementQuestionCorrectAnswer;
-  readonly placementQuestionOptions = this._placement.placementQuestionOptions;
-  readonly placementMultiCorrectAnswers = this._placement.placementMultiCorrectAnswers;
+  readonly placementExamDurationMinutes = this._placement.placementExamDurationMinutes;
+  readonly placementMaxQuestions = this._placement.placementMaxQuestions;
   readonly canCreatePlacementQuestion = this._placement.canCreatePlacementQuestion;
-  readonly isLoading = computed(
-    () => this._hub.isLoading() || this._placement.isLoading(),
-  );
-  readonly activeSection = signal<'operations' | 'placement' | 'users'>('operations');
+  readonly placementQuestionSlotsLeft = this._placement.placementQuestionSlotsLeft;
+  readonly placementQuestionProgressPercent = this._placement.placementQuestionProgressPercent;
 
-  /** Loads hub data only for the active tab (avoids eager subscriptions for hidden tabs). */
+  readonly isLoading = computed(
+    () =>
+      this._hub.isLoading() || this._placement.isLoading() || this._groups.isLoading(),
+  );
+  readonly activeSection = signal<'placement' | 'groups' | 'students'>('placement');
+
+  readonly studentSearchQuery = signal('');
+  readonly studentStatusFilter = signal<'all' | 'active' | 'inactive'>('all');
+  readonly studentPage = signal(1);
+  readonly showAllMistakes = signal(false);
+  readonly showAllPayments = signal(false);
+
+  /** Group targeted by the shared row action menu (Student Groups cards). */
+  readonly groupMenuContext = signal<StudentGroup | null>(null);
+
+  readonly filteredStudents = computed(() => {
+    const query = this.studentSearchQuery().trim().toLowerCase();
+    const status = this.studentStatusFilter();
+    return this.students().filter((student) => {
+      if (status !== 'all' && student.status !== status) {
+        return false;
+      }
+      if (!query) {
+        return true;
+      }
+      const haystack = `${student.firstName} ${student.lastName} ${student.email}`.toLowerCase();
+      return haystack.includes(query);
+    });
+  });
+
+  readonly studentPageCount = computed(() => {
+    const total = this.filteredStudents().length;
+    return Math.max(1, Math.ceil(total / STUDENT_LIST_PAGE_SIZE));
+  });
+
+  readonly pagedStudents = computed(() => {
+    const list = this.filteredStudents();
+    const page = this.studentPage();
+    const start = (page - 1) * STUDENT_LIST_PAGE_SIZE;
+    return list.slice(start, start + STUDENT_LIST_PAGE_SIZE);
+  });
+
+  readonly visibleMistakes = computed((): StudentMistakeDetail[] => {
+    const student = this.selectedStudent();
+    if (!student) {
+      return [];
+    }
+    const mistakes = student.placement.mistakes;
+    if (this.showAllMistakes() || mistakes.length <= STUDENT_DETAIL_COLLAPSE_AT) {
+      return mistakes;
+    }
+    return mistakes.slice(0, STUDENT_DETAIL_COLLAPSE_AT);
+  });
+
+  readonly visiblePayments = computed((): StudentPaymentRecord[] => {
+    const student = this.selectedStudent();
+    if (!student) {
+      return [];
+    }
+    const payments = student.payments;
+    if (this.showAllPayments() || payments.length <= STUDENT_DETAIL_COLLAPSE_AT) {
+      return payments;
+    }
+    return payments.slice(0, STUDENT_DETAIL_COLLAPSE_AT);
+  });
+
   private readonly _lazySectionSync = effect(() => {
     const section = this.activeSection();
-    if (section === 'operations') {
-      this._hub.ensureOperationsDataLoaded();
-    } else if (section === 'placement') {
+    if (section === 'placement') {
       this._placement.ensurePlacementOverviewLoaded();
-    } else if (section === 'users') {
+    } else if (section === 'groups') {
+      this._groups.ensureGroupsLoaded();
+    } else {
       this._hub.ensureUsersTabLoaded();
     }
   });
 
+  private readonly _clampStudentPage = effect(() => {
+    const maxPage = this.studentPageCount();
+    if (this.studentPage() > maxPage) {
+      this.studentPage.set(maxPage);
+    }
+  });
+
+  private readonly _resetDetailExpand = effect(() => {
+    this.selectedStudent();
+    this.showAllMistakes.set(false);
+    this.showAllPayments.set(false);
+  });
+
+  constructor() {
+    super();
+    afterNextRender(() => {
+      this._hub.loadAdminOverview(true);
+    });
+  }
+
   /**
-   * Loads platform-wide analytics counters for admin.
+   * Resolves a group id to its display name for the student list and detail panels.
    */
+  getGroupName(groupId: string | null | undefined): string {
+    if (!groupId) {
+      return '';
+    }
+    return this.groups().find((g) => g.id === groupId)?.name ?? groupId;
+  }
+
+  setStudentSearchQuery(value: string) {
+    this.studentSearchQuery.set(value);
+    this.studentPage.set(1);
+  }
+
+  setStudentStatusFilter(value: string) {
+    this.studentStatusFilter.set(value as 'all' | 'active' | 'inactive');
+    this.studentPage.set(1);
+  }
+
+  prevStudentPage() {
+    this.studentPage.update((page) => Math.max(1, page - 1));
+  }
+
+  nextStudentPage() {
+    this.studentPage.update((page) => Math.min(this.studentPageCount(), page + 1));
+  }
+
+  toggleAllMistakes() {
+    this.showAllMistakes.update((value) => !value);
+  }
+
+  toggleAllPayments() {
+    this.showAllPayments.update((value) => !value);
+  }
+
   loadAdminOverview() {
-    this._hub.loadAdminOverview();
     if (this.activeSection() === 'placement') {
       this._placement.refreshPlacementWorkspace();
+      return;
     }
+    if (this.activeSection() === 'groups') {
+      this._groups.refreshGroups();
+      return;
+    }
+    this._hub.loadAdminOverview(true);
   }
 
-  /**
-   * Assigns a student to a tutor by creating enrollment on a tutor-owned course.
-   */
-  assignStudentToTutor() {
-    this._hub.assignStudentToTutor();
+  setActiveSection(section: 'placement' | 'groups' | 'students') {
+    this.activeSection.set(section);
   }
 
-  /**
-   * Handles tutor selection changes and resets dependent course selection.
-   */
-  onTutorChanged() {
-    this._hub.onTutorChanged();
-  }
-
-  /**
-   * Handles tutor selection changes in reassignment flow.
-   */
-  onReassignTutorChanged() {
-    this._hub.onReassignTutorChanged();
-  }
-
-  /**
-   * Reassigns student enrollment to another tutor-owned course.
-   */
-  reassignStudentTutor() {
-    this._hub.reassignStudentTutor();
-  }
-
-  /**
-   * Reloads placement editor datasets.
-   */
   refreshPlacementWorkspace() {
     this._placement.refreshPlacementWorkspace();
   }
 
-  /**
-   * Creates missing placement quiz for selected course.
-   */
-  createPlacementQuiz() {
-    this._placement.createPlacementQuiz();
+  openCreateGroupDialog() {
+    const dialogRef = this._dialog.open<GroupDialogComponent, { mode: 'create' }, GroupDialogResult>(
+      GroupDialogComponent,
+      {
+        width: '560px',
+        maxWidth: '96vw',
+        data: { mode: 'create' },
+      },
+    );
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (!result) {
+        return;
+      }
+      this._groups.createGroup(result.draft);
+    });
   }
 
-  /**
-   * Saves placement question create or update.
-   */
-  savePlacementQuestion() {
-    this._placement.savePlacementQuestion();
+  openEditGroupDialog(group: StudentGroup) {
+    const dialogRef = this._dialog.open<
+      GroupDialogComponent,
+      { mode: 'edit'; group: StudentGroup },
+      GroupDialogResult
+    >(GroupDialogComponent, {
+      width: '560px',
+      maxWidth: '96vw',
+      data: { mode: 'edit', group },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (!result) {
+        return;
+      }
+      this._groups.updateGroup(group.id, result.draft);
+    });
   }
 
-  /**
-   * Handles placement question type change from editor.
-   */
-  onPlacementQuestionTypeChanged() {
-    this._placement.onPlacementQuestionTypeChanged();
+  /** Sets which group the shared mat-menu applies to before the menu opens. */
+  setGroupMenuContext(group: StudentGroup) {
+    this.groupMenuContext.set(group);
   }
 
-  /**
-   * Toggles multi-answer correct option.
-   */
-  togglePlacementMultiCorrectAnswer(option: string, checked: boolean) {
-    this._placement.togglePlacementMultiCorrectAnswer(option, checked);
+  editGroupFromMenu() {
+    const group = this.groupMenuContext();
+    if (group) {
+      this.openEditGroupDialog(group);
+    }
   }
 
-  /**
-   * Returns whether option is selected as correct multi-answer.
-   */
-  isPlacementMultiCorrectAnswerSelected(option: string): boolean {
-    return this._placement.isPlacementMultiCorrectAnswerSelected(option);
+  deleteGroupFromMenu() {
+    const group = this.groupMenuContext();
+    if (group) {
+      this.deleteGroup(group);
+    }
   }
 
-  /**
-   * Loads placement question into editor.
-   */
-  editPlacementQuestion(question: Question) {
-    this._placement.editPlacementQuestion(question);
+  deleteGroup(group: StudentGroup) {
+    if (!confirm(`Delete group "${group.name}"? Students in this group will be unassigned.`)) {
+      return;
+    }
+    this._groups.deleteGroup(group.id);
   }
 
-  /**
-   * Deletes placement question.
-   */
+  openCreatePlacementQuestionDialog() {
+    const dialogRef = this._dialog.open<
+      PlacementQuestionDialogComponent,
+      { mode: 'create' },
+      PlacementQuestionDialogResult
+    >(PlacementQuestionDialogComponent, {
+      width: '720px',
+      maxWidth: '96vw',
+      data: { mode: 'create' },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (!result) {
+        return;
+      }
+      this._placement.createPlacementQuestion(result.draft);
+    });
+  }
+
+  openEditPlacementQuestionDialog(question: Question) {
+    const dialogRef = this._dialog.open<
+      PlacementQuestionDialogComponent,
+      { mode: 'edit'; question: Question },
+      PlacementQuestionDialogResult
+    >(PlacementQuestionDialogComponent, {
+      width: '720px',
+      maxWidth: '96vw',
+      data: { mode: 'edit', question },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (!result) {
+        return;
+      }
+      this._placement.updatePlacementQuestion(question.id, result.draft);
+    });
+  }
+
   deletePlacementQuestion(questionId: string) {
     if (!confirm('Delete this placement question?')) {
       return;
@@ -190,86 +344,74 @@ export default class AdminComponent extends BaseComponent {
     this._placement.deletePlacementQuestion(questionId);
   }
 
-  /**
-   * Resets placement question form.
-   */
-  resetPlacementQuestionForm() {
-    this._placement.resetPlacementQuestionForm();
-  }
-
-  /**
-   * Parses question options for placement list preview.
-   */
   parsePlacementQuestionOptions(question: Question): string[] {
     return this._placement.parsePlacementQuestionOptions(question);
   }
 
-  /**
-   * Resolves placement question type label.
-   */
   getPlacementQuestionType(question: Question): 'single' | 'multi' | 'text' {
     return this._placement.getPlacementQuestionType(question);
   }
 
-  /**
-   * Switches visible admin workspace section.
-   */
-  setActiveSection(section: 'operations' | 'placement' | 'users') {
-    this.activeSection.set(section);
+  getPlacementCorrectAnswerLabel(question: Question): string {
+    return this._placement.getPlacementCorrectAnswerLabel(question);
   }
 
-  /**
-   * Returns whether selected user is active.
-   */
-  isUserActive(user: BackendUser): boolean {
-    return this._hub.isUserActive(user);
+  selectStudent(studentId: string) {
+    this._hub.setSelectedStudent(studentId);
   }
 
-  /**
-   * Returns whether selected user is manageable by current admin.
-   */
-  canManageUser(user: BackendUser): boolean {
-    return this._hub.canManageUser(user);
+  openCreateStudentDialog() {
+    const dialogRef = this._dialog.open<
+      StudentDialogComponent,
+      { mode: 'create'; groups: StudentGroup[] },
+      AdminStudentDialogResult
+    >(StudentDialogComponent, {
+      width: '720px',
+      maxWidth: '96vw',
+      data: { mode: 'create', groups: this.groups() },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (!result) {
+        return;
+      }
+      this._hub.createStudent(result.draft);
+    });
   }
 
-  /**
-   * Returns readable user status label.
-   */
-  getUserStatusLabel(user: BackendUser): string {
-    return this._hub.getUserStatusLabel(user);
+  openEditStudentDialog(student: AdminStudent) {
+    const dialogRef = this._dialog.open<
+      StudentDialogComponent,
+      { mode: 'edit'; student: AdminStudent; groups: StudentGroup[] },
+      AdminStudentDialogResult
+    >(StudentDialogComponent, {
+      width: '720px',
+      maxWidth: '96vw',
+      data: { mode: 'edit', student, groups: this.groups() },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (!result) {
+        return;
+      }
+      this._hub.updateStudent(student.id, result.draft);
+    });
   }
 
-  /**
-   * Returns consistent full name fallback for users.
-   */
-  getUserName(user?: BackendUser | null): string {
-    if (!user) {
-      return 'Unknown User';
-    }
-    return `${user.firstName ?? ''} ${user.lastName ?? ''}`.trim() || 'Unknown User';
+  toggleStudentStatus(student: AdminStudent) {
+    this._hub.toggleStudentStatus(student);
   }
 
-  /**
-   * Activates or deactivates platform user.
-   */
-  setUserActiveState(user: BackendUser, shouldBeActive: boolean) {
-    if (!shouldBeActive && !confirm(`Deactivate ${this.getUserName(user)}?`)) {
+  deleteStudent(student: AdminStudent) {
+    if (!confirm(`Delete ${student.firstName} ${student.lastName}?`)) {
       return;
     }
-    this._hub.setUserActiveState(user, shouldBeActive);
+    this._hub.deleteStudent(student);
   }
 
-  /**
-   * Deletes platform user.
-   */
-  deleteUser(user: BackendUser) {
-    if (
-      !confirm(
-        `Delete ${this.getUserName(user)} (${user.email || '-'})?\nThis action cannot be undone.`,
-      )
-    ) {
-      return;
-    }
-    this._hub.deleteUser(user);
+  getStudentPaidAmount(student: AdminStudent): number {
+    return student.payments
+      .filter((payment) => payment.status === 'paid')
+      .reduce((sum, payment) => sum + payment.amount, 0);
   }
 }

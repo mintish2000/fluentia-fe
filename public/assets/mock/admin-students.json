@@ -1,0 +1,92 @@
+{
+  "meta": {
+    "adminDisplayName": "Admin"
+  },
+  "students": [
+    {
+      "id": "s_001",
+      "firstName": "Lina",
+      "lastName": "Khaled",
+      "email": "lina.khaled@example.com",
+      "status": "active",
+      "groupId": "g_001",
+      "notes": "Needs confidence in speaking tasks. Strong grammar progress.",
+      "placement": {
+        "score": 84,
+        "totalQuestions": 50,
+        "correctAnswers": 42,
+        "submittedAt": "2026-04-05T08:30:00.000Z",
+        "mistakes": [
+          {
+            "questionId": "q_007",
+            "questionPrompt": "Choose the best preposition.",
+            "studentAnswer": "at",
+            "correctAnswer": "in"
+          },
+          {
+            "questionId": "q_021",
+            "questionPrompt": "Select the correct passive form.",
+            "studentAnswer": "has build",
+            "correctAnswer": "has been built"
+          }
+        ]
+      },
+      "payments": [
+        {
+          "id": "p_001",
+          "amount": 120,
+          "currency": "USD",
+          "paidAt": "2026-03-02T09:00:00.000Z",
+          "status": "paid"
+        },
+        {
+          "id": "p_002",
+          "amount": 120,
+          "currency": "USD",
+          "paidAt": "2026-04-02T09:00:00.000Z",
+          "status": "paid"
+        }
+      ],
+      "nextPaymentDate": "2026-05-02T09:00:00.000Z",
+      "nextPaymentAmount": 120,
+      "createdAt": "2026-01-10T10:00:00.000Z",
+      "updatedAt": "2026-04-08T14:00:00.000Z"
+    },
+    {
+      "id": "s_002",
+      "firstName": "Omar",
+      "lastName": "Yousef",
+      "email": "omar.yousef@example.com",
+      "status": "inactive",
+      "groupId": "g_002",
+      "notes": "Paused for one month. Follow up before next cycle.",
+      "placement": {
+        "score": 62,
+        "totalQuestions": 50,
+        "correctAnswers": 31,
+        "submittedAt": "2026-03-28T11:45:00.000Z",
+        "mistakes": [
+          {
+            "questionId": "q_004",
+            "questionPrompt": "Pick the correct tense.",
+            "studentAnswer": "I have went",
+            "correctAnswer": "I have gone"
+          }
+        ]
+      },
+      "payments": [
+        {
+          "id": "p_010",
+          "amount": 90,
+          "currency": "USD",
+          "paidAt": "2026-03-01T09:00:00.000Z",
+          "status": "paid"
+        }
+      ],
+      "nextPaymentDate": "2026-05-01T09:00:00.000Z",
+      "nextPaymentAmount": 90,
+      "createdAt": "2026-02-01T10:00:00.000Z",
+      "updatedAt": "2026-04-01T12:00:00.000Z"
+    }
+  ]
+}

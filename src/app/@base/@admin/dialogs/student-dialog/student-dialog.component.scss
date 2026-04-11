@@ -1,0 +1,61 @@
+/** Matches admin page pill buttons; Material MDC shape tokens where supported. */
+$admin-btn-pill: 9999px;
+
+:host ::ng-deep mat-dialog-actions {
+  .mat-mdc-button-base {
+    border-radius: $admin-btn-pill;
+    --mdc-text-button-container-shape: #{$admin-btn-pill};
+    --mdc-filled-button-container-shape: #{$admin-btn-pill};
+    --mdc-outlined-button-container-shape: #{$admin-btn-pill};
+  }
+}
+
+.student-dialog__content {
+  display: grid;
+  gap: 0.9rem;
+  min-width: min(680px, 88vw);
+  padding-top: 0.5rem;
+}
+
+.student-dialog__lead {
+  margin: 0;
+  color: rgba(11, 58, 102, 0.72);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.student-dialog__group {
+  border: 1px solid rgba(11, 58, 102, 0.12);
+  border-radius: 12px;
+  padding: 0.7rem;
+  background: linear-gradient(180deg, #ffffff 0%, rgba(240, 248, 255, 0.6) 100%);
+}
+
+.student-dialog__group h3 {
+  margin: 0 0 0.45rem 0;
+  color: #0b3a66;
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.student-dialog__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.student-dialog__grid-full {
+  grid-column: 1 / -1;
+}
+
+.student-dialog__error {
+  margin: 0;
+  color: #b42318;
+  font-weight: 700;
+}
+
+@media (max-width: 700px) {
+  .student-dialog__grid {
+    grid-template-columns: 1fr;
+  }
+}

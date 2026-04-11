@@ -1,0 +1,127 @@
+<h2 mat-dialog-title>{{ isEditMode ? 'Edit placement question' : 'Add placement question' }}</h2>
+
+<mat-dialog-content class="placement-dialog__content">
+  <p class="placement-dialog__lead">
+    Define the question, answer model, and expected solution exactly as students will see it.
+  </p>
+
+  <mat-form-field>
+    <mat-label>Question type</mat-label>
+    <mat-select [formControl]="typeControl" (selectionChange)="onTypeChanged()">
+      <mat-option value="single">Single answer</mat-option>
+      <mat-option value="multi">Multi answer</mat-option>
+      <mat-option value="text">Text answer</mat-option>
+    </mat-select>
+    <mat-hint>Choose one mode before filling options.</mat-hint>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Question prompt</mat-label>
+    <textarea matInput rows="3" [formControl]="promptControl"></textarea>
+    <mat-hint>Keep prompt concise and unambiguous.</mat-hint>
+  </mat-form-field>
+
+  @if (typeControl.value !== 'text') {
+    <section class="placement-dialog__group">
+      <h3>Answer options</h3>
+      @if (typeControl.value === 'multi') {
+        <p class="placement-dialog__hint">Enter each choice, then mark which options are correct.</p>
+        <div class="placement-dialog__multi-rows">
+          <div class="placement-dialog__multi-row">
+            <mat-form-field class="placement-dialog__multi-field">
+              <mat-label>Option A</mat-label>
+              <input matInput [formControl]="optionAControl" />
+            </mat-form-field>
+            <mat-checkbox [formControl]="multiCorrectA" class="placement-dialog__multi-check">
+              Correct
+            </mat-checkbox>
+          </div>
+          <div class="placement-dialog__multi-row">
+            <mat-form-field class="placement-dialog__multi-field">
+              <mat-label>Option B</mat-label>
+              <input matInput [formControl]="optionBControl" />
+            </mat-form-field>
+            <mat-checkbox [formControl]="multiCorrectB" class="placement-dialog__multi-check">
+              Correct
+            </mat-checkbox>
+          </div>
+          <div class="placement-dialog__multi-row">
+            <mat-form-field class="placement-dialog__multi-field">
+              <mat-label>Option C</mat-label>
+              <input matInput [formControl]="optionCControl" />
+            </mat-form-field>
+            <mat-checkbox [formControl]="multiCorrectC" class="placement-dialog__multi-check">
+              Correct
+            </mat-checkbox>
+          </div>
+          <div class="placement-dialog__multi-row">
+            <mat-form-field class="placement-dialog__multi-field">
+              <mat-label>Option D</mat-label>
+              <input matInput [formControl]="optionDControl" />
+            </mat-form-field>
+            <mat-checkbox [formControl]="multiCorrectD" class="placement-dialog__multi-check">
+              Correct
+            </mat-checkbox>
+          </div>
+        </div>
+      } @else {
+        <div class="placement-dialog__option-grid">
+          <mat-form-field>
+            <mat-label>Option A</mat-label>
+            <input matInput [formControl]="optionAControl" />
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Option B</mat-label>
+            <input matInput [formControl]="optionBControl" />
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Option C</mat-label>
+            <input matInput [formControl]="optionCControl" />
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Option D</mat-label>
+            <input matInput [formControl]="optionDControl" />
+          </mat-form-field>
+        </div>
+      }
+    </section>
+  }
+
+  @if (typeControl.value === 'single') {
+    <section class="placement-dialog__group">
+      <h3>Correct answer</h3>
+      <mat-form-field>
+        <mat-label>Correct answer</mat-label>
+        <mat-select [formControl]="correctAnswerControl">
+          @for (option of options(); track option) {
+            <mat-option [value]="option">{{ option }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </section>
+  }
+
+  @if (typeControl.value === 'text') {
+    <section class="placement-dialog__group">
+      <h3>Expected answer</h3>
+      <mat-form-field>
+        <mat-label>Expected text answer</mat-label>
+        <input matInput [formControl]="correctAnswerControl" />
+      </mat-form-field>
+    </section>
+  }
+
+  @if (validationError()) {
+    <p class="placement-dialog__error">{{ validationError() }}</p>
+  }
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close type="button">Cancel</button>
+  <button mat-flat-button color="primary" type="button" (click)="submit()">
+    {{ isEditMode ? 'Save changes' : 'Add question' }}
+  </button>
+</mat-dialog-actions>

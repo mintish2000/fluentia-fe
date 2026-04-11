@@ -13,6 +13,37 @@ type PayPalActions = {
   };
 };
 
+export type PaypalCheckoutSuccessContext = {
+  /** PayPal capture id ({@code purchase_units[0].payments.captures[0].id}), else order id fallback. */
+  providerReference: string;
+};
+
+/**
+ * Reads capture id from Orders API capture response; falls back to top-level order {@code id}.
+ */
+function extractPayPalProviderReference(details: unknown): string {
+  if (!details || typeof details !== 'object') {
+    return '';
+  }
+  const d = details as Record<string, unknown>;
+  const units = d['purchase_units'];
+  if (Array.isArray(units) && units[0] && typeof units[0] === 'object') {
+    const pu = units[0] as Record<string, unknown>;
+    const payments = pu['payments'];
+    if (payments && typeof payments === 'object') {
+      const captures = (payments as Record<string, unknown>)['captures'];
+      if (Array.isArray(captures) && captures[0] && typeof captures[0] === 'object') {
+        const id = (captures[0] as Record<string, unknown>)['id'];
+        if (typeof id === 'string' && id.length > 0) {
+          return id;
+        }
+      }
+    }
+  }
+  const orderId = d['id'];
+  return typeof orderId === 'string' ? orderId : '';
+}
+
 @Injectable({ providedIn: 'root' })
 export class PaypalCheckoutService {
   private readonly _toast = inject(ToastService);
@@ -59,7 +90,7 @@ export class PaypalCheckoutService {
   async renderButtons(
     container: HTMLElement,
     planId: PricingPlanId,
-    handlers: { onSuccess: () => void },
+    handlers: { onSuccess: (ctx: PaypalCheckoutSuccessContext) => void },
   ): Promise<void> {
     const plan = PRICING_PLAN_DETAILS[planId];
     if (!plan) {
@@ -101,8 +132,11 @@ export class PaypalCheckoutService {
           ],
         }),
       onApprove: (_data: unknown, actions: PayPalActions) =>
-        actions.order.capture().then(() => {
-          handlers.onSuccess();
+        actions.order.capture().then((details: unknown) => {
+          const providerReference = extractPayPalProviderReference(details);
+          handlers.onSuccess({
+            providerReference: providerReference || 'paypal-capture-unknown',
+          });
         }),
       onError: (err: { message?: string } | Error) => {
         const msg =

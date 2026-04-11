@@ -1,0 +1,22 @@
+$admin-btn-pill: 9999px;
+
+:host ::ng-deep mat-dialog-actions {
+  .mat-mdc-button-base {
+    border-radius: $admin-btn-pill;
+    --mdc-text-button-container-shape: #{$admin-btn-pill};
+    --mdc-filled-button-container-shape: #{$admin-btn-pill};
+    --mdc-outlined-button-container-shape: #{$admin-btn-pill};
+  }
+}
+
+.group-dialog__content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: min(520px, 92vw);
+  padding-top: 0.35rem;
+}
+
+.group-dialog__field {
+  width: 100%;
+}

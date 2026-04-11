@@ -6,7 +6,6 @@ const routes: Routes = [
     loadComponent: () => import('./student.component'),
     title: 'Student Hub',
   },
-  // {
 ];
 
 export default routes;

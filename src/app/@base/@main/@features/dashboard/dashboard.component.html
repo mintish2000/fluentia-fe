@@ -1,50 +1,126 @@
-<section class="dashboard-page" appScrollRevealContainer>
-  <header class="dashboard-page__header">
-    <h1>Learning Progress Dashboard</h1>
-    <p>Track your enrollments, test performance, and payment activity.</p>
-  </header>
-
+<section class="dashboard-page" appScrollRevealContainer [dir]="_direction">
   @if (isLoading()) {
-    <p class="state-text">Loading dashboard data...</p>
+    <p class="dashboard-page__loading">Loading dashboard…</p>
+  } @else if (loadError()) {
+    <p class="dashboard-page__error" role="alert">{{ loadError() }}</p>
+    <button type="button" class="dashboard-page__retry" (click)="refreshDashboard()">Retry</button>
   } @else {
-    <div class="stats-grid">
-      <article class="stat-card">
-        <h2>Enrollments</h2>
-        <p>{{ enrollments().length }}</p>
+    @if (payload(); as data) {
+    <header class="dashboard-page__header">
+      <div>
+        <h1>{{ data.meta.title }}</h1>
+        <p class="dashboard-page__subtitle">{{ data.meta.subtitle }}</p>
+        <p class="dashboard-page__meta">
+          Data source: /assets/mock/dashboard.json · Generated {{ data.meta.generatedAt | date: 'medium' }}
+        </p>
+      </div>
+      <button type="button" class="dashboard-page__refresh" (click)="refreshDashboard()">Refresh</button>
+    </header>
+
+    <div class="dashboard-kpis">
+      <article class="dashboard-kpi">
+        <h2>Students</h2>
+        <p class="dashboard-kpi__value">{{ data.kpis.totalStudents }}</p>
       </article>
-      <article class="stat-card">
-        <h2>Completed</h2>
-        <p>{{ completedEnrollments() }}</p>
+      <article class="dashboard-kpi">
+        <h2>Active</h2>
+        <p class="dashboard-kpi__value">{{ data.kpis.activeStudents }}</p>
       </article>
-      <article class="stat-card">
-        <h2>Average Progress</h2>
-        <p>{{ averageProgress() }}%</p>
+      <article class="dashboard-kpi">
+        <h2>Inactive</h2>
+        <p class="dashboard-kpi__value">{{ data.kpis.inactiveStudents }}</p>
       </article>
-      <article class="stat-card">
-        <h2>Correct Answers</h2>
-        <p>{{ correctAnswerRate() }}%</p>
+      <article class="dashboard-kpi">
+        <h2>Groups</h2>
+        <p class="dashboard-kpi__value">{{ data.kpis.totalGroups }}</p>
       </article>
-      <article class="stat-card">
-        <h2>Total Paid</h2>
-        <p>{{ totalPaid() }}</p>
+      <article class="dashboard-kpi">
+        <h2>Avg placement</h2>
+        <p class="dashboard-kpi__value">{{ data.kpis.averagePlacementScore | number: '1.0-1' }}%</p>
+      </article>
+      <article class="dashboard-kpi">
+        <h2>Monthly revenue (est.)</h2>
+        <p class="dashboard-kpi__value">${{ data.kpis.expectedMonthlyRevenueUsd | number: '1.0-0' }}</p>
       </article>
     </div>
 
-    <article class="panel">
-      <h2>Recent enrollments</h2>
-      @if (!enrollments().length) {
-        <p class="state-text">No enrollments yet.</p>
-      } @else {
-        <ul>
-          @for (enrollment of enrollments().slice(0, 8); track enrollment.id) {
-            <li>
-              <strong>{{ enrollment.course.title }}</strong>
-              <span>{{ enrollment.status }}</span>
-              <span>{{ enrollment.progress ?? 0 }}%</span>
-            </li>
+    <div class="dashboard-charts">
+      <article class="dashboard-panel dashboard-panel--donut">
+        <h2>Students by group</h2>
+        <div class="dashboard-donut-wrap">
+          <div class="dashboard-donut" [style.background]="groupDonutBackground()">
+            <div class="dashboard-donut__hole">
+              <span class="dashboard-donut__total">{{ data.kpis.totalStudents }}</span>
+              <span class="dashboard-donut__label">students</span>
+            </div>
+          </div>
+          <ul class="dashboard-legend">
+            @for (row of data.studentsByGroup; track row.groupId) {
+              <li>
+                <span class="dashboard-legend__swatch" [style.background-color]="row.color"></span>
+                <span class="dashboard-legend__name">{{ row.groupName }}</span>
+                <span class="dashboard-legend__count">{{ row.count }}</span>
+              </li>
+            }
+          </ul>
+        </div>
+      </article>
+
+      <article class="dashboard-panel">
+        <h2>Students by status</h2>
+        <div class="dashboard-bars">
+          @for (row of data.studentsByStatus; track row.status) {
+            <div class="dashboard-bar-row">
+              <span class="dashboard-bar-row__label">{{ row.label }}</span>
+              <div class="dashboard-bar-track" role="img" [attr.aria-label]="row.label + ': ' + row.count">
+                <div
+                  class="dashboard-bar-fill"
+                  [style.width.%]="(row.count / statusTotal()) * 100"
+                  [style.background-color]="row.color"
+                ></div>
+              </div>
+              <span class="dashboard-bar-row__value">{{ row.count }}</span>
+            </div>
           }
-        </ul>
-      }
-    </article>
+        </div>
+      </article>
+
+      <article class="dashboard-panel dashboard-panel--wide">
+        <h2>Placement score distribution</h2>
+        <div class="dashboard-bars dashboard-bars--vertical">
+          @for (band of data.placementScoreDistribution; track band.label) {
+            <div class="dashboard-vbar">
+              <div class="dashboard-vbar__track">
+                <div
+                  class="dashboard-vbar__fill"
+                  [style.height.%]="(band.count / placementMaxCount()) * 100"
+                ></div>
+              </div>
+              <span class="dashboard-vbar__count">{{ band.count }}</span>
+              <span class="dashboard-vbar__label">{{ band.label }}</span>
+            </div>
+          }
+        </div>
+      </article>
+
+      <article class="dashboard-panel dashboard-panel--wide">
+        <h2>Revenue trend (USD, mock)</h2>
+        <div class="dashboard-revenue">
+          @for (m of data.revenueByMonth; track m.month) {
+            <div class="dashboard-revenue__col">
+              <div class="dashboard-revenue__track">
+                <div
+                  class="dashboard-revenue__bar"
+                  [style.height.%]="(m.amountUsd / revenueMaxAmount()) * 100"
+                ></div>
+              </div>
+              <span class="dashboard-revenue__amount">${{ m.amountUsd | number: '1.0-0' }}</span>
+              <span class="dashboard-revenue__month">{{ m.label }}</span>
+            </div>
+          }
+        </div>
+      </article>
+    </div>
+    }
   }
 </section>

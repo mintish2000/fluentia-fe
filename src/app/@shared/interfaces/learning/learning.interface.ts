@@ -25,11 +25,12 @@ export interface BackendUser {
   lastName: string | null;
   role?: BackendRole | null;
   status?: BackendStatus | null;
-  englishLevel?: string | null;
-  learningGoals?: string | null;
 }
 
-export interface Course {
+/**
+ * Course snapshot embedded in quiz/placement payloads only (no standalone catalog CRUD).
+ */
+export interface QuizCourseSummary {
   id: string;
   title: string;
   description?: string | null;
@@ -40,67 +41,23 @@ export interface Course {
   updatedAt: string;
 }
 
-export interface Lesson {
-  id: string;
-  title: string;
-  content?: string | null;
-  videoUrl?: string | null;
-  lessonOrder: number;
-  course: Course;
-  createdAt: string;
-  updatedAt: string;
-}
-
 export interface Quiz {
   id: string;
   title: string;
   description?: string | null;
-  passingScore?: number | null;
-  course: Course;
+  course: QuizCourseSummary;
   createdAt: string;
   updatedAt: string;
 }
 
 export interface Question {
   id: string;
+  /** Optional label from API; prefer over {@link prompt} in result summaries. */
+  title?: string;
   prompt: string;
   options: string;
   correctAnswer: string;
   quiz: Quiz;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface Enrollment {
-  id: string;
-  status: string;
-  progress?: number | null;
-  course: Course;
-  /** Present when the API joins the student; may be missing on older payloads. */
-  student?: BackendUser | null;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface Availability {
-  id: string;
-  dayOfWeek: number;
-  startTime: string;
-  endTime: string;
-  tutor: BackendUser;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface Booking {
-  id: string;
-  status: string;
-  startTime: string;
-  bookingDate: string;
-  meetingProvider?: 'zoom' | 'google_meet' | null;
-  meetingLink?: string | null;
-  tutor: BackendUser;
-  student: BackendUser;
   createdAt: string;
   updatedAt: string;
 }
@@ -111,7 +68,6 @@ export interface Payment {
   currency: string;
   status: string;
   paidAt?: string | null;
-  enrollment: Enrollment;
   student: BackendUser;
   createdAt: string;
   updatedAt: string;
@@ -134,7 +90,8 @@ export interface SubmitQuizAnswerPayload {
   answer: string;
 }
 
-export interface SubmitQuizPayload {
+/** Body for {@code POST /api/v1/placement/:placementId/submit} (PLACEMENT_SUBMISSION.md). */
+export interface SubmitPlacementAnswersPayload {
   answers: SubmitQuizAnswerPayload[];
 }
 
@@ -143,23 +100,14 @@ export interface SubmitQuizAnswerResult {
   isCorrect: boolean;
 }
 
-export interface SubmitQuizResult {
-  quizId: string;
+/** Response from {@code POST /placement/:placementId/submit}. */
+export interface SubmitPlacementResponse {
+  placementId: string;
   totalQuestions: number;
   answeredQuestions: number;
   correctAnswers: number;
   score: number;
-  passingScore?: number | null;
+  passingScore: number | null;
   passed: boolean;
   answers: SubmitQuizAnswerResult[];
-}
-
-export interface CreateBookingPayload {
-  tutor: { id: number | string };
-  student: { id: number | string };
-  status: string;
-  startTime: string;
-  bookingDate: string;
-  meetingProvider?: 'zoom' | 'google_meet';
-  meetingLink?: string;
 }

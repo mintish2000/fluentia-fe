@@ -32,6 +32,19 @@
           <span class="checkout-dialog__summary-label">Your order</span>
           <p class="checkout-dialog__summary">{{ planSummary(planId) }}</p>
         </div>
+        @if (paymentSaveError(); as saveError) {
+          <div class="checkout-dialog__save-error" role="alert" aria-live="assertive">
+            <p>{{ saveError }}</p>
+            <button
+              type="button"
+              class="checkout-dialog__retry"
+              [disabled]="isRetryingPaymentSave()"
+              (click)="retrySavePayment()"
+            >
+              {{ isRetryingPaymentSave() ? 'Retrying...' : 'Retry Save Receipt' }}
+            </button>
+          </div>
+        }
         <div #paypalHost class="paypal-host"></div>
         <p class="checkout-dialog__footnote">Encrypted payment · Powered by PayPal</p>
       </div>
@@ -41,8 +54,8 @@
   @if (isCheckingStudentCourses()) {
     <p class="page__subtitle">Checking your enrolled courses...</p>
   } @else if (shouldShowNoCoursesMessage()) {
-    <p class="page__subtitle">
-      You are not enrolled in any course yet. Once admin assigns a course, it appears here.
+    <p >
+      You have to take the exam before you can purchase a package. Once you take the exam, the available packages will appear here.
     </p>
   } @else {
     <div class="schedule">

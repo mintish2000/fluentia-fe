@@ -14,7 +14,12 @@ export class TutorGuard implements CanActivate {
       return true;
     }
 
-    this._router.navigateByUrl('/main/dashboard');
+    if (this._userService.isAdmin) {
+      this._router.navigateByUrl('/main/dashboard');
+      return false;
+    }
+
+    this._router.navigateByUrl('/main/student');
     return false;
   }
 }

@@ -1,5 +1,8 @@
 @use '_variables.scss' as *;
 
+/** Shared border-radius for primary/secondary/danger buttons (pill shape). */
+$admin-btn-pill: 9999px;
+
 /*
  * Full-bleed solid surface: main.website__content has padding; without this, the photo shows
  * in the padding gutters and behind “transparent” gaps. Negative margin + matching padding
@@ -123,8 +126,8 @@
 
 .admin-page__refresh {
   border: none;
-  border-radius: 10px;
-  padding: 0.55rem 0.85rem;
+  border-radius: $admin-btn-pill;
+  padding: 0.55rem 1rem;
   font-weight: 800;
   font-size: 0.88rem;
   cursor: pointer;
@@ -201,8 +204,8 @@
   min-height: 50px;
   appearance: none;
   -webkit-appearance: none;
-  border-radius: 12px;
-  padding: 0.65rem 1.1rem;
+  border-radius: $admin-btn-pill;
+  padding: 0.65rem 1.25rem;
   font-weight: 800;
   font-size: 0.95rem;
   letter-spacing: 0.04em;
@@ -246,72 +249,6 @@
   background: linear-gradient(165deg, #1a6bad 0%, #0d4578 100%);
 }
 
-.admin-operations {
-  margin-top: 1.35rem;
-  padding: 1.35rem 1.25rem 1.5rem;
-  border-radius: 16px;
-  background: #ffffff;
-  border: 1px solid rgba(11, 58, 102, 0.14);
-  box-shadow: 0 12px 32px rgba(11, 58, 102, 0.1);
-}
-
-.admin-operations__section-title {
-  margin: 0;
-  font-size: 1.2rem;
-  color: #0b3a66;
-  font-weight: 900;
-  letter-spacing: 0.02em;
-  text-shadow: none;
-}
-
-.admin-operations__section-desc {
-  margin: 0.5rem 0 1.1rem 0;
-  max-width: 52rem;
-  color: #1a3a52;
-  font-size: 0.98rem;
-  line-height: 1.55;
-  font-weight: 600;
-}
-
-.admin-operations__enrollment-row {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.admin-panel {
-  background: #ffffff;
-  border-radius: 14px;
-  border: 1px solid rgba(11, 58, 102, 0.12);
-  box-shadow: 0 8px 22px rgba(31, 42, 55, 0.06);
-  padding: 1.1rem 1.15rem;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
-}
-
-.admin-panel:hover {
-  border-color: rgba(11, 58, 102, 0.18);
-  box-shadow: 0 10px 26px rgba(31, 42, 55, 0.08);
-}
-
-.admin-panel--wide {
-  grid-column: 1 / -1;
-}
-
-.admin-panel__title {
-  margin: 0;
-  font-size: 1rem;
-  font-weight: 800;
-  color: $brand-navy;
-}
-
-.admin-panel__desc {
-  margin: 0.4rem 0 0 0;
-  font-size: 0.88rem;
-  color: rgba(11, 58, 102, 0.7);
-  line-height: 1.4;
-}
-
 .admin-card {
   background: #ffffff;
   border-radius: 16px;
@@ -322,6 +259,97 @@
 
 .admin-card--full {
   margin-top: 1.25rem;
+}
+
+.section-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.section-head__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.section-head__actions button {
+  border: none;
+  border-radius: $admin-btn-pill;
+  padding: 0.55rem 1rem;
+  font-weight: 800;
+  font-size: 0.88rem;
+  cursor: pointer;
+  color: #ffffff;
+  background: linear-gradient(135deg, $brand-navy 0%, #082a4a 100%);
+  box-shadow: 0 4px 12px rgba(11, 58, 102, 0.18);
+}
+
+.section-head__badge {
+  border: 1px solid rgba(11, 58, 102, 0.2);
+  background: rgba(11, 58, 102, 0.06);
+  color: $brand-navy;
+  border-radius: 999px;
+  padding: 0.35rem 0.65rem;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.group-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 0.85rem;
+  margin-top: 0.75rem;
+}
+
+.group-card {
+  border: 1px solid rgba(11, 58, 102, 0.12);
+  border-radius: 14px;
+  padding: 0.85rem 1rem;
+  background: linear-gradient(180deg, #ffffff 0%, rgba(240, 248, 255, 0.55) 100%);
+}
+
+.group-card__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.45rem;
+}
+
+.group-card__title {
+  margin: 0;
+  font-size: 1.05rem;
+  color: $brand-navy;
+  font-weight: 900;
+  line-height: 1.25;
+}
+
+.group-card__menu-btn {
+  flex-shrink: 0;
+  color: $brand-navy;
+}
+
+.group-card__description {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.88rem;
+  color: rgba(11, 58, 102, 0.78);
+  line-height: 1.45;
+}
+
+.group-card__link {
+  display: inline-block;
+  font-size: 0.82rem;
+  word-break: break-all;
+}
+
+.stats-inline {
+  display: grid;
+  gap: 0.2rem;
 }
 
 .pass {
@@ -399,8 +427,8 @@
 .assignment-form button {
   margin-top: 0.35rem;
   border: none;
-  border-radius: 8px;
-  padding: 0.6rem 0.8rem;
+  border-radius: $admin-btn-pill;
+  padding: 0.6rem 1rem;
   font-weight: 800;
   color: #ffffff;
   background: $brand-navy;
@@ -412,51 +440,46 @@
   cursor: not-allowed;
 }
 
-.assignment-fieldset {
-  margin: 0.5rem 0 0 0;
-  padding: 0.85rem 1rem 1rem;
-  border: 1px solid rgba(11, 58, 102, 0.14);
-  border-radius: 12px;
-  background: rgba(11, 58, 102, 0.02);
-}
-
-.assignment-fieldset__legend {
-  padding: 0 0.35rem;
-  font-size: 0.82rem;
-  font-weight: 800;
-  color: $brand-navy;
-}
-
-.assignment-form--stacked {
-  margin-top: 0.5rem;
-}
-
-.assignment-form__field {
-  display: grid;
-  gap: 0.35rem;
-}
-
-.assignment-form__hint {
-  margin: 0.15rem 0 0 0;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: rgba(11, 58, 102, 0.62);
-}
-
-.assignment-form__submit {
-  margin-top: 0.5rem;
-}
-
 .editor-actions {
   display: flex;
   gap: 0.5rem;
   flex-wrap: wrap;
 }
 
+.editor-actions button {
+  border: none;
+  border-radius: $admin-btn-pill;
+  padding: 0.55rem 1rem;
+  font-weight: 800;
+  font-size: 0.88rem;
+  cursor: pointer;
+  color: #ffffff;
+  background: linear-gradient(135deg, $brand-navy 0%, #082a4a 100%);
+  box-shadow: 0 4px 12px rgba(11, 58, 102, 0.18);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.12s ease;
+}
+
+.editor-actions button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(11, 58, 102, 0.24);
+}
+
+.editor-actions button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
 .editor-actions button.secondary {
   color: $brand-navy;
   background: rgba(11, 58, 102, 0.1);
   border: 1px solid rgba(11, 58, 102, 0.2);
+  box-shadow: none;
+}
+
+.editor-actions button.secondary:hover:not(:disabled) {
+  background: rgba(11, 58, 102, 0.14);
+  box-shadow: 0 4px 12px rgba(11, 58, 102, 0.1);
 }
 
 .multi-correct-list {
@@ -478,6 +501,10 @@
   font-weight: 700;
 }
 
+.state-text--placement-summary {
+  margin-top: 0.2rem;
+}
+
 .user-list {
   display: grid;
   gap: 0.65rem;
@@ -493,6 +520,18 @@
   padding: 0.75rem;
   background: linear-gradient(180deg, #ffffff 0%, rgba(240, 248, 255, 0.65) 100%);
   transition: border-color 140ms ease;
+}
+
+.user-item__content {
+  min-width: 0;
+}
+
+.user-item--placement h3 {
+  display: inline-block;
+  border: 1px solid rgba(11, 58, 102, 0.12);
+  border-radius: 8px;
+  padding: 0.2rem 0.45rem;
+  background: rgba(11, 58, 102, 0.04);
 }
 
 .user-item:hover {
@@ -518,8 +557,8 @@
 
 .user-item__actions button {
   border: none;
-  border-radius: 8px;
-  padding: 0.5rem 0.75rem;
+  border-radius: $admin-btn-pill;
+  padding: 0.5rem 0.95rem;
   font-weight: 800;
   color: #ffffff;
   background: $brand-navy;
@@ -532,13 +571,307 @@
   border: 1px solid rgba(11, 58, 102, 0.2);
 }
 
-.user-item__actions button.danger {
-  background: #b42318;
-}
-
 .user-item__actions button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+.user-item--placement {
+  position: relative;
+  padding-right: 2.85rem;
+}
+
+/**
+ * Red × control for remove actions (top-right when modified with --corner).
+ */
+.admin-remove-btn {
+  flex-shrink: 0;
+  width: 2.1rem;
+  height: 2.1rem;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-radius: $admin-btn-pill;
+  background: rgba(180, 35, 24, 0.1);
+  color: #b42318;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    transform 0.12s ease;
+}
+
+.admin-remove-btn:hover {
+  background: rgba(180, 35, 24, 0.2);
+  color: #8f1c14;
+}
+
+.admin-remove-btn:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.admin-remove-btn--corner {
+  position: absolute;
+  top: 0.55rem;
+  right: 0.55rem;
+  z-index: 2;
+}
+
+.admin-remove-btn__icon {
+  font-size: 1.65rem;
+  font-weight: 300;
+  line-height: 0.65;
+  display: block;
+  margin-top: -0.08em;
+}
+
+.student-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.student-header-row button {
+  border: none;
+  border-radius: $admin-btn-pill;
+  padding: 0.6rem 1rem;
+  font-weight: 800;
+  color: #ffffff;
+  background: $brand-navy;
+  cursor: pointer;
+}
+
+.student-header-row__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.student-controls {
+  margin-top: 0.85rem;
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) minmax(180px, 220px) auto;
+  gap: 0.55rem;
+  align-items: center;
+}
+
+.student-controls input,
+.student-controls select {
+  border: 1px solid rgba(11, 58, 102, 0.2);
+  border-radius: 8px;
+  padding: 0.52rem 0.62rem;
+  background: #ffffff;
+}
+
+.student-controls__meta {
+  font-size: 0.84rem;
+  color: rgba(11, 58, 102, 0.7);
+  font-weight: 700;
+  justify-self: end;
+}
+
+.student-grid {
+  margin-top: 0.9rem;
+  display: grid;
+  grid-template-columns: minmax(240px, 320px) minmax(0, 1fr);
+  gap: 0.9rem;
+}
+
+.student-list-panel {
+  border: 1px solid rgba(11, 58, 102, 0.12);
+  border-radius: 12px;
+  padding: 0.55rem;
+  display: grid;
+  gap: 0.45rem;
+  max-height: 78dvh;
+  overflow: auto;
+  align-content: start;
+}
+
+.student-list-item {
+  text-align: left;
+  border: 1px solid rgba(11, 58, 102, 0.14);
+  border-radius: 10px;
+  background: #ffffff;
+  padding: 0.65rem;
+  display: grid;
+  gap: 0.15rem;
+  cursor: pointer;
+  transition: border-color 0.14s ease, background 0.14s ease, transform 0.12s ease;
+}
+
+.student-list-item:hover {
+  transform: translateY(-1px);
+}
+
+.student-list-item--active {
+  border-color: rgba(11, 58, 102, 0.35);
+  background: rgba(11, 58, 102, 0.06);
+}
+
+.student-list-item__name {
+  color: $brand-navy;
+  font-weight: 800;
+}
+
+.student-list-item__meta,
+.student-list-item__status {
+  color: rgba(11, 58, 102, 0.7);
+  font-size: 0.84rem;
+}
+
+.student-list-item__group {
+  font-size: 0.76rem;
+  font-weight: 800;
+  color: rgba(0, 107, 77, 0.95);
+  border: 1px solid rgba(13, 107, 77, 0.22);
+  background: rgba(13, 107, 77, 0.08);
+  border-radius: 999px;
+  padding: 0.12rem 0.45rem;
+  justify-self: start;
+}
+
+.student-detail-head__group {
+  margin: 0.35rem 0 0 0;
+  font-size: 0.9rem;
+  color: rgba(11, 58, 102, 0.82);
+}
+
+.student-notes-readonly {
+  margin: 0;
+  white-space: pre-wrap;
+  color: rgba(11, 58, 102, 0.88);
+  line-height: 1.5;
+  font-weight: 600;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  border: 1px solid rgba(13, 107, 77, 0.25);
+  background: rgba(13, 107, 77, 0.12);
+  color: #0d6b4d;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 0.14rem 0.45rem;
+}
+
+.status-pill--inactive {
+  border-color: rgba(166, 27, 27, 0.26);
+  background: rgba(166, 27, 27, 0.12);
+  color: #a61b1b;
+}
+
+.student-pagination {
+  margin-top: 0.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  border-top: 1px solid rgba(11, 58, 102, 0.1);
+  padding-top: 0.55rem;
+  color: rgba(11, 58, 102, 0.75);
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.student-pagination button.secondary {
+  border: 1px solid rgba(11, 58, 102, 0.2);
+  border-radius: $admin-btn-pill;
+  padding: 0.45rem 0.85rem;
+  background: rgba(11, 58, 102, 0.06);
+  color: $brand-navy;
+  font-weight: 800;
+}
+
+.student-pagination button.secondary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.student-detail-panel {
+  border: 1px solid rgba(11, 58, 102, 0.12);
+  border-radius: 12px;
+  padding: 0.9rem;
+  display: grid;
+  gap: 0.8rem;
+  background: linear-gradient(180deg, #ffffff 0%, rgba(240, 248, 255, 0.45) 100%);
+}
+
+.student-detail-head {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.7rem;
+  align-items: flex-start;
+  padding-right: 2.85rem;
+}
+
+.student-detail-head__text {
+  flex: 1 1 200px;
+  min-width: 0;
+}
+
+.student-detail-head__actions {
+  flex: 0 1 auto;
+}
+
+.student-detail-head h3 {
+  margin: 0;
+  color: $brand-navy;
+}
+
+.student-detail-head p {
+  margin: 0.25rem 0 0 0;
+}
+
+.student-section {
+  border: 1px solid rgba(11, 58, 102, 0.1);
+  border-radius: 10px;
+  padding: 0.75rem;
+  background: #ffffff;
+}
+
+.student-section + .student-section {
+  margin-top: 0.15rem;
+}
+
+.student-section h4,
+.student-section h5 {
+  margin: 0 0 0.35rem 0;
+  color: $brand-navy;
+}
+
+.student-section textarea {
+  width: 100%;
+  border: 1px solid rgba(11, 58, 102, 0.2);
+  border-radius: 8px;
+  padding: 0.55rem 0.65rem;
+  resize: vertical;
+}
+
+.mistake-list,
+.payment-list {
+  margin: 0;
+  padding-left: 1rem;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.mistake-list li,
+.payment-list li {
+  display: grid;
+  gap: 0.15rem;
+  color: rgba(11, 58, 102, 0.78);
 }
 
 button:focus-visible,
@@ -550,13 +883,34 @@ textarea:focus-visible {
   outline-offset: 1px;
 }
 
+.admin-remove-btn:focus-visible {
+  outline: 2px solid rgba(180, 35, 24, 0.55);
+  outline-offset: 2px;
+}
+
 @media (max-width: 980px) {
   .admin-metrics {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .admin-operations__enrollment-row {
+  .student-controls {
     grid-template-columns: 1fr;
+  }
+
+  .student-controls__meta {
+    justify-self: start;
+  }
+
+  .student-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .student-detail-head {
+    flex-direction: column;
+  }
+
+  .section-head {
+    flex-direction: column;
   }
 
   .user-item {

@@ -85,10 +85,15 @@ export default class LoginComponent extends BaseComponent {
 
   /**
    * Authenticates user with email/password against backend.
+   * Ignores duplicate submissions while a request is in flight (avoids double fire from submit + click).
    */
   authenticate() {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
+      return;
+    }
+
+    if (this._isLoading()) {
       return;
     }
 

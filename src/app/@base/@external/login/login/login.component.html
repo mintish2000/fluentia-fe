@@ -58,11 +58,10 @@
       </article>
 
       <app-action-button
-        (click)="authenticate()"
         [text]="'Login'"
         type="flat"
         [isLoading]="_isLoading()"
-        [disabled]="form.invalid"
+        [disabled]="form.invalid || _isLoading()"
         [fullWidth]="true"
       />
     </form>

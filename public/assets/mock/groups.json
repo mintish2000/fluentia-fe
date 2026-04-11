@@ -1,0 +1,16 @@
+{
+  "groups": [
+    {
+      "id": "g_001",
+      "name": "Morning Advanced",
+      "description": "Weekday morning cohort for B2+ learners. Focus on fluency and exam prep.",
+      "link": "https://example.com/groups/morning-advanced"
+    },
+    {
+      "id": "g_002",
+      "name": "Evening Foundations",
+      "description": "A2–B1 evening group with emphasis on grammar and vocabulary.",
+      "link": "https://example.com/groups/evening-foundations"
+    }
+  ]
+}

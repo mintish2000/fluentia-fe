@@ -1,0 +1,58 @@
+<h2 mat-dialog-title>Result</h2>
+
+<mat-dialog-content class="placement-result-dialog__content">
+  <section class="placement-result-dialog__summary" aria-label="Score summary">
+    <p>
+      <strong>Score:</strong> {{ data.result.score }}%
+      @if (data.result.passingScore != null) {
+        <span class="placement-result-dialog__passing">
+          (passing: {{ data.result.passingScore }}%)
+        </span>
+      }
+    </p>
+    <p>
+      <strong>Status:</strong>
+      @if (data.result.passed) {
+        <span class="placement-result-dialog__pass">Passed</span>
+      } @else {
+        <span class="placement-result-dialog__fail">Not passed</span>
+      }
+    </p>
+    <p>
+      <strong>Questions:</strong> {{ data.result.answeredQuestions }} /
+      {{ data.result.totalQuestions }} answered ·
+      <strong>Correct:</strong> {{ data.result.correctAnswers }}
+    </p>
+  </section>
+
+  <h3 class="placement-result-dialog__list-title">Answers</h3>
+  <ul class="placement-result-dialog__answers" role="list">
+    @for (row of data.result.answers; track row.questionId) {
+      <li class="placement-result-dialog__answer" role="listitem">
+        @if (row.isCorrect) {
+          <mat-icon
+            class="placement-result-dialog__icon placement-result-dialog__icon--ok"
+            aria-hidden="true"
+            >check_circle</mat-icon
+          >
+        } @else {
+          <mat-icon
+            class="placement-result-dialog__icon placement-result-dialog__icon--no"
+            aria-hidden="true"
+            >cancel</mat-icon
+          >
+        }
+        <div class="placement-result-dialog__answer-body">
+          <span class="placement-result-dialog__prompt">{{
+            questionLabelForAnswer(row.questionId)
+          }}</span>
+        </div>
+      </li>
+    }
+  </ul>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <a mat-button routerLink="/main/pricing" mat-dialog-close>View plans &amp; pricing</a>
+  <button mat-flat-button color="primary" type="button" mat-dialog-close>OK</button>
+</mat-dialog-actions>
