@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://localhost:3000/api/v1',
+  apiUrl: 'https://web-production-a2b41.up.railway.app/api/v1',
   languages: ['en', 'ar'],
   defaultLanguage: 'en',
   maxFileSize: {
