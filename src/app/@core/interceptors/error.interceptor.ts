@@ -7,7 +7,9 @@ import {
 } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { AuthService } from '@shared/services/auth/auth.service';
+import { LocalStorageService } from '@shared/services/local-storage/local-storage.service';
 import { ToastService } from '@shared/services/toast/toast.service';
+import { UserService } from '@shared/services/user/user.service';
 import {
   BehaviorSubject,
   catchError,
@@ -32,6 +34,8 @@ export const ErrorInterceptor = (
 ): Observable<HttpEvent<unknown>> => {
   const _toast = inject(ToastService);
   const _authService = inject(AuthService);
+  const _localStorageService = inject(LocalStorageService);
+  const _userService = inject(UserService);
 
   return next(req).pipe(
     timeout(60000),
@@ -50,6 +54,12 @@ export const ErrorInterceptor = (
       if (err.status === HttpStatusCode.Unauthorized) {
         if (_isRefreshRequest(req.url)) {
           _authService.kickOut();
+          return throwError(() => err);
+        }
+
+        const hasRefreshToken = !!_localStorageService.getItem<string>('refresh-token');
+        const shouldTryRefresh = _userService.isAuthenticated() && hasRefreshToken;
+        if (!shouldTryRefresh) {
           return throwError(() => err);
         }
 

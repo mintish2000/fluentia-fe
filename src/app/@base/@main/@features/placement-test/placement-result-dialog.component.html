@@ -3,12 +3,10 @@
 <mat-dialog-content class="placement-result-dialog__content">
   <section class="placement-result-dialog__summary" aria-label="Score summary">
     <p>
-      <strong>Score:</strong> {{ data.result.score }}%
-      @if (data.result.passingScore != null) {
-        <span class="placement-result-dialog__passing">
-          (passing: {{ data.result.passingScore }}%)
-        </span>
-      }
+      <strong>English level:</strong>
+      <span class="placement-result-dialog__level">
+        {{ englishLevelFromScore(data.result.score) }}
+      </span>
     </p>
     <p>
       <strong>Status:</strong>

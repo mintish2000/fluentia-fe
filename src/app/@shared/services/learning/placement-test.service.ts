@@ -95,13 +95,7 @@ export class PlacementTestService {
 
     const quiz = mapPlacementWorkspaceToQuiz(workspace);
     this.placementQuiz.set(quiz);
-    this.placementQuestions.set(
-      mapPlacementRecordsToQuestions(
-        workspace,
-        quiz,
-        workspace.maxQuestions ?? 50,
-      ),
-    );
+    this.placementQuestions.set(mapPlacementRecordsToQuestions(workspace, quiz));
     const minutes = workspace.examDurationMinutes ?? 50;
     this.examDurationSeconds.set(Math.max(60, Math.round(minutes * 60)));
   }

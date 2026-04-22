@@ -170,7 +170,7 @@ export class LayoutComponent extends BaseComponent {
    * Resolves whether the app should show authenticated navigation.
    */
   isAuthenticated(): boolean {
-    return this._userService.isAuthenticated() || !!this._authService.isLoggedIn();
+    return this._userService.isAuthenticated();
   }
 
   /**

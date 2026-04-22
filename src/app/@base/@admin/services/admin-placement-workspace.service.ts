@@ -3,8 +3,6 @@ import { PlacementQuestionDraft, PlacementWorkspacePayload } from '../models/adm
 import { Observable, map, of, tap } from 'rxjs';
 import { AdminApiService } from './admin-api.service';
 
-const DEFAULT_MAX_QUESTIONS = 50;
-
 /**
  * Cached placement workspace for admin CRUD; synced from hub or {@code GET /admin/placement}.
  */
@@ -67,10 +65,8 @@ export class AdminPlacementWorkspaceService {
   }
 
   private _normalizePayload(payload: PlacementWorkspacePayload): PlacementWorkspacePayload {
-    const maxQuestions = payload.maxQuestions ?? DEFAULT_MAX_QUESTIONS;
     return {
       ...payload,
-      maxQuestions,
       quizDescription: (payload.quizDescription ?? '').trim() || undefined,
       courseTitle: (payload.courseTitle ?? '').trim() || undefined,
       courseLevel: payload.courseLevel?.trim() || undefined,

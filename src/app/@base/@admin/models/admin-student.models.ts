@@ -58,6 +58,8 @@ export interface AdminStudentDraft {
   lastName: string;
   email: string;
   status: 'active' | 'inactive';
+  /** Required for create flow, omitted on edit unless explicitly changed. */
+  password?: string;
   nextPaymentDate: string;
   nextPaymentAmount: number;
   groupId: string | null;

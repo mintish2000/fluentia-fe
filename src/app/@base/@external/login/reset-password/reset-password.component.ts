@@ -9,7 +9,10 @@ import { ActionButtonComponent } from '@shared/components/buttons/action-button/
 import { FormErrorsComponent } from '@shared/components/forms/form-errors/form-errors.component';
 import { RealsoftError, RealsoftFormField, RealsoftInput } from 'realsoft-reusable-components/features';
 import { finalize, timeout } from 'rxjs';
-import { ForgotPasswordForm, ResetPasswordForm } from '../interfaces/login.interface';
+import { ResetPasswordForm } from '../interfaces/login.interface';
+
+const FORGOT_PASSWORD_STATIC_NOTICE =
+  'Please call your Fluentia admin to change your password.';
 
 @Component({
   selector: 'app-reset-password',
@@ -31,8 +34,8 @@ export default class ResetPasswordComponent extends BaseComponent {
   private _destroyRef = inject(DestroyRef);
 
   readonly resetHash = signal<string | null>(null);
+  readonly forgotPasswordNotice = FORGOT_PASSWORD_STATIC_NOTICE;
 
-  forgotForm!: FormGroup<ForgotPasswordForm>;
   resetForm!: FormGroup<ResetPasswordForm>;
 
   constructor() {
@@ -56,13 +59,6 @@ export default class ResetPasswordComponent extends BaseComponent {
    * Initializes forgot/reset form controls.
    */
   private _initForms() {
-    this.forgotForm = this._formBuilder.group({
-      email: this._formBuilder.control('', {
-        validators: [Validators.required, Validators.email],
-        nonNullable: true,
-      }),
-    });
-
     this.resetForm = this._formBuilder.group({
       password: this._formBuilder.control('', {
         validators: [Validators.required, Validators.minLength(6)],
@@ -73,32 +69,6 @@ export default class ResetPasswordComponent extends BaseComponent {
         nonNullable: true,
       }),
     });
-  }
-
-  /**
-   * Requests password reset email from backend.
-   */
-  requestReset() {
-    if (this.forgotForm.invalid) {
-      this.forgotForm.markAllAsTouched();
-      return;
-    }
-
-    const { email } = this.forgotForm.getRawValue();
-    this._isLoading.set(true);
-
-    this._externalService
-      .forgotPassword({ email })
-      .pipe(
-        timeout(this._defaultTimeout),
-        takeUntilDestroyed(this._destroyRef),
-        finalize(() => this._isLoading.set(false)),
-      )
-      .subscribe({
-        next: () => {
-          this._toast.showSuccess('Reset email sent successfully');
-        },
-      });
   }
 
   /**

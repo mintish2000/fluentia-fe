@@ -128,11 +128,13 @@ export class AdminApiService {
    * Shared create/update body for student roster (see FRONTEND_API.md).
    */
   buildStudentPayload(draft: AdminStudentDraft): Record<string, unknown> {
+    const password = (draft.password ?? '').trim();
     return {
       firstName: draft.firstName.trim(),
       lastName: draft.lastName.trim(),
       email: draft.email.trim().toLowerCase(),
       status: draft.status,
+      ...(password ? { password } : {}),
       groupId: draft.groupId || null,
       notes: draft.notes.trim(),
       nextPaymentDate: draft.nextPaymentDate,

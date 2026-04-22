@@ -21,7 +21,7 @@ export class UserService {
   );
   readonly isStudentSignal = computed(() => {
     const role = this._currentUser()?.userRole;
-    return role === AppUserType.STUDENT || role === AppUserType.USER;
+    return role === AppUserType.STUDENT;
   });
   readonly roleLabelSignal = computed(() => {
     const role = this._currentUser()?.userRole;

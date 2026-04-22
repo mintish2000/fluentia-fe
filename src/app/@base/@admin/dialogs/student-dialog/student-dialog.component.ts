@@ -6,8 +6,10 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import {
   AdminStudentDialogData,
   AdminStudentDialogResult,
@@ -20,7 +22,9 @@ import {
     CommonModule,
     ReactiveFormsModule,
     MatDialogModule,
+    MatSlideToggleModule,
     MatFormFieldModule,
+    MatIconModule,
     MatInputModule,
     MatSelectModule,
     MatDatepickerModule,
@@ -38,6 +42,8 @@ export class StudentDialogComponent {
 
   readonly data = inject<AdminStudentDialogData>(MAT_DIALOG_DATA);
   readonly formError = signal('');
+  readonly hidePassword = signal(true);
+  readonly editPasswordEnabled = signal(false);
 
   readonly firstNameControl = new FormControl('', {
     nonNullable: true,
@@ -50,6 +56,10 @@ export class StudentDialogComponent {
   readonly emailControl = new FormControl('', {
     nonNullable: true,
     validators: [Validators.required, Validators.email],
+  });
+  readonly passwordControl = new FormControl('', {
+    nonNullable: true,
+    validators: [Validators.minLength(8)],
   });
   readonly statusControl = new FormControl<'active' | 'inactive'>('active', {
     nonNullable: true,
@@ -87,15 +97,34 @@ export class StudentDialogComponent {
     return this.data.mode === 'edit';
   }
 
+  togglePasswordVisibility(): void {
+    this.hidePassword.update((value) => !value);
+  }
+
+  toggleEditPassword(): void {
+    const enabled = !this.editPasswordEnabled();
+    this.editPasswordEnabled.set(enabled);
+    if (!enabled) {
+      this.passwordControl.setValue('');
+      this.passwordControl.markAsPristine();
+      this.passwordControl.markAsUntouched();
+    }
+  }
+
   submit() {
     this.formError.set('');
+    const isCreateMode = !this.isEditMode;
+    const password = this.passwordControl.value.trim();
+    const isUpdatingPassword =
+      (isCreateMode || this.editPasswordEnabled()) && password.length >= 8;
     if (
       this.firstNameControl.invalid ||
       this.lastNameControl.invalid ||
       this.emailControl.invalid ||
       this.statusControl.invalid ||
       this.nextPaymentDateControl.invalid ||
-      this.nextPaymentAmountControl.invalid
+      this.nextPaymentAmountControl.invalid ||
+      (isCreateMode && password.length < 8)
     ) {
       this.formError.set('Please complete all required fields correctly.');
       return;
@@ -114,6 +143,7 @@ export class StudentDialogComponent {
         lastName: this.lastNameControl.value,
         email: this.emailControl.value,
         status: this.statusControl.value,
+        ...(isUpdatingPassword ? { password } : {}),
         groupId: groupId ? groupId : null,
         notes: this.notesControl.value,
         nextPaymentDate: paymentDate.toISOString(),

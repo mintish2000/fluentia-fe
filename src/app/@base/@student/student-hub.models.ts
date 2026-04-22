@@ -24,6 +24,7 @@ export interface StudentHubPayment {
 }
 
 export interface StudentHubPayload {
+  status?: string;
   placementCompleted: boolean;
   placement: StudentHubPlacement | null;
   group: StudentHubGroup | null;

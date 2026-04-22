@@ -8,6 +8,7 @@ import type {
   SubmitPlacementResponse,
 } from '@shared/interfaces/learning/learning.interface';
 import { RouterLink } from '@angular/router';
+import { EnglishLevelService } from '@shared/services/learning/english-level.service';
 
 /** Data passed into {@link PlacementResultDialogComponent}. */
 export interface PlacementResultDialogData {
@@ -29,6 +30,11 @@ export interface PlacementResultDialogData {
 })
 export class PlacementResultDialogComponent {
   readonly data = inject<PlacementResultDialogData>(MAT_DIALOG_DATA);
+  readonly englishLevelService = inject(EnglishLevelService);
+
+  englishLevelFromScore(score: number): string {
+    return this.englishLevelService.englishLevelFromScore(score);
+  }
 
   /**
    * Human-readable label from {@link Question.title} and/or {@link Question.prompt} (no ids).

@@ -4,7 +4,7 @@
     <p class="page__subtitle page__subtitle--mixed">
       Discover your English level with our comprehensive assessment.
     </p>
-    <p class="page__lede">One-time timed assessment (up to 50 questions).</p>
+    <p class="page__lede">One-time timed assessment.</p>
   </header>
 
   @if (isLoadingPlacement()) {
@@ -30,7 +30,7 @@
   } @else {
     <article class="card card--highlight">
       <h2 class="card__title">{{ placementQuiz()!.title }}</h2>
-      <p><strong>Questions:</strong> {{ questions().length }} / 50</p>
+      <p><strong>Questions:</strong> {{ questions().length }}</p>
       <p><strong>Answered:</strong> {{ answerProgress() }}</p>
       <p><strong>Time left:</strong> {{ timerText() }}</p>
     </article>

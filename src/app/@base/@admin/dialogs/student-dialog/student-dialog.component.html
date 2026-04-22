@@ -20,7 +20,14 @@
 
       <mat-form-field class="student-dialog__grid-full">
         <mat-label>Email</mat-label>
-        <input matInput [formControl]="emailControl" />
+        <input
+          matInput
+          [formControl]="emailControl"
+          name="student-email"
+          autocomplete="off"
+          autocapitalize="off"
+          spellcheck="false"
+        />
       </mat-form-field>
 
       <mat-form-field class="student-dialog__grid-full">
@@ -72,6 +79,46 @@
         <input matInput type="number" [formControl]="nextPaymentAmountControl" />
       </mat-form-field>
     </div>
+  </section>
+
+  <section class="student-dialog__group">
+    <h3>Security</h3>
+
+    @if (isEditMode) {
+      <mat-slide-toggle
+        class="student-dialog__grid-full"
+        [checked]="editPasswordEnabled()"
+        (change)="toggleEditPassword()"
+      >
+        Edit password
+      </mat-slide-toggle>
+    }
+
+    @if (!isEditMode || editPasswordEnabled()) {
+      <mat-form-field class="student-dialog__grid-full">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          [type]="hidePassword() ? 'password' : 'text'"
+          [formControl]="passwordControl"
+          name="student-password"
+          autocomplete="new-password"
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          type="button"
+          [attr.aria-label]="hidePassword() ? 'Show password' : 'Hide password'"
+          (click)="togglePasswordVisibility()"
+        >
+          <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        <mat-hint>{{ isEditMode ? 'Enter 8+ characters to update password.' : 'Minimum 8 characters.' }}</mat-hint>
+        @if (passwordControl.touched && passwordControl.hasError('minlength')) {
+          <mat-error>Password must be at least 8 characters.</mat-error>
+        }
+      </mat-form-field>
+    }
   </section>
 
   @if (formError()) {

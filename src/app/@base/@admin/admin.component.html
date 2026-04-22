@@ -73,12 +73,8 @@
       <div class="stats-inline">
         <p class="state-text">
           Quiz: {{ placementQuiz()?.title || 'Placement Test' }} | Questions:
-          {{ placementQuestions().length }}/{{ placementMaxQuestions() }} | Exam time:
+          {{ placementQuestions().length }} | Exam time:
           {{ placementExamDurationMinutes() }} minutes
-        </p>
-        <p class="state-text state-text--placement-summary">
-          Slots left: {{ placementQuestionSlotsLeft() }} | Completion:
-          {{ placementQuestionProgressPercent() }}%
         </p>
       </div>
 
@@ -86,7 +82,7 @@
         <button
           type="button"
           (click)="openCreatePlacementQuestionDialog()"
-          [disabled]="!canCreatePlacementQuestion() || isLoading()"
+          [disabled]="isLoading()"
         >
           Add Question
         </button>
@@ -209,7 +205,6 @@
       <div class="student-header-row">
         <div>
           <h2>Student Management</h2>
-          <p>Student roster from the admin API (GET /admin/hub).</p>
         </div>
         <div class="student-header-row__actions">
           <button type="button" (click)="openCreateStudentDialog()">Add Student</button>
@@ -219,6 +214,10 @@
       <div class="student-controls">
         <input
           type="search"
+          name="student-search"
+          autocomplete="off"
+          autocapitalize="off"
+          spellcheck="false"
           [ngModel]="studentSearchQuery()"
           (ngModelChange)="setStudentSearchQuery($event)"
           placeholder="Search by name or email"

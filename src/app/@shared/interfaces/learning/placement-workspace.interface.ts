@@ -25,7 +25,6 @@ export interface PlacementWorkspacePayload {
   title?: string;
   quizTitle?: string;
   examDurationMinutes: number;
-  maxQuestions?: number;
   description?: string;
   quizDescription?: string;
   courseTitle?: string;

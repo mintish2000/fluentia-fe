@@ -1,4 +1,4 @@
-import { Injectable, computed, inject, signal } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { Question, Quiz, QuizCourseSummary } from '@shared/interfaces/learning/learning.interface';
 import { ToastService } from '@shared/services/toast/toast.service';
 import { parseQuestionMeta } from '@shared/utils/learning/quiz.utils';
@@ -15,21 +15,7 @@ export class AdminPlacementService {
   readonly isOverviewLoaded = signal(false);
   readonly placementQuiz = signal<Quiz | null>(null);
   readonly placementQuestions = signal<Question[]>([]);
-  readonly placementMaxQuestions = signal(50);
   readonly placementExamDurationMinutes = signal(50);
-  readonly canCreatePlacementQuestion = computed(
-    () => this.placementQuestions().length < this.placementMaxQuestions(),
-  );
-  readonly placementQuestionSlotsLeft = computed(() =>
-    Math.max(0, this.placementMaxQuestions() - this.placementQuestions().length),
-  );
-  readonly placementQuestionProgressPercent = computed(() => {
-    const max = this.placementMaxQuestions();
-    if (max <= 0) {
-      return 0;
-    }
-    return Math.round((Math.min(this.placementQuestions().length, max) / max) * 100);
-  });
 
   /**
    * Applies placement workspace from {@code GET /admin/hub} without another HTTP round-trip.
@@ -77,13 +63,6 @@ export class AdminPlacementService {
    * Creates a placement question via admin API.
    */
   createPlacementQuestion(draft: PlacementQuestionDraft) {
-    if (!this.canCreatePlacementQuestion()) {
-      this._toast.showError(
-        `Placement test already has ${this.placementMaxQuestions()} questions. Edit existing questions instead.`,
-      );
-      return;
-    }
-
     this.isLoading.set(true);
     this._workspace
       .createQuestion(draft)
@@ -169,14 +148,12 @@ export class AdminPlacementService {
       this.isOverviewLoaded.set(true);
       this.placementQuiz.set(null);
       this.placementQuestions.set([]);
-      this.placementMaxQuestions.set(50);
       this.placementExamDurationMinutes.set(50);
       return;
     }
 
     this.isOverviewLoaded.set(true);
     this.placementExamDurationMinutes.set(payload.examDurationMinutes);
-    this.placementMaxQuestions.set(payload.maxQuestions ?? 50);
     this.placementQuiz.set(this._createQuizFromPayload(payload));
     this.placementQuestions.set(
       payload.questions

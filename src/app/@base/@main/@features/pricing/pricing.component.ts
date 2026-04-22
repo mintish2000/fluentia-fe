@@ -49,6 +49,7 @@ export default class PricingComponent {
   readonly checkoutPlan = signal<PricingPlanId | null>(null);
   readonly isCheckingStudentCourses = signal(false);
   readonly hasStudentEnrollments = signal(true);
+  readonly hasActiveStudentPayment = signal(false);
   readonly paymentSaveError = signal<string | null>(null);
   readonly isRetryingPaymentSave = signal(false);
   readonly shouldShowPlacementEntry = this._placementTestService.shouldShowPlacementEntry;
@@ -120,6 +121,7 @@ export default class PricingComponent {
     const user = this._userService.currentUser();
     if (!user || !this._userService.isStudentSignal()) {
       this.hasStudentEnrollments.set(true);
+      this.hasActiveStudentPayment.set(false);
       return;
     }
 
@@ -129,10 +131,14 @@ export default class PricingComponent {
       .pipe(takeUntilDestroyed(this._destroyRef))
       .subscribe({
         next: (hub) => {
+          this.hasActiveStudentPayment.set(
+            (hub.status ?? '').trim().toLowerCase() === 'active',
+          );
           this.hasStudentEnrollments.set(hub.group != null);
           this.isCheckingStudentCourses.set(false);
         },
         error: () => {
+          this.hasActiveStudentPayment.set(false);
           this.hasStudentEnrollments.set(true);
           this.isCheckingStudentCourses.set(false);
         },
@@ -165,6 +171,13 @@ export default class PricingComponent {
   }
 
   buyNow(planId: PricingPlanId): void {
+
+    if (this.hasActiveStudentPayment()) {
+      this._toast.showError(
+        'Your payment is still active. You can buy a new package after your current one ends.',
+      );
+      return;
+    }
 
     if (!this._userService.isAuthenticated()) {
       void this._router.navigateByUrl('/external/login');

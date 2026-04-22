@@ -78,10 +78,6 @@ export default class AdminComponent extends BaseComponent {
   readonly placementQuiz = this._placement.placementQuiz;
   readonly placementQuestions = this._placement.placementQuestions;
   readonly placementExamDurationMinutes = this._placement.placementExamDurationMinutes;
-  readonly placementMaxQuestions = this._placement.placementMaxQuestions;
-  readonly canCreatePlacementQuestion = this._placement.canCreatePlacementQuestion;
-  readonly placementQuestionSlotsLeft = this._placement.placementQuestionSlotsLeft;
-  readonly placementQuestionProgressPercent = this._placement.placementQuestionProgressPercent;
 
   readonly isLoading = computed(
     () =>

@@ -41,9 +41,11 @@
       <h2>Placement result</h2>
       <p>Your placement test score (one attempt).</p>
       <div class="info-card">
-        <p>
-          <strong>Score:</strong> {{ hub()!.placement!.score }}%
-        </p>
+        @if (placementEnglishLevel()) {
+          <p>
+            <strong>English level:</strong> {{ placementEnglishLevel() }}
+          </p>
+        }
         @if (hub()!.placement!.correctAnswers != null && hub()!.placement!.totalQuestions != null) {
           <p>
             <strong>Correct:</strong>

@@ -46,14 +46,11 @@ export function mapPlacementWorkspaceToQuiz(payload: PlacementWorkspacePayload):
 export function mapPlacementRecordsToQuestions(
   payload: PlacementWorkspacePayload,
   quiz: Quiz,
-  maxQuestions = 50,
 ): Question[] {
   const now = new Date().toISOString();
-  const cap = payload.maxQuestions ?? maxQuestions;
   return (payload.questions ?? [])
     .slice()
     .sort((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt))
-    .slice(0, cap)
     .map((item) => ({
       id: item.id,
       title: item.title?.trim() || undefined,

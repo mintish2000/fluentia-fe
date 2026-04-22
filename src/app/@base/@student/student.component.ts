@@ -11,6 +11,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CoreModule } from '@core/core.module';
 import { BaseComponent } from '@shared/components/base/base.component';
 import { PlacementTestService } from '@shared/services/learning/placement-test.service';
+import { EnglishLevelService } from '@shared/services/learning/english-level.service';
 import { ScrollRevealContainerDirective } from '@shared/directives/scroll-reveal-container.directive';
 import { finalize } from 'rxjs';
 import { StudentHubService } from './student-hub.service';
@@ -25,6 +26,7 @@ import { StudentHubPayload } from './student-hub.models';
 })
 export default class StudentComponent extends BaseComponent {
   private readonly _placementTestService = inject(PlacementTestService);
+  private readonly _englishLevelService = inject(EnglishLevelService);
   private readonly _studentHub = inject(StudentHubService);
   private readonly _destroyRef = inject(DestroyRef);
 
@@ -45,6 +47,12 @@ export default class StudentComponent extends BaseComponent {
     () =>
       this.hasCompletedPlacement() || !!this.hub()?.placementCompleted,
   );
+  readonly placementEnglishLevel = computed(() => {
+    const score = this.hub()?.placement?.score;
+    return score == null
+      ? null
+      : this._englishLevelService.englishLevelFromScore(score);
+  });
 
   /**
    * Full-screen gate until placement is done (logout or take test only).
@@ -60,7 +68,6 @@ export default class StudentComponent extends BaseComponent {
 
   constructor() {
     super();
-    this._placementTestService.refreshStatus();
     this._loadHub();
   }
 
