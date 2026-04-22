@@ -3,18 +3,15 @@ import { CommonModule } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { RouterModule } from '@angular/router';
 import { ExternalService } from '@base/@external/services/external/external.service';
 import { BaseComponent } from '@shared/components/base/base.component';
 import { ActionButtonComponent } from '@shared/components/buttons/action-button/action-button.component';
 import { FormErrorsComponent } from '@shared/components/forms/form-errors/form-errors.component';
-import { RealsoftCheckbox } from 'realsoft-reusable-components/checkbox';
-import {
-  RealsoftError,
-  RealsoftFormField,
-  RealsoftInput,
-  RealsoftSuffix,
-} from 'realsoft-reusable-components/features';
 import { finalize, timeout } from 'rxjs';
 import { LoginForm } from '../interfaces/login.interface';
 
@@ -27,11 +24,10 @@ import { LoginForm } from '../interfaces/login.interface';
     ReactiveFormsModule,
     FormErrorsComponent,
     ActionButtonComponent,
-    RealsoftInput,
-    RealsoftFormField,
-    RealsoftError,
-    RealsoftSuffix,
-    RealsoftCheckbox,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatCheckboxModule,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',

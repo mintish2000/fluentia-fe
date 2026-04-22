@@ -69,10 +69,14 @@
   class="d-flex justify-content-center align-items-center"
   (click)="handleClickEvent()"
   [disabled]="disabled() || isLoading()"
-  realsoft-flat-button
+  mat-flat-button
   [color]="color()"
-  [size]="size()"
-  [class.w-100]="fullWidth()"
+  [ngClass]="{
+            'mat-button-small': size() === 'small',
+            'mat-button-medium': size() === 'medium',
+            'mat-button-large': size() === 'large',
+            'w-100': fullWidth(),
+          }"
 >
   @if (isLoading()) {
   <ng-container *ngTemplateOutlet="loader"></ng-container>
@@ -84,7 +88,7 @@
   }
 </button>
 } @default {
-<button realsoft-raised-button>{{ text() }}</button>
+<button mat-raised-button [color]="color()">{{ text() }}</button>
 } }
 
 <ng-template #loader>

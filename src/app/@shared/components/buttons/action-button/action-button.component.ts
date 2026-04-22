@@ -3,7 +3,6 @@ import { Component, input, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { RealsoftButton } from 'realsoft-reusable-components/button';
 import {
   ActionButtonColor,
   ActionButtonSize,
@@ -17,7 +16,6 @@ import {
     MatButtonModule,
     MatIconModule,
     MatProgressSpinnerModule,
-    RealsoftButton,
   ],
   templateUrl: './action-button.component.html',
   styleUrl: './action-button.component.scss',

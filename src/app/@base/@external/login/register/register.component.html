@@ -5,44 +5,44 @@
 
     <form [formGroup]="form" novalidate>
       <p>First name</p>
-      <realsoft-form-field>
-        <input realsoftInput type="text" formControlName="firstName" autocomplete="given-name" />
-        <realsoft-error>
+      <mat-form-field>
+        <input matInput type="text" formControlName="firstName" autocomplete="given-name" />
+        <mat-error>
           <app-form-errors [control]="form.controls.firstName" />
-        </realsoft-error>
-      </realsoft-form-field>
+        </mat-error>
+      </mat-form-field>
 
       <p>Last name</p>
-      <realsoft-form-field>
-        <input realsoftInput type="text" formControlName="lastName" autocomplete="family-name" />
-        <realsoft-error>
+      <mat-form-field>
+        <input matInput type="text" formControlName="lastName" autocomplete="family-name" />
+        <mat-error>
           <app-form-errors [control]="form.controls.lastName" />
-        </realsoft-error>
-      </realsoft-form-field>
+        </mat-error>
+      </mat-form-field>
 
       <p>Email address</p>
-      <realsoft-form-field>
-        <input realsoftInput type="email" formControlName="email" autocomplete="email" />
-        <realsoft-error>
+      <mat-form-field>
+        <input matInput type="email" formControlName="email" autocomplete="email" />
+        <mat-error>
           <app-form-errors [control]="form.controls.email" />
-        </realsoft-error>
-      </realsoft-form-field>
+        </mat-error>
+      </mat-form-field>
 
       <p>Password</p>
-      <realsoft-form-field>
-        <input realsoftInput type="password" formControlName="password" autocomplete="new-password" />
-        <realsoft-error>
+      <mat-form-field>
+        <input matInput type="password" formControlName="password" autocomplete="new-password" />
+        <mat-error>
           <app-form-errors [control]="form.controls.password" />
-        </realsoft-error>
-      </realsoft-form-field>
+        </mat-error>
+      </mat-form-field>
 
       <p>Confirm password</p>
-      <realsoft-form-field>
-        <input realsoftInput type="password" formControlName="confirmPassword" autocomplete="new-password" />
-        <realsoft-error>
+      <mat-form-field>
+        <input matInput type="password" formControlName="confirmPassword" autocomplete="new-password" />
+        <mat-error>
           <app-form-errors [control]="form.controls.confirmPassword" />
-        </realsoft-error>
-      </realsoft-form-field>
+        </mat-error>
+      </mat-form-field>
 
       <app-action-button
         (click)="register()"

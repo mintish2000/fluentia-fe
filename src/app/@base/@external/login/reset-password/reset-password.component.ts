@@ -2,12 +2,13 @@ import { CommonModule } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { RouterModule } from '@angular/router';
 import { ExternalService } from '@base/@external/services/external/external.service';
 import { BaseComponent } from '@shared/components/base/base.component';
 import { ActionButtonComponent } from '@shared/components/buttons/action-button/action-button.component';
 import { FormErrorsComponent } from '@shared/components/forms/form-errors/form-errors.component';
-import { RealsoftError, RealsoftFormField, RealsoftInput } from 'realsoft-reusable-components/features';
 import { finalize, timeout } from 'rxjs';
 import { ResetPasswordForm } from '../interfaces/login.interface';
 
@@ -22,9 +23,8 @@ const FORGOT_PASSWORD_STATIC_NOTICE =
     ReactiveFormsModule,
     ActionButtonComponent,
     FormErrorsComponent,
-    RealsoftInput,
-    RealsoftFormField,
-    RealsoftError,
+    MatFormFieldModule,
+    MatInputModule,
   ],
   templateUrl: './reset-password.component.html',
   styleUrl: './reset-password.component.scss',

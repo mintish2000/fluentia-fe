@@ -1,9 +1,9 @@
 import { inject, Injectable } from '@angular/core';
+import { MatPaginatorIntl } from '@angular/material/paginator';
 import { TranslateParser, TranslateService } from '@ngx-translate/core';
-import { RealsoftPaginatorIntl } from 'realsoft-reusable-components/features';
 
 @Injectable()
-export class EnglishArabicPaginatorIntl extends RealsoftPaginatorIntl {
+export class EnglishArabicPaginatorIntl extends MatPaginatorIntl {
   private _translate: TranslateService = inject(TranslateService);
   private _translateParser: TranslateParser = inject(TranslateParser);
 

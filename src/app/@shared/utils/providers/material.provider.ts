@@ -3,10 +3,8 @@ import {
   MAT_FORM_FIELD_DEFAULT_OPTIONS,
   MatFormFieldDefaultOptions,
 } from '@angular/material/form-field';
-import {
-  provideNativeDateAdapter,
-  RealsoftPaginatorIntl,
-} from 'realsoft-reusable-components/features';
+import { MatPaginatorIntl } from '@angular/material/paginator';
+import { provideNativeDateAdapter } from '@angular/material/core';
 import { EnglishArabicPaginatorIntl } from '../translation/paginator-intl';
 
 export const materialProviders: Provider[] = [
@@ -18,19 +16,17 @@ export const materialProviders: Provider[] = [
     } as MatFormFieldDefaultOptions,
   },
   {
-    provide: RealsoftPaginatorIntl,
+    provide: MatPaginatorIntl,
     useClass: EnglishArabicPaginatorIntl,
   },
   provideNativeDateAdapter({
-    parse: { dateInput: 'DD/MM/YYYY', timeInput: 'HH:mm' },
+    parse: { dateInput: 'DD/MM/YYYY' },
     display: {
       dateInput: 'DD/MM/YYYY',
       monthLabel: 'MMM',
       monthYearLabel: 'MMMM YYYY',
       dateA11yLabel: 'DD/MM/YYYY',
       monthYearA11yLabel: 'MMMM YYYY',
-      timeInput: 'HH:mm',
-      timeOptionLabel: 'HH:mm',
     },
   }),
 ];

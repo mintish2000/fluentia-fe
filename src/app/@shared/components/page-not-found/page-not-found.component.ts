@@ -1,11 +1,11 @@
 import { Component, inject } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { CoreModule } from '@core/core.module';
-import { RealsoftButton } from 'realsoft-reusable-components/button';
 
 @Component({
   selector: 'app-page-not-found',
-  imports: [CoreModule, RealsoftButton],
+  imports: [CoreModule, MatButtonModule],
   templateUrl: './page-not-found.component.html',
   styleUrl: './page-not-found.component.scss',
 })

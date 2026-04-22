@@ -16,44 +16,44 @@
       novalidate
     >
       <p>Email address</p>
-      <realsoft-form-field>
+      <mat-form-field>
         <input
-          realsoftInput
+          matInput
           cdkFocusInitial
           type="email"
           autocomplete="username"
           formControlName="email"
         />
-        <realsoft-error>
+        <mat-error>
           <app-form-errors [control]="form.controls.email" />
-        </realsoft-error>
-      </realsoft-form-field>
+        </mat-error>
+      </mat-form-field>
 
       <p class="mt-1">Password</p>
-      <realsoft-form-field>
+      <mat-form-field>
         <input
           formControlName="password"
-          realsoftInput
+          matInput
           [type]="hide() ? 'password' : 'text'"
           autocomplete="current-password"
         />
-        <span
-          realsoft-icon-button
-          realsoftSuffix
+        <button
+          type="button"
+          mat-icon-button
+          matSuffix
           (click)="onTogglePasswordClick($event)"
           [attr.aria-label]="'Toggle password visibility'"
           [attr.aria-pressed]="!hide()"
-          class="material-icons"
         >
-          {{ hide() ? 'visibility_off' : 'visibility' }}
-        </span>
-        <realsoft-error>
+          <mat-icon>{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        <mat-error>
           <app-form-errors [control]="form.controls.password" />
-        </realsoft-error>
-      </realsoft-form-field>
+        </mat-error>
+      </mat-form-field>
 
       <article class="auth-actions-row">
-        <realsoft-checkbox formControlName="rememberMe">Remember me</realsoft-checkbox>
+        <mat-checkbox formControlName="rememberMe">Remember me</mat-checkbox>
         <a routerLink="/external/reset-password">Reset password</a>
       </article>
 
