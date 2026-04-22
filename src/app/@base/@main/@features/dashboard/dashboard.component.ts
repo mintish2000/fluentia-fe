@@ -1,15 +1,33 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { finalize } from 'rxjs';
 import { BaseComponent } from '@shared/components/base/base.component';
 import { ScrollRevealContainerDirective } from '@shared/directives/scroll-reveal-container.directive';
-import { DashboardMockService } from './dashboard-mock.service';
-import { DashboardMockResponse } from './dashboard.models';
+import { DashboardService } from './dashboard.service';
+import { DashboardResponse } from './dashboard.models';
+
+/** Returns an ISO date string (YYYY-MM-DD) for the given Date. */
+function toIsoDate(d: Date): string {
+  return d.toISOString().slice(0, 10);
+}
+
+/** Returns the first day of the current month as an ISO date string. */
+function currentMonthStart(): string {
+  const d = new Date();
+  return toIsoDate(new Date(d.getFullYear(), d.getMonth(), 1));
+}
+
+/** Returns the last day of the current month as an ISO date string. */
+function currentMonthEnd(): string {
+  const d = new Date();
+  return toIsoDate(new Date(d.getFullYear(), d.getMonth() + 1, 0));
+}
 
 /**
- * Builds a `conic-gradient` background for the group distribution donut from mock slices.
+ * Builds a `conic-gradient` background for the group distribution donut from API slices.
  */
-function buildGroupConicGradient(data: DashboardMockResponse | null): string {
+function buildGroupConicGradient(data: DashboardResponse | null): string {
   const items = data?.studentsByGroup ?? [];
   const total = items.reduce((sum, item) => sum + item.count, 0);
   if (total <= 0) {
@@ -29,18 +47,22 @@ function buildGroupConicGradient(data: DashboardMockResponse | null): string {
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, ScrollRevealContainerDirective],
-  providers: [DashboardMockService],
+  imports: [CommonModule, FormsModule, ScrollRevealContainerDirective],
+  providers: [DashboardService],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class DashboardComponent extends BaseComponent {
-  private readonly _dashboardMock = inject(DashboardMockService);
+  private readonly _dashboard = inject(DashboardService);
 
-  readonly payload = this._dashboardMock.payload;
+  readonly payload = this._dashboard.payload;
   readonly isLoading = signal(true);
   readonly loadError = signal<string | null>(null);
+
+  /** Required query params – default to the current calendar month. */
+  readonly fromDate = signal<string>(currentMonthStart());
+  readonly toDate = signal<string>(currentMonthEnd());
 
   readonly groupDonutBackground = computed(() => buildGroupConicGradient(this.payload()));
 
@@ -64,21 +86,26 @@ export default class DashboardComponent extends BaseComponent {
     this._reload();
   }
 
-  /** Refetches JSON from `/assets/mock/dashboard.json`. */
-  refreshDashboard(): void {
-    this._reload(true);
+  /** Called when the user submits the date-range filter form. */
+  applyDateRange(): void {
+    this._reload();
   }
 
-  private _reload(force = false): void {
+  /** Refetches dashboard data from `GET /admin/dashboard`. */
+  refreshDashboard(): void {
+    this._reload();
+  }
+
+  private _reload(): void {
     this.isLoading.set(true);
     this.loadError.set(null);
-    this._dashboardMock
-      .loadDashboard(force)
+    this._dashboard
+      .loadDashboard({ from: this.fromDate(), to: this.toDate() })
       .pipe(finalize(() => this.isLoading.set(false)))
       .subscribe({
         next: () => {},
         error: () => {
-          this.loadError.set('Could not load dashboard data. Check /assets/mock/dashboard.json.');
+          this.loadError.set('Could not load dashboard data. Please try again.');
         },
       });
   }

@@ -38,8 +38,8 @@ export interface DashboardRevenueMonth {
   amountUsd: number;
 }
 
-/** Mock API payload: `/assets/mock/dashboard.json` */
-export interface DashboardMockResponse {
+/** API payload: `GET /admin/dashboard` */
+export interface DashboardResponse {
   meta: DashboardMeta;
   kpis: DashboardKpis;
   studentsByGroup: DashboardStudentsByGroupItem[];

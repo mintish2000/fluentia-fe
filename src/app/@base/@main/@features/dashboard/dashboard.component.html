@@ -1,4 +1,32 @@
 <section class="dashboard-page" appScrollRevealContainer [dir]="_direction">
+
+  <!-- Date-range filter (always visible so user can change range before data loads) -->
+  <form class="dashboard-filter" (ngSubmit)="applyDateRange()">
+    <label class="dashboard-filter__field">
+      <span class="dashboard-filter__label">From</span>
+      <input
+        type="date"
+        class="dashboard-filter__input"
+        [ngModel]="fromDate()"
+        (ngModelChange)="fromDate.set($event)"
+        name="fromDate"
+        required
+      />
+    </label>
+    <label class="dashboard-filter__field">
+      <span class="dashboard-filter__label">To</span>
+      <input
+        type="date"
+        class="dashboard-filter__input"
+        [ngModel]="toDate()"
+        (ngModelChange)="toDate.set($event)"
+        name="toDate"
+        required
+      />
+    </label>
+    <button type="submit" class="dashboard-filter__apply" [disabled]="isLoading()">Apply</button>
+  </form>
+
   @if (isLoading()) {
     <p class="dashboard-page__loading">Loading dashboard…</p>
   } @else if (loadError()) {
@@ -11,7 +39,7 @@
         <h1>{{ data.meta.title }}</h1>
         <p class="dashboard-page__subtitle">{{ data.meta.subtitle }}</p>
         <p class="dashboard-page__meta">
-          Data source: /assets/mock/dashboard.json · Generated {{ data.meta.generatedAt | date: 'medium' }}
+          Generated {{ data.meta.generatedAt | date: 'medium' }}
         </p>
       </div>
       <button type="button" class="dashboard-page__refresh" (click)="refreshDashboard()">Refresh</button>
@@ -104,7 +132,7 @@
       </article>
 
       <article class="dashboard-panel dashboard-panel--wide">
-        <h2>Revenue trend (USD, mock)</h2>
+        <h2>Revenue trend (USD)</h2>
         <div class="dashboard-revenue">
           @for (m of data.revenueByMonth; track m.month) {
             <div class="dashboard-revenue__col">
