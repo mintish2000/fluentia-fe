@@ -85,23 +85,38 @@ mat-form-field {
   width: 100%;
 }
 
+
+// Password visibility toggle button restyle for Fluentia
 :host ::ng-deep .mat-mdc-form-field-icon-suffix .password-visibility-toggle {
-  width: 32px;
-  height: 32px;
-  padding: 4px;
-  margin-right: -4px;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: rgba(11, 58, 102, 0.72);
+  transition: background 0.15s, color 0.15s;
+  border-radius: 50%;
 }
 
 :host ::ng-deep .mat-mdc-form-field-icon-suffix .password-visibility-toggle .mat-icon {
-  width: 20px;
-  height: 20px;
-  font-size: 20px;
-  line-height: 20px;
+  width: 22px;
+  height: 22px;
+  font-size: 22px;
+  line-height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-:host ::ng-deep .mat-mdc-form-field-icon-suffix .password-visibility-toggle:hover {
+:host ::ng-deep .mat-mdc-form-field-icon-suffix .password-visibility-toggle:hover,
+:host ::ng-deep .mat-mdc-form-field-icon-suffix .password-visibility-toggle:focus {
   color: $brand-navy;
+  background: rgba(11, 58, 102, 0.07);
 }
 
 form {
