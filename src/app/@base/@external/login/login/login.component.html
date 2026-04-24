@@ -1,11 +1,15 @@
 <section class="auth-page">
   <div class="auth-card">
     <div class="brand-mark" aria-label="Fluentia English Academy">
-      <span class="brand-mark__name fluentia-word">Fluentia</span>
-      <span class="brand-mark__sub">English Academy</span>
+      <img
+        class="brand-mark__logo"
+        src="/images/fluentia-logo.png"
+        alt="Fluentia English Academy Logo"
+        decoding="async"
+      />
     </div>
 
-    <h1>Login</h1>
+    <h1>Log in</h1>
     <h2>Secure sign in to continue your <span class="fluentia-word">Fluentia</span> journey</h2>
 
     <form
@@ -58,7 +62,7 @@
       </article>
 
       <app-action-button
-        [text]="'Login'"
+        [text]="'Log in'"
         type="flat"
         [isLoading]="_isLoading()"
         [disabled]="form.invalid || _isLoading()"

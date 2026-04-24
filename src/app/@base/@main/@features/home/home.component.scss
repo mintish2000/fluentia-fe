@@ -27,7 +27,7 @@ $secondary-color: #2E5984;
 }
 
 .hero__title {
-  font-size: 54px;
+  font-size: 40px;
   line-height: 1;
   font-weight: 900;
   letter-spacing: -0.02em;
@@ -42,13 +42,16 @@ $secondary-color: #2E5984;
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
+  max-width: 48ch;
 }
 
 .hero__bullets li {
   position: relative;
-  padding-inline-start: 22px;
+  padding-inline-start: 24px;
   font-size: 16px;
+  line-height: 1.55;
+  letter-spacing: 0.01em;
   color: #1c2430;
   font-weight: 600;
 }
@@ -57,9 +60,11 @@ $secondary-color: #2E5984;
   content: '•';
   position: absolute;
   left: 0;
-  top: 0;
+  top: 0.1em;
   color: $brand-cyan;
-  font-weight: 700;
+  font-size: 1.1em;
+  font-weight: 900;
+  line-height: 1;
 }
 
 .hero__media {

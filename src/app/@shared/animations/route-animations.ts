@@ -14,11 +14,18 @@ import {
 export const routerAnimations = trigger('routerAnimations', [
   transition('* <=> *', [
     style({ position: 'relative' }),
-    query(':enter, :leave', [
+    query(':leave', [
       style({
         position: 'absolute',
         top: 0,
         left: 0,
+        width: '100%',
+      }),
+    ], { optional: true }),
+    query(':enter', [
+      style({
+        position: 'relative',
+        display: 'block',
         width: '100%',
       }),
     ], { optional: true }),

@@ -51,7 +51,7 @@
             routerLinkActive="active"
             [routerLinkActiveOptions]="{ exact: true }"
           >
-            Login
+            Log in
           </a>
         }
       </div>
@@ -150,7 +150,7 @@
               (click)="closeMobileNav()"
             >
               <mat-icon class="fluentia-mobile-drawer__icon" aria-hidden="true">{{ mobileNavIcon('/external/login') }}</mat-icon>
-              <span>Login</span>
+              <span>Log in</span>
             </a>
           }
         </div>
@@ -167,7 +167,14 @@
       <footer class="website__footer">
         <div class="website__footer-inner">
           <div class="footer-brand">
-            <div class="footer-brand__name"><span class="fluentia-word">Fluentia</span></div>
+            <a class="footer-brand__logo-link" [routerLink]="['/main/home']" aria-label="Go to Fluentia home">
+              <img
+                class="footer-brand__logo"
+                src="/images/fluentia-logo.png"
+                alt="Fluentia English Academy Logo"
+                decoding="async"
+              />
+            </a>
             <div class="footer-brand__tagline">where fluency becomes natural</div>
             @if (isAuthenticated() && isStudentRole() && shouldShowPlacementFooterLink()) {
               <a class="footer-placement-link" routerLink="/main/placement-test">
@@ -175,6 +182,7 @@
               </a>
             }
           </div>
+
           <div class="footer-copy">© 2026 <span class="fluentia-word">Fluentia</span> English Academy. All rights reserved.</div>
         </div>
       </footer>

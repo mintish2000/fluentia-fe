@@ -98,7 +98,7 @@ export default class RegisterComponent extends BaseComponent {
       )
       .subscribe({
         next: () => {
-          this._toast.showSuccess('Account created successfully. Please login.');
+          this._toast.showSuccess('Account created successfully. Please log in.');
           this._router.navigateByUrl('/external/login');
         },
       });
