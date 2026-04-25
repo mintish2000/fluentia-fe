@@ -606,6 +606,25 @@ a.cta {
   box-shadow: 0 14px 35px rgba(0, 0, 0, 0.08);
 }
 
+.home-contact__image-wrap {
+  margin: 18px auto 16px;
+  width: min(620px, 100%);
+  display: flex;
+  justify-content: center;
+}
+
+.home-contact__image {
+  display: block;
+  width: 100%;
+  max-width: 620px;
+  height: auto;
+  border-radius: 18px;
+  border: 1px solid rgba(11, 58, 102, 0.14);
+  box-shadow:
+    0 18px 44px rgba(11, 58, 102, 0.14),
+    0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
 /* Home teasers → full pages */
 .home-preview__lead {
   margin: 0 0 18px 0;

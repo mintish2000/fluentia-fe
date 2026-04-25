@@ -1,7 +1,9 @@
 @use '_variables.scss' as *;
 
 .page {
-  padding: 24px 20px 32px;
+  width: min(960px, 100%);
+  margin: 0 auto;
+  padding: clamp(18px, 3vw, 28px) clamp(14px, 2.8vw, 22px) clamp(24px, 3.6vw, 34px);
   border-radius: 20px;
   background: rgba(255, 255, 255, 0.58);
   backdrop-filter: blur(14px);
@@ -12,36 +14,37 @@
 
 .page__header {
   text-align: center;
-  margin-bottom: 22px;
+  margin-bottom: 20px;
 }
 
 .page__title {
   margin: 0;
+  font-size: clamp(1.9rem, 3.4vw, 2.5rem);
   font-weight: 900;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.05em;
   color: $brand-navy;
 }
 
 .page__subtitle {
-  margin: 8px 0 0 0;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  margin: 10px auto 0;
+  max-width: 36ch;
+  font-size: clamp(1rem, 2.2vw, 1.2rem);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: none;
   color: #1a3348;
-  line-height: 1.45;
+  line-height: 1.5;
 }
 
 .page__subtitle--mixed {
-  text-transform: none;
-  letter-spacing: 0.03em;
-  font-weight: 700;
+  text-wrap: balance;
 }
 
 .grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-  align-items: stretch;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: 20px;
+  align-items: start;
 }
 
 .card {
@@ -49,48 +52,83 @@
   border-radius: 16px;
   border: 1px solid rgba(11, 58, 102, 0.12);
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
-  padding: 18px;
+  padding: 20px;
   display: grid;
-  gap: 14px;
+  gap: 28px;
 }
 
 .item {
   display: grid;
-  grid-template-columns: 28px 1fr;
+  grid-template-columns: 34px 1fr;
   gap: 12px;
-  align-items: center;
+  align-items: start;
 }
 
 .item .material-icons {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
   color: $brand-navy;
+  background: rgba(11, 58, 102, 0.08);
 }
 
 .k {
+  text-transform: uppercase;
+  font-size: 0.82rem;
   font-weight: 900;
   letter-spacing: 0.06em;
   color: $brand-navy;
 }
 
 .v {
+  display: inline-block;
   margin-top: 4px;
-  font-weight: 800;
+  font-weight: 700;
+  text-decoration: none;
+  word-break: break-word;
   color: rgba(11, 58, 102, 0.78);
+
+  &:hover {
+    color: $brand-cyan;
+  }
 }
 
 .art {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  min-height: 220px;
+  aspect-ratio: 4 / 3;
   border-radius: 16px;
   border: 1px solid rgba(11, 58, 102, 0.12);
-  background:
-    radial-gradient(80% 80% at 20% 20%, rgba(0, 167, 216, 0.25), transparent 60%),
-    radial-gradient(80% 80% at 70% 20%, rgba(212, 166, 42, 0.22), transparent 60%),
-    radial-gradient(80% 80% at 60% 70%, rgba(34, 181, 115, 0.22), transparent 60%),
-    #ffffff;
+  background: #ffffff;
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+}
+
+.art__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 @media (max-width: 900px) {
   .grid {
     grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .card {
+    padding: 16px;
+  }
+
+  .art {
+    aspect-ratio: 16 / 10;
+    min-height: 180px;
   }
 }
 

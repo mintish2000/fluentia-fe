@@ -32,7 +32,7 @@
       <h2 class="card__title">{{ placementQuiz()!.title }}</h2>
       <p><strong>Questions:</strong> {{ questions().length }}</p>
       <p><strong>Answered:</strong> {{ answerProgress() }}</p>
-      <p><strong>Time left:</strong> {{ timerText() }}</p>
+      <!-- <p><strong>Time left:</strong> {{ timerText() }}</p> -->
     </article>
 
     <article class="card">
@@ -76,7 +76,7 @@
                 <textarea
                   rows="3"
                   class="text-answer"
-                  [value]="textAnswerMap()[question.id]"
+                  [value]="textAnswerMap()[question.id] ?? ''"
                   (input)="setTextAnswer(question.id, $any($event.target).value)"
                   placeholder="Write your answer"
                 ></textarea>
