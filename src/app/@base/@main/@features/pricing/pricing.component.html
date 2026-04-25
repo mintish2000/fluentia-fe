@@ -70,15 +70,15 @@
       <div class="schedule__subtitle">Group Classes Schedule</div>
       <div class="schedule__grid">
         <div class="schedule__item">
-          <div class="k">Days</div>
-          <div class="v">Monday - Thursday</div>
+          <div class="k">DAYS</div>
+          <div class="v">Monday – Thursday</div>
         </div>
         <div class="schedule__item">
-          <div class="k">Morning</div>
+          <div class="k">MORNING</div>
           <div class="v">10:00 AM – 11:00 AM</div>
         </div>
         <div class="schedule__item">
-          <div class="k">Evening</div>
+          <div class="k">EVENING</div>
           <div class="v">6:00 PM – 7:00 PM</div>
         </div>
         <div class="schedule__item">
@@ -125,7 +125,7 @@
             <li>Digital materials</li>
             <li>Progress tracking</li>
           </ul>
-          <button type="button" class="cta cta--gold" (click)="buyNow('group-1m')" [disabled]="hasActiveStudentPayment()">Buy Now</button>
+          <button type="button" class="cta cta--blue" (click)="buyNow('group-1m')" [disabled]="hasActiveStudentPayment()">Buy Now</button>
         </article>
 
         <article class="card card--featured">
@@ -142,7 +142,7 @@
             <li>Digital materials</li>
             <li>Progress tracking</li>
           </ul>
-          <button type="button" class="cta cta--gold" (click)="buyNow('group-2m')" [disabled]="hasActiveStudentPayment()">Buy Now</button>
+          <button type="button" class="cta cta--blue" (click)="buyNow('group-2m')" [disabled]="hasActiveStudentPayment()">Buy Now</button>
         </article>
 
         <article class="card card--featured">
@@ -174,7 +174,11 @@
             <li>Digital materials</li>
             <li>Progress tracking</li>
           </ul>
-          <p class="card__extra">Includes 2 bonus 1-to-1 classes</p>
+
+          <p class="card__extra">
+            <span class="material-icons card__extra-icon" aria-hidden="true">redeem</span>
+            Includes 2 bonus 1–on–1 classes
+          </p>
           <button type="button" class="cta cta--gold" (click)="buyNow('group-6m')" [disabled]="hasActiveStudentPayment()">Buy Now</button>
         </article>
 
@@ -192,25 +196,30 @@
             <li>Digital materials</li>
             <li>Progress tracking</li>
           </ul>
-          <p class="card__extra">Includes 5 bonus 1-to-1 classes</p>
+
+          <p class="card__extra">
+            <span class="material-icons card__extra-icon" aria-hidden="true">redeem</span>
+            Includes 5 bonus 1–on–1 classes
+          </p>
           <button type="button" class="cta cta--gold" (click)="buyNow('group-12m')" [disabled]="hasActiveStudentPayment()">Buy Now</button>
+
         </article>
       </div>
     </div>
 
     <div class="private">
       <div class="private__title">
-        (1-to-1): Private 'General English, IELTS preparation, or SAT 1 (Reading &amp; Writing)' Classes
+        (1–on–1): Private 'General English, IELTS preparation, or SAT 1 (Reading &amp; Writing)' Classes
       </div>
       <div class="private__grid">
         <article class="mini-card">
           <div class="mini-card__title">30-Minute Private Classes</div>
-          <p class="mini-card__lead">1-on-1 instruction, fully customized lessons, flexible scheduling</p>
+          <p class="mini-card__lead">1–on–1 instruction, fully customized lessons, flexible scheduling</p>
           <div class="mini-card__row">
             <span>One session</span>
             <span class="mini-card__row-right">
               <strong>$15</strong>
-              <button type="button" class="cta cta--gold cta--inline" (click)="buyNow('private-30-1')" [disabled]="hasActiveStudentPayment()">
+              <button type="button" class="cta cta--gold cta--inline" (click)="buyNow('private-30-1')" >
                 Buy
               </button>
             </span>
@@ -219,7 +228,7 @@
             <span>Four sessions</span>
             <span class="mini-card__row-right">
               <strong>$50</strong>
-              <button type="button" class="cta cta--gold cta--inline" (click)="buyNow('private-30-4')" [disabled]="hasActiveStudentPayment()">
+              <button type="button" class="cta cta--gold cta--inline" (click)="buyNow('private-30-4')" >
                 Buy
               </button>
             </span>
@@ -228,7 +237,7 @@
             <span>Eight sessions</span>
             <span class="mini-card__row-right">
               <strong>$100</strong>
-              <button type="button" class="cta cta--gold cta--inline" (click)="buyNow('private-30-8')" [disabled]="hasActiveStudentPayment()">
+              <button type="button" class="cta cta--gold cta--inline" (click)="buyNow('private-30-8')" >
                 Buy
               </button>
             </span>
@@ -237,12 +246,12 @@
 
         <article class="mini-card">
           <div class="mini-card__title">60-Minute Private Classes</div>
-          <p class="mini-card__lead">1-on-1 instruction, fully customized lessons, flexible scheduling</p>
+          <p class="mini-card__lead">1–on–1 instruction, fully customized lessons, flexible scheduling</p>
           <div class="mini-card__row">
             <span>One session</span>
             <span class="mini-card__row-right">
               <strong>$20</strong>
-              <button type="button" class="cta cta--gold cta--inline" (click)="buyNow('private-60-1')" [disabled]="hasActiveStudentPayment()">
+              <button type="button" class="cta cta--gold cta--inline" (click)="buyNow('private-60-1')" >
                 Buy
               </button>
             </span>
@@ -251,7 +260,7 @@
             <span>Four sessions</span>
             <span class="mini-card__row-right">
               <strong>$70</strong>
-              <button type="button" class="cta cta--gold cta--inline" (click)="buyNow('private-60-4')" [disabled]="hasActiveStudentPayment()">
+              <button type="button" class="cta cta--gold cta--inline" (click)="buyNow('private-60-4')" >
                 Buy
               </button>
             </span>
@@ -260,7 +269,7 @@
             <span>Eight sessions</span>
             <span class="mini-card__row-right">
               <strong>$140</strong>
-              <button type="button" class="cta cta--gold cta--inline" (click)="buyNow('private-60-8')" [disabled]="hasActiveStudentPayment()">
+              <button type="button" class="cta cta--gold cta--inline" (click)="buyNow('private-60-8')" >
                 Buy
               </button>
             </span>

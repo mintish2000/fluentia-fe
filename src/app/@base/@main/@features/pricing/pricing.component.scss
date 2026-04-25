@@ -74,7 +74,7 @@
   margin: -4px 0 10px;
   font-weight: 800;
   font-size: 13px;
-  color: rgba(11, 58, 102, 0.65);
+  color: red;
 }
 
 .schedule__subtitle {
@@ -233,6 +233,57 @@
   font-size: 13px;
   font-weight: 800;
   color: rgba(11, 58, 102, 0.72);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.card__extra-icon {
+  position: relative;
+  font-size: 13px;
+  width: 24px;
+  height: 24px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  background: linear-gradient(155deg, #ff7a9e 0%, #ff5e85 45%, #ff4f78 100%);
+  border: 1px solid rgba(165, 34, 72, 0.25);
+  box-shadow:
+    0 3px 8px rgba(176, 38, 82, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.32);
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.card__extra-icon::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 4px;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, #ffe8a6 0%, #ffd45a 100%);
+  border-radius: 999px;
+  opacity: 0.95;
+}
+
+.card__extra-icon::after {
+  content: '';
+  position: absolute;
+  top: 5px;
+  left: 4px;
+  right: 4px;
+  height: 4px;
+  background: linear-gradient(90deg, #ffe8a6 0%, #ffd45a 100%);
+  border-radius: 999px;
+  opacity: 0.95;
+}
+
+.card__extra-icon.material-icons {
+  z-index: 1;
 }
 
 .card__title {

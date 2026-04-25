@@ -7,9 +7,9 @@ export const englishLocal: Locale = {
       external: {
         login: {
           stepOne: {
-            login: 'Login',
+            login: 'Log in',
             loginText:
-              'Please login to access your account and explore our platform',
+              'Please log in to access your account and explore our platform',
             form: {
               email: 'Email',
               username: 'Username',
@@ -28,7 +28,7 @@ export const englishLocal: Locale = {
             messages: {
               success: 'A verification code has been sent to your email.',
               failed: 'An error has occurred while verifying your account',
-              timeout: 'Login request has timed out, please try again later.',
+              timeout: 'Log in request has timed out, please try again later.',
             },
           },
           stepTwo: {

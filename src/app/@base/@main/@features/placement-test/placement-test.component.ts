@@ -40,13 +40,13 @@ export default class PlacementTestComponent implements OnDestroy {
   readonly questions = signal<Question[]>([]);
   readonly singleAnswerMap = signal<Record<string, string>>({});
   readonly multiAnswerMap = signal<Record<string, string[]>>({});
-  readonly textAnswerMap = signal<Record<string, string>>({});
+  readonly textAnswerMap = signal<Record<string, string | undefined>>({});
   readonly placementQuiz = this._placementTestService.placementQuiz;
   readonly hasCompletedPlacement = this._placementTestService.hasCompletedPlacement;
   readonly hasQuestions = computed(() => this.questions().length > 0);
-  readonly timerText = computed(() =>
-    this._formatTime(this.timerSecondsLeft()),
-  );
+  // readonly timerText = computed(() =>
+  //   this._formatTime(this.timerSecondsLeft()),
+  // );
   readonly answerProgress = computed(() =>
     this.questions().reduce((count, question) => {
       const type = this.getQuestionType(question);
@@ -54,7 +54,7 @@ export default class PlacementTestComponent implements OnDestroy {
         return count + (this.multiAnswerMap()[question.id]?.length ? 1 : 0);
       }
       if (type === 'text') {
-        return count + (this.textAnswerMap()[question.id]?.trim() ? 1 : 0);
+        return count + (this.textAnswerMap()[question.id]?.trim() ?? '' ? 1 : 0);
       }
       return count + (this.singleAnswerMap()[question.id] ? 1 : 0);
     }, 0),
@@ -227,7 +227,7 @@ export default class PlacementTestComponent implements OnDestroy {
       return (this.multiAnswerMap()[question.id] ?? []).length > 0;
     }
     if (type === 'text') {
-      return Boolean(this.textAnswerMap()[question.id]?.trim());
+      return Boolean(this.textAnswerMap()[question.id]?.trim() ?? '');
     }
     return Boolean(this.singleAnswerMap()[question.id]);
   }

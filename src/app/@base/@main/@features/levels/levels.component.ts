@@ -84,8 +84,8 @@ export default class LevelsComponent {
   levels: Level[] = [
     {
       code: 'A1',
-      label: 'beginner',
-      duration: '3-4 Months (Intensive) Or 6-8 Months (Regular)',
+      label: 'Beginner',
+      duration: '3–4 Months (Intensive) or 6–8 Months (Regular)',
       who: 'Complete beginners with little or no English knowledge',
       outcome: 'Can communicate in simple situations and understand basic everyday English',
       skills: [
@@ -147,7 +147,7 @@ export default class LevelsComponent {
     {
       code: 'B1',
       label: 'Intermediate',
-      duration: '4-5 Months (Intensive) Or 8-10 Months (Regular)',
+      duration: '4–5 Months (Intensive) Or 8–10 Months (Regular)',
       who: 'Students who can communicate in most everyday situations',
       outcome: 'Can deal confidently with most situations likely to arise while traveling',
       skills: [
@@ -178,7 +178,7 @@ export default class LevelsComponent {
     {
       code: 'B2',
       label: 'Upper-Intermediate',
-      duration: '4–6 months (intensive) or 10–12 months (regular)',
+      duration: '4–6 months (Intensive) or 10–12 months (Regular)',
       who: 'Students who can interact with native speakers fluently',
       outcome: 'Can communicate effectively in professional and academic contexts',
       skills: [
@@ -209,7 +209,7 @@ export default class LevelsComponent {
     {
       code: 'C1',
       label: 'Advanced',
-      duration: '5–7 months (intensive) or 12–14 months (regular)',
+      duration: '5–7 months (Intensive) or 12–14 months (Regular)',
       who: 'Students aiming for near-native proficiency',
       outcome:
         'Can use English for all professional, academic, and social purposes with precision',
