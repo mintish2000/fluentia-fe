@@ -116,7 +116,7 @@ export default class LevelsComponent {
     {
       code: 'A2',
       label: 'Elementary',
-      duration: '3–4 months (intensive) or 6–8 months (regular)',
+      duration: '3–4 months (Intensive) or 6–8 months (Regular)',
       who: 'Students who can handle basic communication',
       outcome: 'Can communicate in routine tasks requiring simple information exchange',
       skills: [
@@ -147,7 +147,7 @@ export default class LevelsComponent {
     {
       code: 'B1',
       label: 'Intermediate',
-      duration: '4–5 Months (Intensive) Or 8–10 Months (Regular)',
+      duration: '4–5 Months (Intensive) or 8–10 Months (Regular)',
       who: 'Students who can communicate in most everyday situations',
       outcome: 'Can deal confidently with most situations likely to arise while traveling',
       skills: [
