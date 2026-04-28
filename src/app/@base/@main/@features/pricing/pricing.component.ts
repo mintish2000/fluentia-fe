@@ -27,6 +27,7 @@ import { ScrollRevealContainerDirective } from '@shared/directives/scroll-reveal
 import { StudentHubService } from '@base/@student/student-hub.service';
 import { PlacementTestService } from '@shared/services/learning/placement-test.service';
 import { UserService } from '@shared/services/user/user.service';
+import { MatIcon } from "@angular/material/icon";
 
 @Component({
   selector: 'app-pricing',
@@ -34,7 +35,7 @@ import { UserService } from '@shared/services/user/user.service';
   templateUrl: './pricing.component.html',
   styleUrl: './pricing.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ScrollRevealContainerDirective],
+  imports: [ScrollRevealContainerDirective, MatIcon],
 })
 export default class PricingComponent {
   private readonly _userService = inject(UserService);
