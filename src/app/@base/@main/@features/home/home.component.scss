@@ -17,13 +17,25 @@ $secondary-color: #2E5984;
 }
 
 .hero__content {
-  padding: 22px 24px;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.75);
-  box-shadow: 0 16px 48px rgba(11, 58, 102, 0.14);
+  position: relative;
+  max-width: 640px;
+  padding: 8px 2px 8px 20px;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.hero__content::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 6px;
+  bottom: 10px;
+  width: 4px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, $brand-cyan 0%, rgba(11, 58, 102, 0.85) 100%);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.7), 0 8px 20px rgba(11, 58, 102, 0.18);
 }
 
 .hero__title {
@@ -34,59 +46,90 @@ $secondary-color: #2E5984;
   color: $brand-navy;
   margin: 0 0 14px 0;
   text-transform: uppercase;
+  text-wrap: balance;
+  background: linear-gradient(110deg, #0a3561 0%, #12518b 56%, #0ea6d7 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: none;
 }
 
 .hero__bullets {
   list-style: none;
-  padding: 0;
+  padding: 10px 0 0;
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
   max-width: 48ch;
 }
 
 .hero__bullets li {
   position: relative;
-  padding-inline-start: 32px;
+  padding-inline-start: 36px;
   font-size: 16px;
   line-height: 1.55;
   letter-spacing: 0.01em;
-  color: #1c2430;
+  color: #132233;
   font-weight: 600;
+  text-shadow: 0 1px 8px rgba(255, 255, 255, 0.5);
+}
+
+.hero__bullets li + li {
+  margin-top: 2px;
 }
 
 .hero__bullets li::before {
-  content: '•';
+  content: '';
   position: absolute;
-  left: 0;
-  top: 0.1em;
-  color: $brand-cyan;
-  font-size: 1.1em;
-  font-weight: 900;
-  line-height: 1;
+  left: 4px;
+  top: 0.55em;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #48dbff 0%, $brand-cyan 50%, #0a5f86 100%);
+  box-shadow: 0 0 0 3px rgba(14, 166, 215, 0.14);
 }
 
 /* In Arabic/RTL, keep bullet markers on the right side. */
 :host-context([dir='rtl']) .hero__bullets li {
   padding-inline-start: 0;
-  padding-inline-end: 32px;
-  padding-right: 32px;
+  padding-inline-end: 36px;
+  padding-right: 36px;
   text-align: right;
 }
 
 :host-context([dir='rtl']) .hero__bullets li::before {
   left: auto;
-  right: 6px;
+  right: 8px;
 }
 
 /* Fallback selector in case dir is only on <html>. */
 :host-context(html[dir='rtl']) .hero__bullets li {
-  padding-right: 32px;
+  padding-right: 36px;
 }
 
 :host-context(html[dir='rtl']) .hero__bullets li::before {
-  right: 6px;
+  right: 8px;
+}
+
+:host-context([dir='rtl']) .hero__content {
+  padding-inline-start: 2px;
+  padding-inline-end: 20px;
+}
+
+:host-context([dir='rtl']) .hero__content::before {
+  left: auto;
+  right: 0;
+}
+
+:host-context(html[dir='rtl']) .hero__content {
+  padding-right: 20px;
+}
+
+:host-context(html[dir='rtl']) .hero__content::before {
+  left: auto;
+  right: 0;
 }
 
 .hero__media {
