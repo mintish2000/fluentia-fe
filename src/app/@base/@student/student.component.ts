@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { TranslateModule } from '@ngx-translate/core';
 import { CoreModule } from '@core/core.module';
 import { BaseComponent } from '@shared/components/base/base.component';
 import { PlacementTestService } from '@shared/services/learning/placement-test.service';
@@ -19,7 +20,7 @@ import { StudentHubPayload } from './student-hub.models';
 
 @Component({
   selector: 'app-student',
-  imports: [CoreModule, RouterLink, ScrollRevealContainerDirective],
+  imports: [CoreModule, RouterLink, ScrollRevealContainerDirective, TranslateModule],
   templateUrl: './student.component.html',
   styleUrl: './student.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -31,7 +32,9 @@ export default class StudentComponent extends BaseComponent {
   private readonly _destroyRef = inject(DestroyRef);
 
   readonly currentUser = this._userService.currentUser;
-  readonly displayName = computed(() => this.currentUser()?.name || 'Student');
+  readonly displayName = computed(
+    () => this.currentUser()?.name || this._translate.instant('pages.student.fallbackName'),
+  );
   readonly isLoading = this._isLoading;
   readonly lastSyncedAt = signal<Date | null>(null);
   readonly hub = signal<StudentHubPayload | null>(null);
@@ -89,7 +92,7 @@ export default class StudentComponent extends BaseComponent {
           this.lastSyncedAt.set(new Date());
         },
         error: () => {
-          this.hubLoadError.set('Could not load student data.');
+          this.hubLoadError.set(this._translate.instant('pages.student.errors.loadFailed'));
         },
       });
   }

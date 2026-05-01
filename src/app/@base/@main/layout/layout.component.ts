@@ -14,6 +14,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { TranslateModule } from '@ngx-translate/core';
 import {
   NavigationEnd,
   RouterModule,
@@ -51,6 +52,8 @@ type NavbarLink = {
     MatIconModule,
     MatSidenavModule,
     MatToolbarModule,
+    TranslateModule,
+    ChangeLanguageComponent,
   ],
 })
 export class LayoutComponent extends BaseComponent {
@@ -82,34 +85,34 @@ export class LayoutComponent extends BaseComponent {
   /** Mobile slide-out navigation (Material drawer). */
   readonly mobileDrawer = viewChild<MatDrawer>('mobileDrawer');
   private readonly _studentNavbarLinks: NavbarLink[] = [
-    { path: '/main/student', label: 'Student Hub', exact: true },
-    { path: '/main/payments', label: 'Payments', exact: true },
+    { path: '/main/student', label: 'pages.layout.nav.studentHub', exact: true },
+    { path: '/main/payments', label: 'pages.layout.nav.payments', exact: true },
     // { path: '/main/lessons', label: 'Lessons', exact: true },
     // { path: '/main/bookings', label: 'Bookings', exact: true },
   ];
 
   private readonly _tutorNavbarLinks: NavbarLink[] = [
-    { path: '/main/tutor', label: 'Tutor Hub', exact: true },
+    { path: '/main/tutor', label: 'pages.layout.nav.tutorHub', exact: true },
     // { path: '/main/courses', label: 'Courses', exact: true },
     // { path: '/main/lessons', label: 'Lessons', exact: true },
     // { path: '/main/bookings', label: 'Bookings', exact: true },
   ];
 
   private readonly _adminNavbarLinks: NavbarLink[] = [
-    { path: '/main/admin', label: 'Admin Hub', exact: true },
-    { path: '/main/dashboard', label: 'Dashboard', exact: true },
+    { path: '/main/admin', label: 'pages.layout.nav.adminHub', exact: true },
+    { path: '/main/dashboard', label: 'pages.layout.nav.dashboard', exact: true },
     // { path: '/main/courses', label: 'Courses', exact: true },
     // { path: '/main/lessons', label: 'Lessons', exact: true },
     // { path: '/main/bookings', label: 'Bookings', exact: true },
   ];
 
   readonly publicNavbarLinks: NavbarLink[] = [
-    { path: '/main/home', label: 'HOME', exact: true },
-    { path: '/main/about', label: 'ABOUT US', exact: true },
-    { path: '/main/levels', label: 'ENGLISH LEVELS', exact: true },
-    { path: '/main/how-it-works', label: 'HOW IT WORKS', exact: true },
-    { path: '/main/pricing', label: 'SCHEDULE & PRICING', exact: true },
-    { path: '/main/contact', label: 'CONTACT US', exact: true },
+    { path: '/main/home', label: 'pages.layout.nav.home', exact: true },
+    { path: '/main/about', label: 'pages.layout.nav.about', exact: true },
+    { path: '/main/levels', label: 'pages.layout.nav.levels', exact: true },
+    { path: '/main/how-it-works', label: 'pages.layout.nav.howItWorks', exact: true },
+    { path: '/main/pricing', label: 'pages.layout.nav.pricing', exact: true },
+    { path: '/main/contact', label: 'pages.layout.nav.contact', exact: true },
   ];
   readonly shouldShowPlacementFooterLink = computed(
     () => this._userService.isStudent && this._placementTestService.shouldShowPlacementEntry(),

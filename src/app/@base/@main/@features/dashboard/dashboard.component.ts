@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { finalize } from 'rxjs';
 import { BaseComponent } from '@shared/components/base/base.component';
 import { ScrollRevealContainerDirective } from '@shared/directives/scroll-reveal-container.directive';
@@ -29,7 +30,7 @@ function buildGroupConicGradient(data: DashboardMockResponse | null): string {
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, ScrollRevealContainerDirective],
+  imports: [CommonModule, ScrollRevealContainerDirective, TranslateModule],
   providers: [DashboardMockService],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
@@ -78,7 +79,7 @@ export default class DashboardComponent extends BaseComponent {
       .subscribe({
         next: () => {},
         error: () => {
-          this.loadError.set('Could not load dashboard data. Check /assets/mock/dashboard.json.');
+          this.loadError.set(this._translate.instant('pages.dashboard.errors.loadFailed'));
         },
       });
   }

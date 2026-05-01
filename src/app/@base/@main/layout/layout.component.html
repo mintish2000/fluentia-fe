@@ -18,7 +18,7 @@
               routerLinkActive="active"
               [routerLinkActiveOptions]="{ exact: link.exact ?? true }"
             >
-              {{ link.label }}
+              {{ link.label | translate }}
             </a>
           }
         } @else {
@@ -28,7 +28,7 @@
               routerLinkActive="active"
               [routerLinkActiveOptions]="{ exact: link.exact ?? true }"
             >
-              {{ link.label }}
+              {{ link.label | translate }}
             </a>
           }
         }
@@ -39,10 +39,10 @@
           <span class="role-chip">{{ getCurrentRoleLabel() }}</span>
           <!-- <a class="hub-link" [routerLink]="getRoleHubPath()">Go to Hub</a> -->
         }
-        <!-- <app-change-language class="navbar-language"></app-change-language> -->
+        <app-change-language class="navbar-language"></app-change-language>
         @if (isAuthenticated()) {
           <button type="button" class="auth-action auth-action--logout" (click)="logout()">
-            Logout
+            {{ 'pages.layout.header.actions.logout' | translate }}
           </button>
         } @else {
           <a
@@ -51,7 +51,7 @@
             routerLinkActive="active"
             [routerLinkActiveOptions]="{ exact: true }"
           >
-            Log in
+            {{ 'pages.layout.header.actions.login' | translate }}
           </a>
         }
       </div>
@@ -81,7 +81,7 @@
     >
       <div class="fluentia-mobile-drawer__scroll">
         <div class="fluentia-mobile-drawer__header">
-          <span class="fluentia-mobile-drawer__title">Menu</span>
+          <span class="fluentia-mobile-drawer__title">{{ 'pages.layout.mobile.menu' | translate }}</span>
           <button
             type="button"
             mat-icon-button
@@ -104,7 +104,7 @@
                 (click)="closeMobileNav()"
               >
                 <mat-icon class="fluentia-mobile-drawer__icon" aria-hidden="true">{{ mobileNavIcon(link.path) }}</mat-icon>
-                <span>{{ link.label }}</span>
+                <span>{{ link.label | translate }}</span>
               </a>
             }
           } @else {
@@ -117,7 +117,7 @@
                 (click)="closeMobileNav()"
               >
                 <mat-icon class="fluentia-mobile-drawer__icon" aria-hidden="true">{{ mobileNavIcon(link.path) }}</mat-icon>
-                <span>{{ link.label }}</span>
+                <span>{{ link.label | translate }}</span>
               </a>
             }
           }
@@ -130,16 +130,16 @@
             <div class="fluentia-mobile-drawer__role">{{ getCurrentRoleLabel() }}</div>
             <a class="fluentia-mobile-drawer__link" [routerLink]="getRoleHubPath()" (click)="closeMobileNav()">
               <mat-icon class="fluentia-mobile-drawer__icon" aria-hidden="true">hub</mat-icon>
-              <span>Go to Hub</span>
+              <span>{{ 'pages.layout.mobile.goToHub' | translate }}</span>
             </a>
           }
-          <!-- <div class="fluentia-mobile-drawer__language">
+          <div class="fluentia-mobile-drawer__language">
             <app-change-language class="navbar-language navbar-language--mobile-menu"></app-change-language>
-          </div> -->
+          </div>
           @if (isAuthenticated()) {
             <button type="button" class="fluentia-mobile-drawer__logout" (click)="onMobileLogout()">
               <mat-icon class="fluentia-mobile-drawer__icon" aria-hidden="true">logout</mat-icon>
-              <span>Logout</span>
+              <span>{{ 'pages.layout.header.actions.logout' | translate }}</span>
             </button>
           } @else {
             <a
@@ -150,7 +150,7 @@
               (click)="closeMobileNav()"
             >
               <mat-icon class="fluentia-mobile-drawer__icon" aria-hidden="true">{{ mobileNavIcon('/external/login') }}</mat-icon>
-              <span>Log in</span>
+              <span>{{ 'pages.layout.header.actions.login' | translate }}</span>
             </a>
           }
         </div>
@@ -175,15 +175,21 @@
                 decoding="async"
               />
             </a>
-            <div class="footer-brand__tagline">where fluency becomes natural</div>
+            <div class="footer-brand__tagline">{{ 'pages.layout.footer.tagline' | translate }}</div>
             @if (isAuthenticated() && isStudentRole() && shouldShowPlacementFooterLink()) {
               <a class="footer-placement-link" routerLink="/main/placement-test">
-                Start Placement Test
+                {{ 'pages.layout.footer.startPlacementTest' | translate }}
               </a>
             }
           </div>
 
-          <div class="footer-copy">© 2026 <span class="fluentia-word">Fluentia</span> English Academy. All rights reserved.</div>
+          <div class="footer-copy">{{ 'pages.layout.footer.copy' | translate }}</div>
+
+          <div class="footer-actions">
+            <a class="footer-contact-link" routerLink="/main/contact">
+              {{ 'pages.layout.footer.contactUsButton' | translate }}
+            </a>
+          </div>
         </div>
       </footer>
     </mat-drawer-content>

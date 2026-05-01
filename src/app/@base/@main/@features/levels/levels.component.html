@@ -2,21 +2,21 @@
   <!-- Split reveals: top (hero + jump) vs each level card (articles need a host whose direct children are articles). -->
   <div class="levels-reveal-top" appScrollRevealContainer>
     <header class="hero">
-      <p class="hero__eyebrow"><span class="fluentia-word">Fluentia</span> Learning Path</p>
-      <h1 class="hero__title">ENGLISH LEVELS</h1>
-      <p class="hero__subtitle">Progress step by step from beginner to advanced</p>
+      <p class="hero__eyebrow"><span class="fluentia-word">Fluentia</span> {{ 'pages.levels.hero.eyebrow' | translate }}</p>
+      <h1 class="hero__title">{{ 'pages.levels.hero.title' | translate }}</h1>
+      <p class="hero__subtitle">{{ 'pages.levels.hero.subtitle' | translate }}</p>
     </header>
 
-    <nav class="level-jump" aria-label="Jump to level">
+    <nav class="level-jump" [attr.aria-label]="'pages.levels.jumpNavLabel' | translate">
       @for (lvl of levels; track lvl.code) {
         <a
           [class]="'level-jump__item level-jump__item--' + lvl.code"
           [href]="levelJumpHref(lvl.code)"
           (click)="onLevelJumpClick($event, lvl.code)"
-          [attr.aria-label]="'Jump to ' + lvl.code + ' ' + lvl.label + ' section'"
+          [attr.aria-label]="'pages.levels.jumpToLevelAria' | translate: { code: lvl.code, label: (lvl.labelKey | translate) }"
         >
           <span class="level-jump__code">{{ lvl.code }}</span>
-          <span class="level-jump__text">{{ lvl.label }}</span>
+          <span class="level-jump__text">{{ lvl.labelKey | translate }}</span>
         </a>
       }
     </nav>
@@ -30,33 +30,33 @@
             <div class="level-card__dot">{{ i + 1 }}</div>
             <div>
               <div class="level-card__code">{{ lvl.code }}</div>
-              <div class="level-card__name">{{ lvl.label }}</div>
+              <div class="level-card__name">{{ lvl.labelKey | translate }}</div>
             </div>
           </div>
-          <div class="level-card__duration">{{ lvl.duration }}</div>
+          <div class="level-card__duration">{{ lvl.durationKey | translate }}</div>
         </div>
 
         <div class="level-card__intro">
           <div class="panel">
-            <div class="panel__title">Who It's For</div>
-            <div class="panel__text">{{ lvl.who }}</div>
+            <div class="panel__title">{{ 'pages.levels.sections.whoItsFor' | translate }}</div>
+            <div class="panel__text">{{ lvl.whoKey | translate }}</div>
           </div>
           <div class="panel">
-            <div class="panel__title">Expected Progress Outcome</div>
-            <div class="panel__text">{{ lvl.outcome }}</div>
+            <div class="panel__title">{{ 'pages.levels.sections.expectedOutcome' | translate }}</div>
+            <div class="panel__text">{{ lvl.outcomeKey | translate }}</div>
           </div>
         </div>
 
         <div class="level-card__body">
           <section class="section">
-            <h3 class="section__title">Skills Focus</h3>
+            <h3 class="section__title">{{ 'pages.levels.sections.skillsFocus' | translate }}</h3>
             <div class="skills-grid">
-              @for (s of lvl.skills; track s.title) {
+              @for (s of lvl.skills; track s.titleKey) {
                 <div class="skill-card">
-                  <div class="skill-card__title">{{ s.title }}</div>
+                  <div class="skill-card__title">{{ s.titleKey | translate }}</div>
                   <ul class="skill-card__list">
-                    @for (it of s.items; track it) {
-                      <li>{{ it }}</li>
+                    @for (it of s.itemsKeys; track it) {
+                      <li>{{ it | translate }}</li>
                     }
                   </ul>
                 </div>
@@ -65,10 +65,10 @@
           </section>
 
           <section class="section">
-            <h3 class="section__title">Learning Objectives</h3>
+            <h3 class="section__title">{{ 'pages.levels.sections.learningObjectives' | translate }}</h3>
             <ul class="objective-list">
-              @for (o of lvl.objectives; track o) {
-                <li>{{ o }}</li>
+              @for (o of lvl.objectivesKeys; track o) {
+                <li>{{ o | translate }}</li>
               }
             </ul>
           </section>

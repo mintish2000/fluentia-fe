@@ -48,7 +48,37 @@
     0 20px 48px rgba(11, 58, 102, 0.09);
   padding: 22px 18px 20px;
   text-align: center;
+  transition:
+    opacity 1700ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1700ms cubic-bezier(0.22, 1, 0.36, 1);
 }
+
+/* About page cards: same cinematic side entrance as Home cards. */
+.about[data-scroll-reveal] .about__profiles .profile {
+  opacity: 0;
+}
+
+.about[data-scroll-reveal] .about__profiles .profile:nth-child(1) {
+  transform: translate3d(-56px, 0, 0);
+}
+
+.about[data-scroll-reveal] .about__profiles .profile:nth-child(2) {
+  transform: translate3d(56px, 0, 0);
+}
+
+.about[data-scroll-reveal].scroll-reveal--visible .about__profiles .profile {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.about[data-scroll-reveal].scroll-reveal--visible .about__profiles .profile:nth-child(1) {
+  transition-delay: 220ms;
+}
+
+.about[data-scroll-reveal].scroll-reveal--visible .about__profiles .profile:nth-child(2) {
+  transition-delay: 480ms;
+}
+
 
 .profile__frame {
   display: inline-block;
@@ -248,4 +278,13 @@
     grid-template-columns: 1fr;
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .about[data-scroll-reveal] .about__profiles .profile {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 
