@@ -67,7 +67,7 @@ export const englishLocal: Locale = {
           titleLine2: 'JOURNEY TODAY!',
           bullets: [
             'Professional online English lessons tailored to your goals',
-            'Small groups and 1-on-1 classes available',
+            'Small groups and 1–on–1 classes available',
           ],
         },
         tagline: {
@@ -86,7 +86,7 @@ export const englishLocal: Locale = {
             a1: 'Beginner',
             a2: 'Elementary',
             b1: 'Intermediate',
-            b2: 'Upper-Intermediate',
+            b2: 'Upper–Intermediate',
             c1: 'Advanced',
           },
         },
@@ -120,7 +120,7 @@ export const englishLocal: Locale = {
         pricing: {
           title: 'Schedule & Pricing',
           subtitle: 'Flexible packages designed to fit your learning goals and budget',
-          lead: 'Group classes run on a set weekly schedule. Private sessions are booked separately - all pricing and packages are on the pricing page.',
+          lead: 'Group classes run on a set weekly schedule. Private sessions are booked separately – all pricing and packages are on the pricing page.',
           scheduleTitle: 'Group Classes Schedule',
           scheduleNote: '*All times shown in (GMT+3)',
           daysLabel: 'DAYS',
@@ -132,7 +132,7 @@ export const englishLocal: Locale = {
         contact: {
           title: 'Contact Us',
           subtitle: 'Ready to start your English journey? Get in touch with us today!',
-          lead: "Have questions about levels, schedules, or enrollment? Reach out by email or Instagram - we'll get back to you as soon as we can.",
+          lead: "Have questions about levels, schedules, or enrollment? Reach out by email or Instagram – we'll get back to you as soon as we can.",
           link: 'Contact page',
         },
       },
@@ -343,10 +343,10 @@ export const englishLocal: Locale = {
         privateTagFlexible: 'Fully flexible',
         privateTagDuration: '30 or 60 minutes',
         groupClassesPricingTitle: 'Group Classes Pricing',
-        privateTitle: '(1-on-1): Private General English, IELTS preparation, or SAT 1 (Reading & Writing) Classes',
-        private30Title: '30-Minute Private Classes',
-        private60Title: '60-Minute Private Classes',
-        privateLead: '1-on-1 instruction, fully customized lessons, flexible scheduling',
+        privateTitle: '(1–on–1): Private General English, IELTS preparation, or SAT 1 (Reading & Writing) Classes',
+        private30Title: '30–Minute Private Classes',
+        private60Title: '60–Minute Private Classes',
+        privateLead: '1–on–1 instruction, fully customized lessons, flexible scheduling',
         sessions: {
           one: 'One session',
           four: 'Four sessions',
@@ -368,15 +368,15 @@ export const englishLocal: Locale = {
           twelveMonths: 'Twelve months',
         },
         features: {
-          session60: '60-minute sessions',
+          session60: '60–minute sessions',
           max6: 'Max 6 students',
           fourPerWeek: '4 sessions/week',
           digitalMaterials: 'Digital materials',
           progressTracking: 'Progress tracking',
         },
         bonus: {
-          twoClasses: 'Includes 2 bonus 1-on-1 classes',
-          fiveClasses: 'Includes 5 bonus 1-on-1 classes',
+          twoClasses: 'Includes 2 bonus 1–on–1 classes',
+          fiveClasses: 'Includes 5 bonus 1–on–1 classes',
         },
         checkout: {
           close: 'Close checkout',
@@ -385,7 +385,7 @@ export const englishLocal: Locale = {
           yourOrder: 'Your order',
           retrying: 'Retrying...',
           retrySaveReceipt: 'Retry Save Receipt',
-          footnote: 'Encrypted payment - Powered by PayPal',
+          footnote: 'Encrypted payment – Powered by PayPal',
         },
         errors: {
           unknownProduct: 'Unknown product.',
@@ -402,7 +402,7 @@ export const englishLocal: Locale = {
       about: {
         title: 'ABOUT US',
         subtitle: 'WHO WE ARE',
-        lead: 'Co-founders and certified English instructors',
+        lead: 'Co–founders and certified English instructors',
         leadText: 'Experienced in teaching students across different levels, ages, and learning goals.',
         workWithTitle: 'Who We Work With:',
         workWithItems: [
@@ -413,24 +413,24 @@ export const englishLocal: Locale = {
         ],
         expertiseTitle: 'Our Expertise Areas:',
         expertiseItems: [
-          'General English (A1-C1)',
+          'General English (A1–C1)',
           'Writing and critical thinking',
-          'Speaking-focused and communicative learning',
+          'Speaking–focused and communicative learning',
         ],
         missionTitle: 'Mission & Philosophy',
         missionText: 'We help students of all levels learn English in a practical, engaging, and effective way.',
         pills: {
           goal: {
-            title: 'Goal-Oriented',
+            title: 'Goal–Oriented',
             text: 'Every lesson has clear objectives aligned with your English goals',
           },
           studentCentered: {
-            title: 'Student-Centered',
+            title: 'Student–Centered',
             text: 'Classes focus on your needs, interests, and learning styles',
           },
           interactive: {
             title: 'Interactive',
-            text: 'Maximum speaking practice and real-life communication',
+            text: 'Maximum speaking practice and real–life communication',
           },
           professional: {
             title: 'Professional',
@@ -443,21 +443,21 @@ export const englishLocal: Locale = {
         subtitle: 'Professionally delivered, interactive online lessons',
         learningFormats: 'OUR LEARNING FORMATS',
         groupClassesTitle: 'General English Group Classes',
-        groupList: ['Max 6 students', 'Interactive learning', 'Peer support', '60-minute sessions'],
-        privateTitle: '(1-on-1): Private General English, IELTS Preparation, or SAT 1 (Reading & Writing) Classes',
-        privateList: ['Customized curriculum', 'Full teacher focus', 'Faster progress', '30 or 60-minute sessions'],
+        groupList: ['Max 6 students', 'Interactive learning', 'Peer support', '60–minute sessions'],
+        privateTitle: '(1–on–1): Private General English, IELTS Preparation, or SAT 1 (Reading & Writing) Classes',
+        privateList: ['Customized curriculum', 'Full teacher focus', 'Faster progress', '30 or 60–minute sessions'],
         classStructure: 'CLASS STRUCTURE',
         chips: {
           platform: { title: 'Platform', text: 'Delivered via Microsoft Teams' },
           materials: { title: 'Materials', text: 'Guided Digital Sources' },
-          approach: { title: 'Approach', text: 'Real-life Speaking Application' },
+          approach: { title: 'Approach', text: 'Real–life Speaking Application' },
         },
         highlightsTitle: 'Learning Experience Highlights',
         highlights: {
           active: { title: 'Active participation', text: 'Practicing from day one with meaningful speaking opportunities' },
-          feedback: { title: 'Immediate feedback', text: 'Gaining real-time corrections and personalized guidance' },
+          feedback: { title: 'Immediate feedback', text: 'Gaining real–time corrections and personalized guidance' },
           progress: { title: 'Progress tracking', text: 'Monitoring growth through regular assessments' },
-          realWorld: { title: 'Real-world language use', text: 'Applying practical language in everyday situations' },
+          realWorld: { title: 'Real–world language use', text: 'Applying practical language in everyday situations' },
         },
       },
       contact: {
@@ -495,7 +495,7 @@ export const englishLocal: Locale = {
         levels: {
           a1: {
             label: 'Beginner',
-            duration: '3-4 Months (Intensive) or 6-8 Months (Regular)',
+            duration: '3–4 Months (Intensive) or 6–8 Months (Regular)',
             who: 'Complete beginners with little or no English knowledge',
             outcome: 'Can communicate in simple situations and understand basic everyday English',
             skills: { speaking: ['Greet and introduce yourself in simple conversations'], listening: ['Recognize and understand simple phrases and questions'], reading: ['Read short, simple texts and everyday signs'], writing: ['Write basic personal information and short sentences'] },
@@ -503,7 +503,7 @@ export const englishLocal: Locale = {
           },
           a2: {
             label: 'Elementary',
-            duration: '3-4 months (Intensive) or 6-8 months (Regular)',
+            duration: '3–4 months (Intensive) or 6–8 months (Regular)',
             who: 'Students who can handle basic communication',
             outcome: 'Can communicate in routine tasks requiring simple information exchange',
             skills: { speaking: ['Discuss familiar topics and daily routines'], listening: ['Understand conversations on common everyday topics'], reading: ['Read short, simple texts with familiar vocabulary'], writing: ['Write simple notes, messages, and short descriptions'] },
@@ -511,15 +511,15 @@ export const englishLocal: Locale = {
           },
           b1: {
             label: 'Intermediate',
-            duration: '4-5 Months (Intensive) or 8-10 Months (Regular)',
+            duration: '4–5 Months (Intensive) or 8–10 Months (Regular)',
             who: 'Students who can communicate in most everyday situations',
             outcome: 'Can deal confidently with most situations likely to arise while traveling',
             skills: { speaking: ['Participate in conversations on familiar topics with confidence'], listening: ['Identify main points in clear, standard speech'], reading: ['Understand texts on everyday or familiar subjects'], writing: ['Write connected text on personal experiences and familiar topics'] },
             objectives: ['Handle most travel and everyday situations effectively', 'Give reasons and explanations for opinions', 'Understand TV shows, movies, and basic media with subtitles', 'Describe experiences, events, dreams, and ambitions'],
           },
           b2: {
-            label: 'Upper-Intermediate',
-            duration: '4-6 months (Intensive) or 10-12 months (Regular)',
+            label: 'Upper–Intermediate',
+            duration: '4–6 months (Intensive) or 10–12 months (Regular)',
             who: 'Students who can interact with native speakers fluently',
             outcome: 'Can communicate effectively in professional and academic contexts',
             skills: { speaking: ['Speak fluently and spontaneously in various contexts'], listening: ['Understand extended speech, lectures, and media content'], reading: ['Read articles, contemporary prose, and professional texts'], writing: ['Write detailed texts on a wide range of subjects'] },
@@ -527,11 +527,11 @@ export const englishLocal: Locale = {
           },
           c1: {
             label: 'Advanced',
-            duration: '5-7 months (Intensive) or 12-14 months (Regular)',
-            who: 'Students aiming for near-native proficiency',
+            duration: '5–7 months (Intensive) or 12–14 months (Regular)',
+            who: 'Students aiming for near–native proficiency',
             outcome: 'Can use English for all professional, academic, and social purposes with precision',
-            skills: { speaking: ['Express ideas fluently, accurately, and persuasively'], listening: ['Understand virtually all spoken English, including complex discussions'], reading: ['Interpret complex texts, literature, and specialized materials'], writing: ['Write well-structured, coherent, and detailed texts'] },
-            objectives: ['Use English flexibly for social, academic, and professional purposes', 'Understand virtually everything read or heard', 'Summarize and reconstruct arguments from multiple sources', 'Produce clear, well-structured texts on complex subjects'],
+            skills: { speaking: ['Express ideas fluently, accurately, and persuasively'], listening: ['Understand virtually all spoken English, including complex discussions'], reading: ['Interpret complex texts, literature, and specialized materials'], writing: ['Write well–structured, coherent, and detailed texts'] },
+            objectives: ['Use English flexibly for social, academic, and professional purposes', 'Understand virtually everything read or heard', 'Summarize and reconstruct arguments from multiple sources', 'Produce clear, well–structured texts on complex subjects'],
           },
         },
       },
@@ -652,7 +652,7 @@ export const englishLocal: Locale = {
       itemsPerPage: 'Items per page',
       nextPage: 'Next Page',
       previousPage: 'Previous Page',
-      range: '{{startIndex}} - {{endIndex}} out of {{length}}',
+      range: '{{startIndex}} – {{endIndex}} out of {{length}}',
     },
   },
 };

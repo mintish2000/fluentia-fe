@@ -98,7 +98,7 @@
           @for (question of placementQuestions(); track question.id; let index = $index) {
             <article class="user-item user-item--placement">
               <div class="user-item__content">
-                <h3>Q{{ index + 1 }} - {{ getPlacementQuestionType(question) }}</h3>
+                <h3>Q{{ index + 1 }} – {{ getPlacementQuestionType(question) }}</h3>
                 <p>{{ question.prompt }}</p>
                 <p>
                   Options: {{ parsePlacementQuestionOptions(question).join(' | ') || 'Text answer' }}
