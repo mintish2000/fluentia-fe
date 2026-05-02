@@ -902,6 +902,11 @@ a.cta {
   color: rgba(11, 58, 102, 0.65);
 }
 
+.home-schedule-snapshot__tz {
+  color: #d32f2f;
+  font-weight: 900;
+}
+
 .home-schedule-snapshot__grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
