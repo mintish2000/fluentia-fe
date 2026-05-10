@@ -109,4 +109,27 @@
       </div>
     </section>
   }
+
+  @if (placementDone() && hub()) {
+    <section class="role-section" [class.role-section--dimmed]="showPlacementGate()">
+      <h2>{{ 'pages.student.shift.title' | translate }}</h2>
+      <p>{{ 'pages.student.shift.description' | translate }}</p>
+      <div class="info-card info-card--inline">
+        <span>{{ 'pages.student.shift.morning' | translate }}</span>
+        <mat-slide-toggle
+          [checked]="hub()!.shift === 'evening'"
+          [disabled]="shiftSaving()"
+          (change)="updateShift($event.checked)"
+          aria-label="{{ 'pages.student.shift.ariaLabel' | translate }}"
+        ></mat-slide-toggle>
+        <span>{{ 'pages.student.shift.evening' | translate }}</span>
+      </div>
+      @if (shiftSaving()) {
+        <p class="state-text">{{ 'pages.student.shift.saving' | translate }}</p>
+      }
+      @if (shiftError()) {
+        <p class="state-text state-text--error">{{ shiftError() }}</p>
+      }
+    </section>
+  }
 </section>

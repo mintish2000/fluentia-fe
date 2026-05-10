@@ -9,6 +9,7 @@ import {
 import { RouterLink } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslateModule } from '@ngx-translate/core';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { CoreModule } from '@core/core.module';
 import { BaseComponent } from '@shared/components/base/base.component';
 import { PlacementTestService } from '@shared/services/learning/placement-test.service';
@@ -16,11 +17,11 @@ import { EnglishLevelService } from '@shared/services/learning/english-level.ser
 import { ScrollRevealContainerDirective } from '@shared/directives/scroll-reveal-container.directive';
 import { finalize } from 'rxjs';
 import { StudentHubService } from './student-hub.service';
-import { StudentHubPayload } from './student-hub.models';
+import { StudentHubPayload, StudentShift } from './student-hub.models';
 
 @Component({
   selector: 'app-student',
-  imports: [CoreModule, RouterLink, ScrollRevealContainerDirective, TranslateModule],
+  imports: [CoreModule, RouterLink, ScrollRevealContainerDirective, TranslateModule, MatSlideToggleModule],
   templateUrl: './student.component.html',
   styleUrl: './student.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -39,6 +40,8 @@ export default class StudentComponent extends BaseComponent {
   readonly lastSyncedAt = signal<Date | null>(null);
   readonly hub = signal<StudentHubPayload | null>(null);
   readonly hubLoadError = signal<string | null>(null);
+  readonly shiftSaving = signal(false);
+  readonly shiftError = signal<string | null>(null);
 
   readonly hasCompletedPlacement = this._placementTestService.hasCompletedPlacement;
   readonly isPlacementStatusLoaded = this._placementTestService.isStatusLoaded;
@@ -110,5 +113,28 @@ export default class StudentComponent extends BaseComponent {
    */
   logout() {
     this._authService.kickOut();
+  }
+
+  /**
+   * Toggles student shift between morning and evening.
+   */
+  updateShift(isEvening: boolean) {
+    const shift: StudentShift = isEvening ? 'evening' : 'morning';
+    this.shiftSaving.set(true);
+    this.shiftError.set(null);
+    this._studentHub
+      .updateShift(shift)
+      .pipe(
+        takeUntilDestroyed(this._destroyRef),
+        finalize(() => this.shiftSaving.set(false)),
+      )
+      .subscribe({
+        next: (res) => {
+          this.hub.update((h) => (h ? { ...h, shift: res.shift } : h));
+        },
+        error: () => {
+          this.shiftError.set(this._translate.instant('pages.student.shift.saveFailed'));
+        },
+      });
   }
 }

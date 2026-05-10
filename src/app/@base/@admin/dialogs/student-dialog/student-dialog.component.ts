@@ -13,6 +13,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import {
   AdminStudentDialogData,
   AdminStudentDialogResult,
+  StudentShift,
 } from '../../models/admin-student.models';
 
 @Component({
@@ -67,6 +68,7 @@ export class StudentDialogComponent {
   });
   readonly groupIdControl = new FormControl<string>('', { nonNullable: true });
   readonly notesControl = new FormControl('', { nonNullable: true });
+  readonly shiftControl = new FormControl<StudentShift | ''>('', { nonNullable: true });
   /** Next payment date (Material datepicker uses `Date`; persisted as ISO string on save). */
   readonly nextPaymentDateControl = new FormControl<Date | null>(null, {
     validators: [Validators.required],
@@ -87,6 +89,7 @@ export class StudentDialogComponent {
     this.statusControl.setValue(s.status);
     this.groupIdControl.setValue(s.groupId ?? '');
     this.notesControl.setValue(s.notes ?? '');
+    this.shiftControl.setValue(s.shift ?? '');
     this.nextPaymentDateControl.setValue(
       s.nextPaymentDate ? new Date(s.nextPaymentDate) : null,
     );
@@ -137,6 +140,7 @@ export class StudentDialogComponent {
     }
 
     const groupId = this.groupIdControl.value.trim();
+    const shiftValue = this.shiftControl.value;
     this._dialogRef.close({
       draft: {
         firstName: this.firstNameControl.value,
@@ -148,6 +152,7 @@ export class StudentDialogComponent {
         notes: this.notesControl.value,
         nextPaymentDate: paymentDate.toISOString(),
         nextPaymentAmount: this.nextPaymentAmountControl.value,
+        shift: (shiftValue as StudentShift) || null,
       },
     });
   }

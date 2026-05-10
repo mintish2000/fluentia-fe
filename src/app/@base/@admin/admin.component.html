@@ -255,6 +255,11 @@
                   <span class="status-pill" [class.status-pill--inactive]="student.status === 'inactive'">
                     {{ student.status }}
                   </span>
+                  @if (student.shift) {
+                    <span class="status-pill status-pill--shift status-pill--shift-{{ student.shift }}">
+                      {{ student.shift }}
+                    </span>
+                  }
                 </span>
               </button>
             }
@@ -285,6 +290,11 @@
                     <span class="status-pill" [class.status-pill--inactive]="student.status === 'inactive'">
                       {{ student.status }}
                     </span>
+                    @if (student.shift) {
+                      <span class="status-pill status-pill--shift status-pill--shift-{{ student.shift }}">
+                        {{ student.shift }}
+                      </span>
+                    }
                   </p>
                   @if (getGroupName(student.groupId)) {
                     <p class="student-detail-head__group">

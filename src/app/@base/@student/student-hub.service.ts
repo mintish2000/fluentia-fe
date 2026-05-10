@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { ApiService } from '@shared/services/api/api.service';
 import { map } from 'rxjs';
-import { StudentHubPayload, StudentHubPlacement } from './student-hub.models';
+import { StudentHubPayload, StudentHubPlacement, StudentShift } from './student-hub.models';
 
 /**
  * {@code GET /api/v1/student/hub} — placement, group, payments (see FRONTEND_API.md).
@@ -17,6 +17,17 @@ export class StudentHubService {
     return this._api
       .get<StudentHubPayload>({ path: '/student/hub' })
       .pipe(map((payload) => this._mapPayload(payload)));
+  }
+
+  /**
+   * Updates the student's shift preference.
+   * {@code PATCH /api/v1/student/shift}
+   */
+  updateShift(shift: StudentShift) {
+    return this._api.patch<{ shift: StudentShift }>({
+      path: '/student/shift',
+      body: { shift },
+    });
   }
 
   private _mapPayload(payload: StudentHubPayload): StudentHubPayload {

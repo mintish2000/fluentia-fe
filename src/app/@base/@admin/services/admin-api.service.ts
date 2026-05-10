@@ -139,6 +139,7 @@ export class AdminApiService {
       notes: draft.notes.trim(),
       nextPaymentDate: draft.nextPaymentDate,
       nextPaymentAmount: draft.nextPaymentAmount,
+      ...(draft.shift ? { shift: draft.shift } : {}),
     };
   }
 }

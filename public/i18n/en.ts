@@ -208,6 +208,15 @@ export const englishLocal: Locale = {
           title: 'Your group',
           link: 'Group link',
         },
+        shift: {
+          title: 'Session shift',
+          description: 'Select your preferred session time.',
+          morning: 'Morning',
+          evening: 'Evening',
+          ariaLabel: 'Toggle session shift between morning and evening',
+          saving: 'Saving shift...',
+          saveFailed: 'Could not update shift. Please try again.',
+        },
       },
       admin: {
         header: {

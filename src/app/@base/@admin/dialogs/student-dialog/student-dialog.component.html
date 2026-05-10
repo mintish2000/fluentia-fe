@@ -48,6 +48,16 @@
         </mat-select>
         <mat-hint>Assign a cohort from Student Groups.</mat-hint>
       </mat-form-field>
+
+      <mat-form-field class="student-dialog__grid-full">
+        <mat-label>Shift</mat-label>
+        <mat-select [formControl]="shiftControl">
+          <mat-option value="">Not set</mat-option>
+          <mat-option value="morning">Morning</mat-option>
+          <mat-option value="evening">Evening</mat-option>
+        </mat-select>
+        <mat-hint>Student's preferred session shift.</mat-hint>
+      </mat-form-field>
     </div>
   </section>
 

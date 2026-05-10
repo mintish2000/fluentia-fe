@@ -30,6 +30,8 @@ export interface StudentPaymentRecord {
   status: 'paid' | 'failed' | 'refunded';
 }
 
+export type StudentShift = 'morning' | 'evening';
+
 export interface AdminStudent {
   id: string;
   firstName: string;
@@ -45,6 +47,7 @@ export interface AdminStudent {
   nextPaymentAmount: number;
   createdAt: string;
   updatedAt: string;
+  shift: StudentShift | null;
 }
 
 /** Response bundle for admin student roster (see FRONTEND_API.md). */
@@ -64,6 +67,7 @@ export interface AdminStudentDraft {
   nextPaymentAmount: number;
   groupId: string | null;
   notes: string;
+  shift: StudentShift | null;
 }
 
 export interface AdminStudentDialogData {

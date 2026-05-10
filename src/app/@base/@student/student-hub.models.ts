@@ -23,6 +23,8 @@ export interface StudentHubPayment {
   status: string;
 }
 
+export type StudentShift = 'morning' | 'evening';
+
 export interface StudentHubPayload {
   status?: string;
   placementCompleted: boolean;
@@ -32,4 +34,5 @@ export interface StudentHubPayload {
   nextPaymentDate: string | null;
   nextPaymentAmount: number | null;
   nextPaymentCurrency: string;
+  shift: StudentShift | null;
 }

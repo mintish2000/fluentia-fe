@@ -200,6 +200,15 @@ export const arabicLocal: Locale = {
           title: 'مجموعتك',
           link: 'رابط المجموعة',
         },
+        shift: {
+          title: 'الفترة الدراسية',
+          description: 'اختر الفترة الزمنية المفضلة لديك.',
+          morning: 'صباحية',
+          evening: 'مسائية',
+          ariaLabel: 'تبديل الفترة الدراسية بين الصباحية والمسائية',
+          saving: 'جارٍ حفظ الفترة...',
+          saveFailed: 'تعذر تحديث الفترة الدراسية. يرجى المحاولة مجددًا.',
+        },
       },
       admin: {
         header: {
