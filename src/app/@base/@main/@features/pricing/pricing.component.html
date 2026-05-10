@@ -1,14 +1,14 @@
 <section class="page" appScrollRevealContainer>
   <header class="page__header">
-    <h1 class="page__title">Schedule &amp; Pricing</h1>
+    <h1 class="page__title">{{ 'pages.pricing.title' | translate }}</h1>
     <p class="page__subtitle page__subtitle--mixed">
-      Flexible packages designed to fit your learning goals and budget
+      {{ 'pages.pricing.subtitle' | translate }}
     </p>
   </header>
 
   @if (hasActiveStudentPayment()) {
     <div class="active-payment-banner" role="status" aria-live="polite">
-      Your payment is still active. Buying new packages is disabled until it expires.
+      {{ 'pages.pricing.activePaymentBanner' | translate }}
     </div>
   }
 
@@ -22,7 +22,7 @@
     >
       <div class="checkout-dialog" (click)="$event.stopPropagation()">
         <div class="checkout-dialog__accent" aria-hidden="true"></div>
-        <button type="button" class="checkout-close" (click)="closeCheckout()" aria-label="Close checkout">
+        <button type="button" class="checkout-close" (click)="closeCheckout()" [attr.aria-label]="'pages.pricing.checkout.close' | translate">
           <span class="material-icons" aria-hidden="true">close</span>
         </button>
         <div class="checkout-dialog__header">
@@ -30,12 +30,12 @@
             <span class="material-icons">lock</span>
           </div>
           <div class="checkout-dialog__headlines">
-            <p class="checkout-dialog__eyebrow">Secure checkout</p>
-            <h2 id="checkout-title" class="checkout-dialog__title">Pay with PayPal</h2>
+            <p class="checkout-dialog__eyebrow">{{ 'pages.pricing.checkout.secureCheckout' | translate }}</p>
+            <h2 id="checkout-title" class="checkout-dialog__title">{{ 'pages.pricing.checkout.payWithPaypal' | translate }}</h2>
           </div>
         </div>
         <div class="checkout-dialog__summary-card">
-          <span class="checkout-dialog__summary-label">Your order</span>
+          <span class="checkout-dialog__summary-label">{{ 'pages.pricing.checkout.yourOrder' | translate }}</span>
           <p class="checkout-dialog__summary">{{ planSummary(planId) }}</p>
         </div>
         @if (paymentSaveError(); as saveError) {
@@ -47,38 +47,40 @@
               [disabled]="isRetryingPaymentSave()"
               (click)="retrySavePayment()"
             >
-              {{ isRetryingPaymentSave() ? 'Retrying...' : 'Retry Save Receipt' }}
+              {{ isRetryingPaymentSave() ? ('pages.pricing.checkout.retrying' | translate) : ('pages.pricing.checkout.retrySaveReceipt' | translate) }}
             </button>
           </div>
         }
         <div #paypalHost class="paypal-host"></div>
-        <p class="checkout-dialog__footnote">Encrypted payment · Powered by PayPal</p>
+        <p class="checkout-dialog__footnote">{{ 'pages.pricing.checkout.footnote' | translate }}</p>
       </div>
     </div>
   }
 
   @if (isCheckingStudentCourses()) {
-    <p class="page__subtitle">Checking your enrolled courses...</p>
+    <p class="page__subtitle">{{ 'pages.pricing.checkingCourses' | translate }}</p>
   } @else if (shouldShowNoCoursesMessage()) {
     <p >
-      You have to take the exam before you can purchase a package. Once you take the exam, the available packages will appear here.
+      {{ 'pages.pricing.noCoursesMessage' | translate }}
     </p>
   } @else {
     <div class="schedule">
-      <div class="schedule__title">Schedule &amp; Time Slots</div>
-      <div class="schedule__note">*All times shown in (GMT+3)</div>
-      <div class="schedule__subtitle">Group Classes Schedule</div>
+      <div class="schedule__title">{{ 'pages.pricing.schedule.title' | translate }}</div>
+      <div class="schedule__note">
+        {{ 'pages.pricing.schedule.note' | translate }}
+      </div>
+      <div class="schedule__subtitle">{{ 'pages.pricing.schedule.groupTitle' | translate }}</div>
       <div class="schedule__grid">
         <div class="schedule__item">
-          <div class="k">DAYS</div>
+          <div class="k">{{ 'pages.pricing.schedule.daysLabel' | translate }}</div>
           <div class="v">Monday – Thursday</div>
         </div>
         <div class="schedule__item">
-          <div class="k">MORNING</div>
+          <div class="k">{{ 'pages.pricing.schedule.morningLabel' | translate }}</div>
           <div class="v">10:00 AM – 11:00 AM</div>
         </div>
         <div class="schedule__item">
-          <div class="k">EVENING</div>
+          <div class="k">{{ 'pages.pricing.schedule.eveningLabel' | translate }}</div>
           <div class="v">6:00 PM – 7:00 PM</div>
         </div>
         <div class="schedule__item">
@@ -89,119 +91,118 @@
     </div>
 
     <div class="private-schedule">
-      <div class="private-schedule__title">Private Classes Scheduling</div>
+      <div class="private-schedule__title">{{ 'pages.pricing.aboutClasses' | translate }}</div>
       <div class="private-schedule__cards">
         <article class="private-schedule__card">
-          <div class="private-schedule__card-title">Private Class Availability</div>
+          <div class="private-schedule__card-title">{{ 'pages.pricing.groupClassesStructureTitle' | translate }}</div>
           <p class="private-schedule__text">
-            All levels offered morning and evening. Same curriculum, different teachers. 4 sessions per
-            week. Each session 60 minutes.
+            {{ 'pages.pricing.groupClassesStructureText' | translate }}
           </p>
         </article>
 
         <article class="private-schedule__card private-schedule__card--tags">
-          <div class="private-schedule__card-title">Private Class Options</div>
+          <div class="private-schedule__card-title">{{ 'pages.pricing.privateClassesStructureTitle' | translate }}</div>
           <div class="private-schedule__row">
-            <div class="private-schedule__tag">Fully flexible</div>
-            <div class="private-schedule__tag">30 or 60 minutes</div>
+            <div class="private-schedule__tag">{{ 'pages.pricing.privateTagFlexible' | translate }}</div>
+            <div class="private-schedule__tag">{{ 'pages.pricing.privateTagDuration' | translate }}</div>
           </div>
         </article>
       </div>
     </div>
 
     <div class="pricing">
-      <div class="pricing__title">Group Classes Pricing</div>
+      <div class="pricing__title">{{ 'pages.pricing.groupClassesPricingTitle' | translate }}</div>
       <div class="pricing__grid">
         <article class="card">
-          <div class="card__title">One month</div>
+          <div class="card__title">{{ 'pages.pricing.plans.oneMonth' | translate }}</div>
           <div class="card__price-wrap">
             <span class="card__old-price card__old-price--spacer" aria-hidden="true">$000</span>
             <div class="card__price">$100</div>
           </div>
           <ul class="list">
-            <li>60-minute sessions</li>
-            <li>Max 6 students</li>
-            <li>4 sessions/week</li>
-            <li>Digital materials</li>
-            <li>Progress tracking</li>
+            <li>{{ 'pages.pricing.features.session60' | translate }}</li>
+            <li>{{ 'pages.pricing.features.max6' | translate }}</li>
+            <li>{{ 'pages.pricing.features.fourPerWeek' | translate }}</li>
+            <li>{{ 'pages.pricing.features.digitalMaterials' | translate }}</li>
+            <li>{{ 'pages.pricing.features.progressTracking' | translate }}</li>
           </ul>
-          <button type="button" class="cta cta--blue" (click)="buyNow('group-1m')" [disabled]="hasActiveStudentPayment()">Buy Now</button>
+          <button type="button" class="cta cta--blue" (click)="buyNow('group-1m')" [disabled]="hasActiveStudentPayment()">{{ 'pages.pricing.buyNow' | translate }}</button>
         </article>
 
         <article class="card card--featured">
-          <div class="card__badge">most popular</div>
-          <div class="card__title">Two months</div>
+          <div class="card__badge">{{ 'pages.pricing.mostPopular' | translate }}</div>
+          <div class="card__title">{{ 'pages.pricing.plans.twoMonths' | translate }}</div>
           <div class="card__price-wrap">
             <span class="card__old-price">$200</span>
             <div class="card__price">$180</div>
           </div>
           <ul class="list">
-            <li>60-minute sessions</li>
-            <li>Max 6 students</li>
-            <li>4 sessions/week</li>
-            <li>Digital materials</li>
-            <li>Progress tracking</li>
+            <li>{{ 'pages.pricing.features.session60' | translate }}</li>
+            <li>{{ 'pages.pricing.features.max6' | translate }}</li>
+            <li>{{ 'pages.pricing.features.fourPerWeek' | translate }}</li>
+            <li>{{ 'pages.pricing.features.digitalMaterials' | translate }}</li>
+            <li>{{ 'pages.pricing.features.progressTracking' | translate }}</li>
           </ul>
-          <button type="button" class="cta cta--blue" (click)="buyNow('group-2m')" [disabled]="hasActiveStudentPayment()">Buy Now</button>
+          <button type="button" class="cta cta--blue" (click)="buyNow('group-2m')" [disabled]="hasActiveStudentPayment()">{{ 'pages.pricing.buyNow' | translate }}</button>
         </article>
 
         <article class="card card--featured">
-          <div class="card__title">Three months</div>
+          <div class="card__title">{{ 'pages.pricing.plans.threeMonths' | translate }}</div>
           <div class="card__price-wrap">
             <span class="card__old-price">$300</span>
             <div class="card__price">$250</div>
           </div>
           <ul class="list">
-            <li>60-minute sessions</li>
-            <li>Max 6 students</li>
-            <li>4 sessions/week</li>
-            <li>Digital materials</li>
-            <li>Progress tracking</li>
+            <li>{{ 'pages.pricing.features.session60' | translate }}</li>
+            <li>{{ 'pages.pricing.features.max6' | translate }}</li>
+            <li>{{ 'pages.pricing.features.fourPerWeek' | translate }}</li>
+            <li>{{ 'pages.pricing.features.digitalMaterials' | translate }}</li>
+            <li>{{ 'pages.pricing.features.progressTracking' | translate }}</li>
           </ul>
-          <button type="button" class="cta cta--blue" (click)="buyNow('group-3m')" [disabled]="hasActiveStudentPayment()">Buy Now</button>
+          <button type="button" class="cta cta--blue" (click)="buyNow('group-3m')" [disabled]="hasActiveStudentPayment()">{{ 'pages.pricing.buyNow' | translate }}</button>
         </article>
 
         <article class="card">
-          <div class="card__title">Six months</div>
+          <div class="card__title">{{ 'pages.pricing.plans.sixMonths' | translate }}</div>
           <div class="card__price-wrap">
             <span class="card__old-price">$600</span>
             <div class="card__price">$420</div>
           </div>
           <ul class="list">
-            <li>60-minute sessions</li>
-            <li>Max 6 students</li>
-            <li>4 sessions/week</li>
-            <li>Digital materials</li>
-            <li>Progress tracking</li>
+            <li>{{ 'pages.pricing.features.session60' | translate }}</li>
+            <li>{{ 'pages.pricing.features.max6' | translate }}</li>
+            <li>{{ 'pages.pricing.features.fourPerWeek' | translate }}</li>
+            <li>{{ 'pages.pricing.features.digitalMaterials' | translate }}</li>
+            <li>{{ 'pages.pricing.features.progressTracking' | translate }}</li>
           </ul>
 
-          <p class="card__extra">
-            <span class="material-icons card__extra-icon" aria-hidden="true">redeem</span>
-            Includes 2 bonus 1–on–1 classes
+          <p class="card__extra card__extra--two-classes">
+            <span class="card__extra-icon card__extra-icon--emoji" aria-hidden="true">🎁</span>
+            {{ 'pages.pricing.bonus.twoClasses' | translate }}
           </p>
-          <button type="button" class="cta cta--gold" (click)="buyNow('group-6m')" [disabled]="hasActiveStudentPayment()">Buy Now</button>
+          <button type="button" class="cta cta--gold" (click)="buyNow('group-6m')" [disabled]="hasActiveStudentPayment()">{{ 'pages.pricing.buyNow' | translate }}</button>
         </article>
 
         <article class="card card--featured">
-          <div class="card__badge">most popular</div>
-          <div class="card__title">Twelve months</div>
+          <div class="card__badge">{{ 'pages.pricing.mostPopular' | translate }}</div>
+          <div class="card__title">{{ 'pages.pricing.plans.twelveMonths' | translate }}</div>
           <div class="card__price-wrap">
             <span class="card__old-price">$1200</span>
             <div class="card__price">$780</div>
           </div>
           <ul class="list">
-            <li>60-minute sessions</li>
-            <li>Max 6 students</li>
-            <li>4 sessions/week</li>
-            <li>Digital materials</li>
-            <li>Progress tracking</li>
+            <li>{{ 'pages.pricing.features.session60' | translate }}</li>
+            <li>{{ 'pages.pricing.features.max6' | translate }}</li>
+            <li>{{ 'pages.pricing.features.fourPerWeek' | translate }}</li>
+            <li>{{ 'pages.pricing.features.digitalMaterials' | translate }}</li>
+            <li>{{ 'pages.pricing.features.progressTracking' | translate }}</li>
           </ul>
 
-          <p class="card__extra">
-            <span class="material-icons card__extra-icon" aria-hidden="true">redeem</span>
-            Includes 5 bonus 1–on–1 classes
+          <p class="card__extra card__extra--two-classes">
+            <span class="card__extra-icon card__extra-icon--emoji" aria-hidden="true">🎁</span>
+            {{ 'pages.pricing.bonus.fiveClasses' | translate }}
           </p>
-          <button type="button" class="cta cta--gold" (click)="buyNow('group-12m')" [disabled]="hasActiveStudentPayment()">Buy Now</button>
+          <button type="button" class="cta cta--gold" (click)="buyNow('group-12m')" [disabled]="hasActiveStudentPayment()">{{ 'pages.pricing.buyNow' | translate }}</button>
 
         </article>
       </div>
@@ -209,68 +210,68 @@
 
     <div class="private">
       <div class="private__title">
-        (1–on–1): Private 'General English, IELTS preparation, or SAT 1 (Reading &amp; Writing)' Classes
+        {{ 'pages.pricing.privateTitle' | translate }}
       </div>
       <div class="private__grid">
         <article class="mini-card">
-          <div class="mini-card__title">30-Minute Private Classes</div>
-          <p class="mini-card__lead">1–on–1 instruction, fully customized lessons, flexible scheduling</p>
+          <div class="mini-card__title">{{ 'pages.pricing.private30Title' | translate }}</div>
+          <p class="mini-card__lead">{{ 'pages.pricing.privateLead' | translate }}</p>
           <div class="mini-card__row">
-            <span>One session</span>
+            <span>{{ 'pages.pricing.sessions.one' | translate }}</span>
             <span class="mini-card__row-right">
-              <strong>$15</strong>
+              <strong>$20</strong>
               <button type="button" class="cta cta--gold cta--inline" (click)="buyNow('private-30-1')" >
-                Buy
+                {{ 'pages.pricing.buy' | translate }}
               </button>
             </span>
           </div>
           <div class="mini-card__row">
-            <span>Four sessions</span>
+            <span>{{ 'pages.pricing.sessions.four' | translate }}</span>
             <span class="mini-card__row-right">
-              <strong>$50</strong>
+              <strong>$70</strong>
               <button type="button" class="cta cta--gold cta--inline" (click)="buyNow('private-30-4')" >
-                Buy
+                {{ 'pages.pricing.buy' | translate }}
               </button>
             </span>
           </div>
           <div class="mini-card__row">
-            <span>Eight sessions</span>
+            <span>{{ 'pages.pricing.sessions.eight' | translate }}</span>
             <span class="mini-card__row-right">
-              <strong>$100</strong>
+              <strong>$150</strong>
               <button type="button" class="cta cta--gold cta--inline" (click)="buyNow('private-30-8')" >
-                Buy
+                {{ 'pages.pricing.buy' | translate }}
               </button>
             </span>
           </div>
         </article>
 
         <article class="mini-card">
-          <div class="mini-card__title">60-Minute Private Classes</div>
-          <p class="mini-card__lead">1–on–1 instruction, fully customized lessons, flexible scheduling</p>
+          <div class="mini-card__title">{{ 'pages.pricing.private60Title' | translate }}</div>
+          <p class="mini-card__lead">{{ 'pages.pricing.privateLead' | translate }}</p>
           <div class="mini-card__row">
-            <span>One session</span>
+            <span>{{ 'pages.pricing.sessions.one' | translate }}</span>
             <span class="mini-card__row-right">
-              <strong>$20</strong>
+              <strong>$35</strong>
               <button type="button" class="cta cta--gold cta--inline" (click)="buyNow('private-60-1')" >
-                Buy
+                {{ 'pages.pricing.buy' | translate }}
               </button>
             </span>
           </div>
           <div class="mini-card__row">
-            <span>Four sessions</span>
+            <span>{{ 'pages.pricing.sessions.four' | translate }}</span>
             <span class="mini-card__row-right">
-              <strong>$70</strong>
+              <strong>$130</strong>
               <button type="button" class="cta cta--gold cta--inline" (click)="buyNow('private-60-4')" >
-                Buy
+                {{ 'pages.pricing.buy' | translate }}
               </button>
             </span>
           </div>
           <div class="mini-card__row">
-            <span>Eight sessions</span>
+            <span>{{ 'pages.pricing.sessions.eight' | translate }}</span>
             <span class="mini-card__row-right">
-              <strong>$140</strong>
+              <strong>$280</strong>
               <button type="button" class="cta cta--gold cta--inline" (click)="buyNow('private-60-8')" >
-                Buy
+                {{ 'pages.pricing.buy' | translate }}
               </button>
             </span>
           </div>

@@ -1,16 +1,17 @@
 import { DOCUMENT } from '@angular/common';
 import { ChangeDetectionStrategy, Component, afterNextRender, inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { ScrollRevealContainerDirective } from '@shared/directives/scroll-reveal-container.directive';
 
 type Level = {
   code: 'A1' | 'A2' | 'B1' | 'B2' | 'C1';
-  label: string;
-  duration: string;
-  who: string;
-  outcome: string;
-  skills: { title: string; items: string[] }[];
-  objectives: string[];
+  labelKey: string;
+  durationKey: string;
+  whoKey: string;
+  outcomeKey: string;
+  skills: { titleKey: string; itemsKeys: string[] }[];
+  objectivesKeys: string[];
 };
 
 @Component({
@@ -19,7 +20,7 @@ type Level = {
   templateUrl: './levels.component.html',
   styleUrl: './levels.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ScrollRevealContainerDirective],
+  imports: [ScrollRevealContainerDirective, TranslateModule],
 })
 export default class LevelsComponent {
   private readonly document = inject(DOCUMENT);
@@ -84,158 +85,157 @@ export default class LevelsComponent {
   levels: Level[] = [
     {
       code: 'A1',
-      label: 'Beginner',
-      duration: '3–4 Months (Intensive) or 6–8 Months (Regular)',
-      who: 'Complete beginners with little or no English knowledge',
-      outcome: 'Can communicate in simple situations and understand basic everyday English',
+      labelKey: 'pages.levels.levels.a1.label',
+      durationKey: 'pages.levels.levels.a1.duration',
+      whoKey: 'pages.levels.levels.a1.who',
+      outcomeKey: 'pages.levels.levels.a1.outcome',
       skills: [
         {
-          title: 'Speaking',
-          items: ['Greet and introduce yourself in simple conversations'],
+          titleKey: 'pages.levels.skills.speaking',
+          itemsKeys: ['pages.levels.levels.a1.skills.speaking.0'],
         },
         {
-          title: 'Listening',
-          items: ['Recognize and understand simple phrases and questions'],
+          titleKey: 'pages.levels.skills.listening',
+          itemsKeys: ['pages.levels.levels.a1.skills.listening.0'],
         },
         {
-          title: 'Reading',
-          items: ['Read short, simple texts and everyday signs'],
+          titleKey: 'pages.levels.skills.reading',
+          itemsKeys: ['pages.levels.levels.a1.skills.reading.0'],
         },
         {
-          title: 'Writing',
-          items: ['Write basic personal information and short sentences'],
+          titleKey: 'pages.levels.skills.writing',
+          itemsKeys: ['pages.levels.levels.a1.skills.writing.0'],
         },
       ],
-      objectives: [
-        'Introduce yourself and others confidently',
-        'Use essential vocabulary about family, shopping, and work',
-        'Describe your home, surroundings, and people you know',
-        'Ask and answer simple personal questions',
+      objectivesKeys: [
+        'pages.levels.levels.a1.objectives.0',
+        'pages.levels.levels.a1.objectives.1',
+        'pages.levels.levels.a1.objectives.2',
+        'pages.levels.levels.a1.objectives.3',
       ],
     },
     {
       code: 'A2',
-      label: 'Elementary',
-      duration: '3–4 months (intensive) or 6–8 months (regular)',
-      who: 'Students who can handle basic communication',
-      outcome: 'Can communicate in routine tasks requiring simple information exchange',
+      labelKey: 'pages.levels.levels.a2.label',
+      durationKey: 'pages.levels.levels.a2.duration',
+      whoKey: 'pages.levels.levels.a2.who',
+      outcomeKey: 'pages.levels.levels.a2.outcome',
       skills: [
         {
-          title: 'Speaking',
-          items: ['Discuss familiar topics and daily routines'],
+          titleKey: 'pages.levels.skills.speaking',
+          itemsKeys: ['pages.levels.levels.a2.skills.speaking.0'],
         },
         {
-          title: 'Listening',
-          items: ['Understand conversations on common everyday topics'],
+          titleKey: 'pages.levels.skills.listening',
+          itemsKeys: ['pages.levels.levels.a2.skills.listening.0'],
         },
         {
-          title: 'Reading',
-          items: ['Read short, simple texts with familiar vocabulary'],
+          titleKey: 'pages.levels.skills.reading',
+          itemsKeys: ['pages.levels.levels.a2.skills.reading.0'],
         },
         {
-          title: 'Writing',
-          items: ['Write simple notes, messages, and short descriptions'],
+          titleKey: 'pages.levels.skills.writing',
+          itemsKeys: ['pages.levels.levels.a2.skills.writing.0'],
         },
       ],
-      objectives: [
-        'Describe your background, environment, and daily life',
-        'Make simple purchases, requests, and orders',
-        'Understand basic TV programs or multimedia with visual support',
-        'Express opinions on familiar topics',
+      objectivesKeys: [
+        'pages.levels.levels.a2.objectives.0',
+        'pages.levels.levels.a2.objectives.1',
+        'pages.levels.levels.a2.objectives.2',
+        'pages.levels.levels.a2.objectives.3',
       ],
     },
     {
       code: 'B1',
-      label: 'Intermediate',
-      duration: '4–5 Months (Intensive) Or 8–10 Months (Regular)',
-      who: 'Students who can communicate in most everyday situations',
-      outcome: 'Can deal confidently with most situations likely to arise while traveling',
+      labelKey: 'pages.levels.levels.b1.label',
+      durationKey: 'pages.levels.levels.b1.duration',
+      whoKey: 'pages.levels.levels.b1.who',
+      outcomeKey: 'pages.levels.levels.b1.outcome',
       skills: [
         {
-          title: 'Speaking',
-          items: ['Participate in conversations on familiar topics with confidence'],
+          titleKey: 'pages.levels.skills.speaking',
+          itemsKeys: ['pages.levels.levels.b1.skills.speaking.0'],
         },
         {
-          title: 'Listening',
-          items: ['Identify main points in clear, standard speech'],
+          titleKey: 'pages.levels.skills.listening',
+          itemsKeys: ['pages.levels.levels.b1.skills.listening.0'],
         },
         {
-          title: 'Reading',
-          items: ['Understand texts on everyday or familiar subjects'],
+          titleKey: 'pages.levels.skills.reading',
+          itemsKeys: ['pages.levels.levels.b1.skills.reading.0'],
         },
         {
-          title: 'Writing',
-          items: ['Write connected text on personal experiences and familiar topics'],
+          titleKey: 'pages.levels.skills.writing',
+          itemsKeys: ['pages.levels.levels.b1.skills.writing.0'],
         },
       ],
-      objectives: [
-        'Handle most travel and everyday situations effectively',
-        'Give reasons and explanations for opinions',
-        'Understand TV shows, movies, and basic media with subtitles',
-        'Describe experiences, events, dreams, and ambitions',
+      objectivesKeys: [
+        'pages.levels.levels.b1.objectives.0',
+        'pages.levels.levels.b1.objectives.1',
+        'pages.levels.levels.b1.objectives.2',
+        'pages.levels.levels.b1.objectives.3',
       ],
     },
     {
       code: 'B2',
-      label: 'Upper-Intermediate',
-      duration: '4–6 months (Intensive) or 10–12 months (Regular)',
-      who: 'Students who can interact with native speakers fluently',
-      outcome: 'Can communicate effectively in professional and academic contexts',
+      labelKey: 'pages.levels.levels.b2.label',
+      durationKey: 'pages.levels.levels.b2.duration',
+      whoKey: 'pages.levels.levels.b2.who',
+      outcomeKey: 'pages.levels.levels.b2.outcome',
       skills: [
         {
-          title: 'Speaking',
-          items: ['Speak fluently and spontaneously in various contexts'],
+          titleKey: 'pages.levels.skills.speaking',
+          itemsKeys: ['pages.levels.levels.b2.skills.speaking.0'],
         },
         {
-          title: 'Listening',
-          items: ['Understand extended speech, lectures, and media content'],
+          titleKey: 'pages.levels.skills.listening',
+          itemsKeys: ['pages.levels.levels.b2.skills.listening.0'],
         },
         {
-          title: 'Reading',
-          items: ['Read articles, contemporary prose, and professional texts'],
+          titleKey: 'pages.levels.skills.reading',
+          itemsKeys: ['pages.levels.levels.b2.skills.reading.0'],
         },
         {
-          title: 'Writing',
-          items: ['Write detailed texts on a wide range of subjects'],
+          titleKey: 'pages.levels.skills.writing',
+          itemsKeys: ['pages.levels.levels.b2.skills.writing.0'],
         },
       ],
-      objectives: [
-        'Interact naturally with native speakers',
-        'Explain viewpoints and argue ideas on topical issues',
-        'Understand most TV news, documentaries, and current affairs',
-        'Present clear, detailed descriptions on topics of interest',
+      objectivesKeys: [
+        'pages.levels.levels.b2.objectives.0',
+        'pages.levels.levels.b2.objectives.1',
+        'pages.levels.levels.b2.objectives.2',
+        'pages.levels.levels.b2.objectives.3',
       ],
     },
     {
       code: 'C1',
-      label: 'Advanced',
-      duration: '5–7 months (Intensive) or 12–14 months (Regular)',
-      who: 'Students aiming for near-native proficiency',
-      outcome:
-        'Can use English for all professional, academic, and social purposes with precision',
+      labelKey: 'pages.levels.levels.c1.label',
+      durationKey: 'pages.levels.levels.c1.duration',
+      whoKey: 'pages.levels.levels.c1.who',
+      outcomeKey: 'pages.levels.levels.c1.outcome',
       skills: [
         {
-          title: 'Speaking',
-          items: ['Express ideas fluently, accurately, and persuasively'],
+          titleKey: 'pages.levels.skills.speaking',
+          itemsKeys: ['pages.levels.levels.c1.skills.speaking.0'],
         },
         {
-          title: 'Listening',
-          items: ['Understand virtually all spoken English, including complex discussions'],
+          titleKey: 'pages.levels.skills.listening',
+          itemsKeys: ['pages.levels.levels.c1.skills.listening.0'],
         },
         {
-          title: 'Reading',
-          items: ['Interpret complex texts, literature, and specialized materials'],
+          titleKey: 'pages.levels.skills.reading',
+          itemsKeys: ['pages.levels.levels.c1.skills.reading.0'],
         },
         {
-          title: 'Writing',
-          items: ['Write well-structured, coherent, and detailed texts'],
+          titleKey: 'pages.levels.skills.writing',
+          itemsKeys: ['pages.levels.levels.c1.skills.writing.0'],
         },
       ],
-      objectives: [
-        'Use English flexibly for social, academic, and professional purposes',
-        'Understand virtually everything read or heard',
-        'Summarize and reconstruct arguments from multiple sources',
-        'Produce clear, well-structured texts on complex subjects',
+      objectivesKeys: [
+        'pages.levels.levels.c1.objectives.0',
+        'pages.levels.levels.c1.objectives.1',
+        'pages.levels.levels.c1.objectives.2',
+        'pages.levels.levels.c1.objectives.3',
       ],
     },
   ];

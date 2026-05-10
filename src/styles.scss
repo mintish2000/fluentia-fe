@@ -34,8 +34,8 @@ html {
   opacity: 0;
   transform: translate3d(0, 1.5rem, 0);
   transition:
-    opacity 1.15s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 1.15s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity 1.55s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1.55s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: opacity, transform;
 }
 
@@ -45,10 +45,37 @@ html {
   will-change: auto;
 }
 
+/* First-time image reveal (triggered by appScrollRevealContainer). */
+[data-image-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 14px, 0) scale(0.985);
+  filter: blur(5px) saturate(0.9);
+  transition:
+    opacity 1350ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1350ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 1650ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform, filter;
+}
+
+[data-image-reveal].scroll-reveal--visible {
+  opacity: 1;
+  transform: none;
+  filter: blur(0) saturate(1);
+  will-change: auto;
+}
+
 @media (prefers-reduced-motion: reduce) {
   [data-scroll-reveal] {
     opacity: 1;
     transform: none;
+    transition: none;
+    will-change: auto;
+  }
+
+  [data-image-reveal] {
+    opacity: 1;
+    transform: none;
+    filter: none;
     transition: none;
     will-change: auto;
   }

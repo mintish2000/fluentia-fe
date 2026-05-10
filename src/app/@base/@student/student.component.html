@@ -2,28 +2,28 @@
   @if (showPlacementGate()) {
     <div class="placement-gate" role="dialog" aria-modal="true" aria-labelledby="placement-gate-title">
       <div class="placement-gate__panel">
-        <h2 id="placement-gate-title">Placement test required</h2>
+        <h2 id="placement-gate-title">{{ 'pages.student.gate.title' | translate }}</h2>
         <p>
-          You must complete the placement test before using the hub. Log out or start the test below.
+          {{ 'pages.student.gate.description' | translate }}
         </p>
         <div class="placement-gate__actions">
-          <button type="button" class="secondary" (click)="logout()">Log out</button>
-          <a routerLink="/main/placement-test" class="placement-gate__primary">Take placement test</a>
+          <button type="button" class="secondary" (click)="logout()">{{ 'pages.student.gate.logout' | translate }}</button>
+          <a routerLink="/main/placement-test" class="placement-gate__primary">{{ 'pages.student.gate.takePlacementTest' | translate }}</a>
         </div>
       </div>
     </div>
   }
 
   <header class="role-page__header">
-    <h1>Student Hub</h1>
-    <p>Welcome back, {{ displayName() }}</p>
+    <h1>{{ 'pages.student.title' | translate }}</h1>
+    <p>{{ 'pages.student.welcomeBack' | translate }} {{ displayName() }}</p>
     <div class="role-page__sync">
       <span>
-        Last synced:
-        {{ lastSyncedAt() ? (lastSyncedAt() | date: 'medium') : 'Not synced yet' }}
+        {{ 'pages.student.lastSynced' | translate }}:
+        {{ lastSyncedAt() ? (lastSyncedAt() | date: 'medium') : ('pages.student.notSyncedYet' | translate) }}
       </span>
       <button type="button" class="secondary" [disabled]="isLoading()" (click)="refreshOverview()">
-        Refresh
+        {{ 'pages.student.refresh' | translate }}
       </button>
     </div>
   </header>
@@ -33,28 +33,28 @@
   }
 
   @if (isLoading()) {
-    <p class="state-text">Loading your data...</p>
+    <p class="state-text">{{ 'pages.student.loadingData' | translate }}</p>
   }
 
   @if (placementDone() && hub()?.placement) {
     <section class="role-section" [class.role-section--dimmed]="showPlacementGate()">
-      <h2>Placement result</h2>
-      <p>Your placement test score (one attempt).</p>
+      <h2>{{ 'pages.student.placementResult.title' | translate }}</h2>
+      <p>{{ 'pages.student.placementResult.subtitle' | translate }}</p>
       <div class="info-card">
         @if (placementEnglishLevel()) {
           <p>
-            <strong>English level:</strong> {{ placementEnglishLevel() }}
+            <strong>{{ 'pages.student.placementResult.englishLevel' | translate }}</strong> {{ placementEnglishLevel() }}
           </p>
         }
         @if (hub()!.placement!.correctAnswers != null && hub()!.placement!.totalQuestions != null) {
           <p>
-            <strong>Correct:</strong>
+            <strong>{{ 'pages.student.placementResult.correct' | translate }}</strong>
             {{ hub()!.placement!.correctAnswers }} / {{ hub()!.placement!.totalQuestions }}
           </p>
         }
         @if (hub()!.placement!.submittedAt) {
           <p>
-            <strong>Submitted:</strong>
+            <strong>{{ 'pages.student.placementResult.submitted' | translate }}</strong>
             {{ hub()!.placement!.submittedAt | date: 'medium' }}
           </p>
         }
@@ -64,9 +64,9 @@
 
   @if (placementDone() && hub()) {
     <section class="role-section" [class.role-section--dimmed]="showPlacementGate()">
-      <h2>Payments</h2>
+      <h2>{{ 'pages.student.payments.title' | translate }}</h2>
       @if (!hub()!.payments.length) {
-        <p class="state-text">No payments recorded yet.</p>
+        <p class="state-text">{{ 'pages.student.payments.noPayments' | translate }}</p>
       } @else {
         <div class="role-list">
           @for (payment of hub()!.payments; track payment.id) {
@@ -81,12 +81,12 @@
       }
       <div class="info-card info-card--inline">
         <p>
-          <strong>Next payment:</strong>
+          <strong>{{ 'pages.student.payments.nextPayment' | translate }}</strong>
           @if (hub()!.nextPaymentDate && hub()!.nextPaymentAmount != null) {
-            {{ hub()!.nextPaymentAmount }} {{ hub()!.nextPaymentCurrency }} on
+            {{ hub()!.nextPaymentAmount }} {{ hub()!.nextPaymentCurrency }} {{ 'pages.student.payments.on' | translate }}
             {{ hub()!.nextPaymentDate | date: 'mediumDate' }}
           } @else {
-            Not scheduled
+            {{ 'pages.student.payments.notScheduled' | translate }}
           }
         </p>
       </div>
@@ -95,7 +95,7 @@
 
   @if (placementDone() && hub()?.group) {
     <section class="role-section" [class.role-section--dimmed]="showPlacementGate()">
-      <h2>Your group</h2>
+      <h2>{{ 'pages.student.group.title' | translate }}</h2>
       <div class="info-card">
         <h3>{{ hub()!.group!.name }}</h3>
         @if (hub()!.group!.description) {
@@ -103,7 +103,7 @@
         }
         @if (hub()!.group!.link) {
           <p>
-            <a [href]="hub()!.group!.link" target="_blank" rel="noopener noreferrer">Group link</a>
+            <a [href]="hub()!.group!.link" target="_blank" rel="noopener noreferrer">{{ 'pages.student.group.link' | translate }}</a>
           </p>
         }
       </div>

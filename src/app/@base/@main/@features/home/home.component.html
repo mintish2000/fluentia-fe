@@ -1,10 +1,10 @@
 <div class="landing" appScrollRevealContainer>
   <section class="hero" id="top">
     <div class="hero__content">
-      <h1 class="hero__title">START YOUR ENGLISH<br />JOURNEY TODAY!</h1>
+      <h1 class="hero__title">{{ 'pages.home.hero.titleLine1' | translate }}<br />{{ 'pages.home.hero.titleLine2' | translate }}</h1>
       <ul class="hero__bullets">
-        <li>Professional online English lessons tailored to your goals</li>
-        <li>Small groups and 1–on–1 classes available</li>
+        <li>{{ 'pages.home.hero.bullets.0' | translate }}</li>
+        <li>{{ 'pages.home.hero.bullets.1' | translate }}</li>
       </ul>
     </div>
 
@@ -22,25 +22,25 @@
   </section>
 
   <section class="tagline" id="how">
-    <div class="tagline__eyebrow tagline__eyebrow--title-case">English Learning, All in One Place</div>
-    <div class="tagline__heading">Why Learn With Us</div>
+    <div class="tagline__eyebrow tagline__eyebrow--title-case">{{ 'pages.home.tagline.eyebrow' | translate }}</div>
+    <div class="tagline__heading">{{ 'pages.home.tagline.heading' | translate }}</div>
   </section>
 
   <section class="features">
     <div class="features__grid">
       <div class="feature">
         <span class="material-icons">video_library</span>
-        <div class="feature__label">ONLINE CLASSES</div>
+        <div class="feature__label">{{ 'pages.home.features.onlineClasses' | translate }}</div>
       </div>
 
       <div class="feature">
         <span class="material-icons">groups</span>
-        <div class="feature__label">SMALL GROUPS</div>
+        <div class="feature__label">{{ 'pages.home.features.smallGroups' | translate }}</div>
       </div>
 
       <div class="feature">
         <span class="material-icons">verified</span>
-        <div class="feature__label">CERTIFIED TEACHERS</div>
+        <div class="feature__label">{{ 'pages.home.features.certifiedTeachers' | translate }}</div>
       </div>
 
       <div class="feature">
@@ -51,64 +51,64 @@
   </section>
 
   <section class="levels" id="levels">
-    <div class="section-title">All Levels Available</div>
-    <div class="levels__subtitle levels__subtitle--mixed">Focused learning. Flexible support</div>
+    <div class="section-title">{{ 'pages.home.levels.title' | translate }}</div>
+    <div class="levels__subtitle levels__subtitle--mixed">{{ 'pages.home.levels.subtitle' | translate }}</div>
 
     <div class="levels__row">
-      <div class="level">A1 <span>Beginner</span></div>
-      <div class="level">A2 <span>Elementary</span></div>
-      <div class="level">B1 <span>Intermediate</span></div>
-      <div class="level">B2 <span>Upper-Intermediate</span></div>
-      <div class="level">C1 <span>Advanced</span></div>
+      <div class="level">A1 <span>{{ 'pages.home.levels.labels.a1' | translate }}</span></div>
+      <div class="level">A2 <span>{{ 'pages.home.levels.labels.a2' | translate }}</span></div>
+      <div class="level">B1 <span>{{ 'pages.home.levels.labels.b1' | translate }}</span></div>
+      <div class="level">B2 <span>{{ 'pages.home.levels.labels.b2' | translate }}</span></div>
+      <div class="level">C1 <span>{{ 'pages.home.levels.labels.c1' | translate }}</span></div>
     </div>
   </section>
 
   <section class="steps" id="test">
-    <div class="section-title">Placement Test</div>
-    <div class="steps__subtitle steps__subtitle--mixed">Discover your English level with our comprehensive assessment</div>
+    <div class="section-title">{{ 'pages.home.placement.title' | translate }}</div>
+    <div class="steps__subtitle steps__subtitle--mixed">{{ 'pages.home.placement.subtitle' | translate }}</div>
 
 
 
     <div class="how-start">
-      <div class="how-start__eyebrow">How to Get Started</div>
-      <div class="how-start__title">THREE SIMPLE STEPS TO BEGIN YOUR ENGLISH LEARNING JOURNEY</div>
+      <div class="how-start__eyebrow">{{ 'pages.home.placement.howToStart' | translate }}</div>
+      <div class="how-start__title">{{ 'pages.home.placement.threeStepsTitle' | translate }}</div>
     </div>
 
-    <div class="steps__list">
+    <div class="steps__list" appScrollRevealContainer>
       <div class="step">
         <div class="step__number">01</div>
         <div class="step__card">
-          <div class="step__title">Take the Level Test</div>
-          <p class="step__desc">Complete our placement test to determine your current English level</p>
+          <div class="step__title">{{ 'pages.home.placement.steps.0.title' | translate }}</div>
+          <p class="step__desc">{{ 'pages.home.placement.steps.0.desc' | translate }}</p>
         </div>
       </div>
 
       <div class="step">
         <div class="step__number">02</div>
         <div class="step__card">
-          <div class="step__title">Get Your Level</div>
-          <p class="step__desc">Receive your level assessment and level recommendations</p>
+          <div class="step__title">{{ 'pages.home.placement.steps.1.title' | translate }}</div>
+          <p class="step__desc">{{ 'pages.home.placement.steps.1.desc' | translate }}</p>
         </div>
       </div>
 
       <div class="step">
         <div class="step__number">03</div>
         <div class="step__card">
-          <div class="step__title">Start Learning</div>
-          <p class="step__desc">Choose your package and time, and then begin your journey!</p>
+          <div class="step__title">{{ 'pages.home.placement.steps.2.title' | translate }}</div>
+          <p class="step__desc">{{ 'pages.home.placement.steps.2.desc' | translate }}</p>
         </div>
       </div>
     </div>
 
     <div class="cta-row">
-      <button type="button" class="cta cta--gold" (click)="navigateToLogin()">Log In to Take the Free Placement Test</button>
-      <button type="button" class="cta cta--blue" (click)="navigateToLevels()">Check Our Levels</button>
+      <button type="button" class="cta cta--gold" (click)="navigateToLogin()">{{ 'pages.home.placement.ctaPrimary' | translate }}</button>
+      <button type="button" class="cta cta--blue" (click)="navigateToLevels()">{{ 'pages.home.placement.ctaSecondary' | translate }}</button>
     </div>
   </section>
 
   <section class="about" id="about">
-    <div class="section-title">About Us</div>
-    <div class="steps__subtitle">Who We Are</div>
+    <div class="section-title">{{ 'pages.home.about.title' | translate }}</div>
+    <div class="steps__subtitle">{{ 'pages.home.about.subtitle' | translate }}</div>
 
     <div class="home-founders" aria-label="Fluentia co-founders">
       <article class="home-founders__card">
@@ -154,44 +154,45 @@
 
     <div class="home-preview__footer">
       <a routerLink="/main/about" class="home-preview__cta">
-        <span> about us &amp; mission</span>
+        <span>{{ 'pages.home.about.link' | translate }}</span>
         <span class="material-icons" aria-hidden="true">arrow_forward</span>
       </a>
     </div>
   </section>
 
   <section class="pricing" id="pricing">
-    <div class="section-title">Schedule &amp; Pricing</div>
+    <div class="section-title">{{ 'pages.home.pricing.title' | translate }}</div>
     <div class="steps__subtitle steps__subtitle--mixed">
-      Flexible packages designed to fit your learning goals and budget
+      {{ 'pages.home.pricing.subtitle' | translate }}
     </div>
 
     <p class="home-preview__lead">
-      Group classes run on a set weekly schedule. Private sessions are booked
-      separately — all pricing and packages are on the pricing page.
+      {{ 'pages.home.pricing.lead' | translate }}
     </p>
 
     <div class="home-schedule-snapshot" aria-label="Group classes schedule summary">
       <div class="home-schedule-snapshot__head">
         <span class="material-icons" aria-hidden="true">calendar_month</span>
-        <span>Group Classes Schedule</span>
+        <span>{{ 'pages.home.pricing.scheduleTitle' | translate }}</span>
       </div>
-      <p class="home-schedule-snapshot__note">*All times shown in (GMT+3)</p>
+      <p class="home-schedule-snapshot__note">
+        {{ 'pages.home.pricing.scheduleNotePrefix' | translate }}<span class="home-schedule-snapshot__tz">GMT+3</span>
+      </p>
       <div class="home-schedule-snapshot__grid">
         <div class="home-schedule-snapshot__cell">
-          <span class="home-schedule-snapshot__k">DAYS</span>
+          <span class="home-schedule-snapshot__k">{{ 'pages.home.pricing.daysLabel' | translate }}</span>
           <span class="home-schedule-snapshot__v">Monday – Thursday</span>
         </div>
         <div class="home-schedule-snapshot__cell">
-          <span class="home-schedule-snapshot__k">MORNING</span>
+          <span class="home-schedule-snapshot__k">{{ 'pages.home.pricing.morningLabel' | translate }}</span>
           <span class="home-schedule-snapshot__v">10:00 AM – 11:00 AM</span>
         </div>
         <div class="home-schedule-snapshot__cell">
-          <span class="home-schedule-snapshot__k">EVENING</span>
+          <span class="home-schedule-snapshot__k">{{ 'pages.home.pricing.eveningLabel' | translate }}</span>
           <span class="home-schedule-snapshot__v">6:00 PM – 7:00 PM</span>
         </div>
         <div class="home-schedule-snapshot__cell">
-          <span class="home-schedule-snapshot__k">Levels</span>
+          <span class="home-schedule-snapshot__k">{{ 'pages.home.pricing.levelsLabel' | translate }}</span>
           <span class="home-schedule-snapshot__v">A1–B1 &amp; B2–C1</span>
         </div>
       </div>
@@ -199,16 +200,16 @@
 
     <div class="home-preview__footer">
       <a routerLink="/main/pricing" class="home-preview__cta">
-        <span>schedule, private rates &amp; packages</span>
+        <span>{{ 'pages.home.pricing.link' | translate }}</span>
         <span class="material-icons" aria-hidden="true">arrow_forward</span>
       </a>
     </div>
   </section>
 
   <section class="contact" id="contact">
-    <div class="section-title">Contact Us</div>
+    <div class="section-title">{{ 'pages.home.contact.title' | translate }}</div>
     <div class="steps__subtitle steps__subtitle--mixed">
-      Ready to start your English journey? Get in touch with us today!
+      {{ 'pages.home.contact.subtitle' | translate }}
     </div>
 
     <div class="home-contact__image-wrap">
@@ -220,13 +221,12 @@
     </div>
 
     <p class="home-preview__lead">
-      Have questions about levels, schedules, or enrollment? Reach
-      out by email or Instagram — we’ll get back to you as soon as we can.
+      {{ 'pages.home.contact.lead' | translate }}
     </p>
 
     <div class="home-preview__footer">
       <a routerLink="/main/contact" class="home-preview__cta">
-        <span>Contact page</span>
+        <span>{{ 'pages.home.contact.link' | translate }}</span>
         <span class="material-icons" aria-hidden="true">arrow_forward</span>
       </a>
     </div>

@@ -34,12 +34,18 @@ export class ScrollRevealContainerDirective implements AfterViewInit, OnDestroy 
 
     const root = this._el.nativeElement;
     const targets = this.collectTargets(root);
+    const imageTargets = this.collectImageTargets(root);
     if (targets.length === 0) {
-      return;
+      if (imageTargets.length === 0) {
+        return;
+      }
     }
 
     for (const el of targets) {
       this._renderer.setAttribute(el, 'data-scroll-reveal', '');
+    }
+    for (const img of imageTargets) {
+      this._renderer.setAttribute(img, 'data-image-reveal', '');
     }
 
     this._observer = new IntersectionObserver(
@@ -56,7 +62,7 @@ export class ScrollRevealContainerDirective implements AfterViewInit, OnDestroy 
       { root: null, rootMargin: '0px 0px -8% 0px', threshold: 0.08 },
     );
 
-    for (const el of targets) {
+    for (const el of [...targets, ...imageTargets]) {
       this._observer.observe(el);
     }
   }
@@ -71,6 +77,10 @@ export class ScrollRevealContainerDirective implements AfterViewInit, OnDestroy 
     for (const el of this.collectTargets(root)) {
       this._renderer.setAttribute(el, 'data-scroll-reveal', '');
       this._renderer.addClass(el, 'scroll-reveal--visible');
+    }
+    for (const img of this.collectImageTargets(root)) {
+      this._renderer.setAttribute(img, 'data-image-reveal', '');
+      this._renderer.addClass(img, 'scroll-reveal--visible');
     }
   }
 
@@ -102,5 +112,17 @@ export class ScrollRevealContainerDirective implements AfterViewInit, OnDestroy 
     }
 
     return [];
+  }
+
+  /**
+   * Collects content images under the container for one-time first-viewport reveal.
+   */
+  private collectImageTargets(root: HTMLElement): HTMLImageElement[] {
+    return Array.from(root.querySelectorAll<HTMLImageElement>('img')).filter((img) => {
+      if ((img.closest('[data-image-reveal]') as HTMLElement | null) !== null) {
+        return false;
+      }
+      return true;
+    });
   }
 }

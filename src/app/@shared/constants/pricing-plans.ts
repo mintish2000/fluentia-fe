@@ -37,27 +37,27 @@ export const PRICING_PLAN_DETAILS: Record<
     description: 'Fluentia — Group classes (12 months)',
   },
   'private-30-1': {
-    amount: '15.00',
+    amount: '20.00',
     description: 'Fluentia — Private 30 min (1 session)',
   },
   'private-30-4': {
-    amount: '50.00',
+    amount: '70.00',
     description: 'Fluentia — Private 30 min (4 sessions)',
   },
   'private-30-8': {
-    amount: '100.00',
+    amount: '150.00',
     description: 'Fluentia — Private 30 min (8 sessions)',
   },
   'private-60-1': {
-    amount: '20.00',
+    amount: '35.00',
     description: 'Fluentia — Private 60 min (1 session)',
   },
   'private-60-4': {
-    amount: '70.00',
+    amount: '130.00',
     description: 'Fluentia — Private 60 min (4 sessions)',
   },
   'private-60-8': {
-    amount: '140.00',
+    amount: '270.00',
     description: 'Fluentia — Private 60 min (8 sessions)',
   },
 };

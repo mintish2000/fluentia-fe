@@ -5,7 +5,7 @@ import { environment } from '@environments/environment';
 import { TranslateService } from '@ngx-translate/core';
 
 type AppLanguages = 'ar' | 'en';
-type DataValue = { [key: string]: DataValue } | string;
+type DataValue = any;
 type AppLocals = {
   [local: string]: {
     lang: AppLanguages;

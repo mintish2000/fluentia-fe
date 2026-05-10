@@ -28,10 +28,10 @@
   </form>
 
   @if (isLoading()) {
-    <p class="dashboard-page__loading">Loading dashboard…</p>
+    <p class="dashboard-page__loading">{{ 'pages.dashboard.loading' | translate }}</p>
   } @else if (loadError()) {
     <p class="dashboard-page__error" role="alert">{{ loadError() }}</p>
-    <button type="button" class="dashboard-page__retry" (click)="refreshDashboard()">Retry</button>
+    <button type="button" class="dashboard-page__retry" (click)="refreshDashboard()">{{ 'pages.dashboard.retry' | translate }}</button>
   } @else {
     @if (payload(); as data) {
     <header class="dashboard-page__header">
@@ -39,47 +39,47 @@
         <h1>{{ data.meta.title }}</h1>
         <p class="dashboard-page__subtitle">{{ data.meta.subtitle }}</p>
         <p class="dashboard-page__meta">
-          Generated {{ data.meta.generatedAt | date: 'medium' }}
+          {{ 'pages.dashboard.generated' | translate }} {{ data.meta.generatedAt | date: 'medium' }}
         </p>
       </div>
-      <button type="button" class="dashboard-page__refresh" (click)="refreshDashboard()">Refresh</button>
+      <button type="button" class="dashboard-page__refresh" (click)="refreshDashboard()">{{ 'pages.dashboard.refresh' | translate }}</button>
     </header>
 
     <div class="dashboard-kpis">
       <article class="dashboard-kpi">
-        <h2>Students</h2>
+        <h2>{{ 'pages.dashboard.kpis.students' | translate }}</h2>
         <p class="dashboard-kpi__value">{{ data.kpis.totalStudents }}</p>
       </article>
       <article class="dashboard-kpi">
-        <h2>Active</h2>
+        <h2>{{ 'pages.dashboard.kpis.active' | translate }}</h2>
         <p class="dashboard-kpi__value">{{ data.kpis.activeStudents }}</p>
       </article>
       <article class="dashboard-kpi">
-        <h2>Inactive</h2>
+        <h2>{{ 'pages.dashboard.kpis.inactive' | translate }}</h2>
         <p class="dashboard-kpi__value">{{ data.kpis.inactiveStudents }}</p>
       </article>
       <article class="dashboard-kpi">
-        <h2>Groups</h2>
+        <h2>{{ 'pages.dashboard.kpis.groups' | translate }}</h2>
         <p class="dashboard-kpi__value">{{ data.kpis.totalGroups }}</p>
       </article>
       <article class="dashboard-kpi">
-        <h2>Avg placement</h2>
+        <h2>{{ 'pages.dashboard.kpis.avgPlacement' | translate }}</h2>
         <p class="dashboard-kpi__value">{{ data.kpis.averagePlacementScore | number: '1.0-1' }}%</p>
       </article>
       <article class="dashboard-kpi">
-        <h2>Monthly revenue (est.)</h2>
+        <h2>{{ 'pages.dashboard.kpis.monthlyRevenue' | translate }}</h2>
         <p class="dashboard-kpi__value">${{ data.kpis.expectedMonthlyRevenueUsd | number: '1.0-0' }}</p>
       </article>
     </div>
 
     <div class="dashboard-charts">
       <article class="dashboard-panel dashboard-panel--donut">
-        <h2>Students by group</h2>
+        <h2>{{ 'pages.dashboard.panels.studentsByGroup' | translate }}</h2>
         <div class="dashboard-donut-wrap">
           <div class="dashboard-donut" [style.background]="groupDonutBackground()">
             <div class="dashboard-donut__hole">
               <span class="dashboard-donut__total">{{ data.kpis.totalStudents }}</span>
-              <span class="dashboard-donut__label">students</span>
+              <span class="dashboard-donut__label">{{ 'pages.dashboard.kpis.students' | translate }}</span>
             </div>
           </div>
           <ul class="dashboard-legend">
@@ -95,7 +95,7 @@
       </article>
 
       <article class="dashboard-panel">
-        <h2>Students by status</h2>
+        <h2>{{ 'pages.dashboard.panels.studentsByStatus' | translate }}</h2>
         <div class="dashboard-bars">
           @for (row of data.studentsByStatus; track row.status) {
             <div class="dashboard-bar-row">
@@ -114,7 +114,7 @@
       </article>
 
       <article class="dashboard-panel dashboard-panel--wide">
-        <h2>Placement score distribution</h2>
+        <h2>{{ 'pages.dashboard.panels.placementDistribution' | translate }}</h2>
         <div class="dashboard-bars dashboard-bars--vertical">
           @for (band of data.placementScoreDistribution; track band.label) {
             <div class="dashboard-vbar">
@@ -132,7 +132,7 @@
       </article>
 
       <article class="dashboard-panel dashboard-panel--wide">
-        <h2>Revenue trend (USD)</h2>
+        <h2>{{ 'pages.dashboard.panels.revenueTrend' | translate }}</h2>
         <div class="dashboard-revenue">
           @for (m of data.revenueByMonth; track m.month) {
             <div class="dashboard-revenue__col">

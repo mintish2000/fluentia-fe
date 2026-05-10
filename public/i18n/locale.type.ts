@@ -1,7 +1,7 @@
 
 
 export type AppLanguages = "ar" | "en"
-type DataValue = { [key: string]: DataValue } | string;
+type DataValue = any;
 
 export interface Locale {
     lang: AppLanguages;

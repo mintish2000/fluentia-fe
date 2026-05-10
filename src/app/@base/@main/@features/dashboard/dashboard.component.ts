@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 import { finalize } from 'rxjs';
 import { BaseComponent } from '@shared/components/base/base.component';
 import { ScrollRevealContainerDirective } from '@shared/directives/scroll-reveal-container.directive';
@@ -47,7 +48,7 @@ function buildGroupConicGradient(data: DashboardResponse | null): string {
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule, ScrollRevealContainerDirective],
+  imports: [CommonModule, FormsModule, ScrollRevealContainerDirective, TranslateModule],
   providers: [DashboardService],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
@@ -105,7 +106,7 @@ export default class DashboardComponent extends BaseComponent {
       .subscribe({
         next: () => {},
         error: () => {
-          this.loadError.set('Could not load dashboard data. Please try again.');
+          this.loadError.set(this._translate.instant('pages.dashboard.errors.loadFailed'));
         },
       });
   }

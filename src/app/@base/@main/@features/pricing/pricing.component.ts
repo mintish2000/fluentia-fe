@@ -27,6 +27,8 @@ import { ScrollRevealContainerDirective } from '@shared/directives/scroll-reveal
 import { StudentHubService } from '@base/@student/student-hub.service';
 import { PlacementTestService } from '@shared/services/learning/placement-test.service';
 import { UserService } from '@shared/services/user/user.service';
+import { TranslateModule } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-pricing',
@@ -34,7 +36,7 @@ import { UserService } from '@shared/services/user/user.service';
   templateUrl: './pricing.component.html',
   styleUrl: './pricing.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ScrollRevealContainerDirective],
+  imports: [ScrollRevealContainerDirective, TranslateModule],
 })
 export default class PricingComponent {
   private readonly _userService = inject(UserService);
@@ -44,6 +46,7 @@ export default class PricingComponent {
   private readonly _paymentsService = inject(PaymentsService);
   private readonly _studentHubService = inject(StudentHubService);
   private readonly _placementTestService = inject(PlacementTestService);
+  private readonly _translate = inject(TranslateService);
   private readonly _destroyRef = inject(DestroyRef);
 
   readonly checkoutPlan = signal<PricingPlanId | null>(null);
@@ -95,7 +98,7 @@ export default class PricingComponent {
             onSuccess: (ctx) => {
               const planDetail = PRICING_PLAN_DETAILS[plan];
               if (!planDetail) {
-                this._toast.showError('Unknown product.');
+                this._toast.showError(this._translate.instant('pages.pricing.errors.unknownProduct'));
                 return;
               }
               this.persistPaymentRecord({
@@ -107,7 +110,7 @@ export default class PricingComponent {
           })
           .catch(() =>
             this._toast.showError(
-              'Could not load PayPal checkout. Check paypalClientId in environment.',
+              this._translate.instant('pages.pricing.errors.paypalLoadFailed'),
             ),
           );
       });
@@ -174,7 +177,7 @@ export default class PricingComponent {
 
     if (this.hasActiveStudentPayment()) {
       this._toast.showError(
-        'Your payment is still active. You can buy a new package after your current one ends.',
+        this._translate.instant('pages.pricing.errors.activePaymentExists'),
       );
       return;
     }
@@ -192,7 +195,7 @@ export default class PricingComponent {
 
     if (!this._paypal.clientId) {
       this._toast.showError(
-        'PayPal is not configured. Set paypalClientId in src/environments/environment.ts (sandbox or live Client ID from developer.paypal.com).',
+        this._translate.instant('pages.pricing.errors.paypalNotConfigured'),
       );
       return;
     }
@@ -219,7 +222,7 @@ export default class PricingComponent {
           this.paymentSaveError.set(null);
           this.isRetryingPaymentSave.set(false);
           this._pendingPaymentPayload.set(null);
-          this._toast.showSuccess('Payment successful. Thank you!');
+          this._toast.showSuccess(this._translate.instant('pages.pricing.messages.paymentSuccess'));
           this.checkoutPlan.set(null);
           this._mountedPlan = null;
           this._mountedEl = null;
@@ -229,10 +232,10 @@ export default class PricingComponent {
           this.isRetryingPaymentSave.set(false);
           this._pendingPaymentPayload.set(payload);
           this.paymentSaveError.set(
-            'Payment went through PayPal, but we could not save your receipt yet.',
+            this._translate.instant('pages.pricing.errors.receiptSaveFailedShort'),
           );
           this._toast.showError(
-            'Payment went through PayPal, but we could not save your receipt. Please retry now or contact support with your PayPal confirmation.',
+            this._translate.instant('pages.pricing.errors.receiptSaveFailed'),
           );
         },
       });

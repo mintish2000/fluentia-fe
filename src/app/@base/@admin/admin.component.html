@@ -2,15 +2,15 @@
   <header class="admin-page__header">
     <div class="admin-page__header-main">
       <div class="admin-page__title-block">
-        <p class="admin-page__eyebrow"><span class="fluentia-word">Fluentia</span> · Administration</p>
-        <h1>Admin Hub</h1>
-        <p class="admin-page__welcome">Welcome back, {{ displayName() }}</p>
+        <p class="admin-page__eyebrow"><span class="fluentia-word">Fluentia</span> · {{ 'pages.admin.header.administration' | translate }}</p>
+        <h1>{{ 'pages.admin.header.title' | translate }}</h1>
+        <p class="admin-page__welcome">{{ 'pages.admin.header.welcomeBack' | translate }} {{ displayName() }}</p>
       </div>
       <div class="admin-page__header-actions">
         <div class="admin-page__sync-meta">
-          <span class="admin-page__sync-label">Last synced</span>
+          <span class="admin-page__sync-label">{{ 'pages.admin.header.lastSynced' | translate }}</span>
           <span class="admin-page__sync-value">
-            {{ lastSyncedAt() ? (lastSyncedAt() | date: 'medium') : 'Not yet' }}
+            {{ lastSyncedAt() ? (lastSyncedAt() | date: 'medium') : ('pages.admin.header.notYet' | translate) }}
           </span>
         </div>
         <button
@@ -19,7 +19,7 @@
           [disabled]="isLoading()"
           (click)="loadAdminOverview()"
         >
-          Refresh current section
+          {{ 'pages.admin.header.refreshCurrentSection' | translate }}
         </button>
       </div>
     </div>
@@ -27,7 +27,7 @@
 
 
 
-  <nav class="admin-workspace-switcher" role="tablist" aria-label="Admin sections">
+  <nav class="admin-workspace-switcher" role="tablist" [attr.aria-label]="'pages.admin.workspaceTabs.ariaLabel' | translate">
     <button
       type="button"
       role="tab"
@@ -46,7 +46,7 @@
       [class.admin-workspace-switcher__tab--active]="activeSection() === 'groups'"
       (click)="setActiveSection('groups')"
     >
-      Student Groups
+      {{ 'pages.admin.workspaceTabs.studentGroups' | translate }}
     </button>
     <button
       type="button"
@@ -56,7 +56,7 @@
       [class.admin-workspace-switcher__tab--active]="activeSection() === 'students'"
       (click)="setActiveSection('students')"
     >
-      Student Management
+      {{ 'pages.admin.workspaceTabs.studentManagement' | translate }}
     </button>
   </nav>
 
@@ -97,7 +97,7 @@
           @for (question of placementQuestions(); track question.id; let index = $index) {
             <article class="user-item user-item--placement">
               <div class="user-item__content">
-                <h3>Q{{ index + 1 }} - {{ getPlacementQuestionType(question) }}</h3>
+                <h3>Q{{ index + 1 }} – {{ getPlacementQuestionType(question) }}</h3>
                 <p>{{ question.prompt }}</p>
                 <p>
                   Options: {{ parsePlacementQuestionOptions(question).join(' | ') || 'Text answer' }}
@@ -132,20 +132,20 @@
     <section class="admin-card admin-card--full">
       <div class="section-head">
         <div>
-          <h2>Student Groups</h2>
-          <p>Groups from the admin API; assign students in the student dialog.</p>
+          <h2>{{ 'pages.admin.workspaceTabs.studentGroups' | translate }}</h2>
+          <p>{{ 'pages.admin.groups.description' | translate }}</p>
         </div>
         <div class="section-head__actions">
-          <button type="button" (click)="openCreateGroupDialog()">Add group</button>
+          <button type="button" (click)="openCreateGroupDialog()">{{ 'pages.admin.groups.addGroup' | translate }}</button>
         </div>
       </div>
 
       @if (!groups().length) {
-        <p class="state-text">No groups yet. Create one or refresh from the server.</p>
+        <p class="state-text">{{ 'pages.admin.groups.empty' | translate }}</p>
       } @else {
         <mat-menu #studentGroupActions="matMenu">
-          <button mat-menu-item type="button" (click)="editGroupFromMenu()">Edit</button>
-          <button mat-menu-item type="button" (click)="deleteGroupFromMenu()">Delete</button>
+          <button mat-menu-item type="button" (click)="editGroupFromMenu()">{{ 'shared.misc.edit' | translate }}</button>
+          <button mat-menu-item type="button" (click)="deleteGroupFromMenu()">{{ 'shared.misc.delete' | translate }}</button>
         </mat-menu>
 
         <div class="group-card-grid">
@@ -159,7 +159,7 @@
                   mat-icon-button
                   [matMenuTriggerFor]="studentGroupActions"
                   (click)="setGroupMenuContext(group)"
-                  [attr.aria-label]="'Actions for group ' + group.name"
+                  [attr.aria-label]="'pages.admin.groups.actionsForGroupAria' | translate: { name: group.name }"
                 >
                   <mat-icon>more_vert</mat-icon>
                 </button>
@@ -184,29 +184,29 @@
   @if (activeSection() === 'students') {
       <section class="admin-metrics">
     <article class="metric-card">
-      <h3>Students</h3>
+      <h3>{{ 'pages.admin.students.metrics.students' | translate }}</h3>
       <p>{{ students().length }}</p>
     </article>
     <article class="metric-card">
-      <h3>Active Students</h3>
+      <h3>{{ 'pages.admin.students.metrics.activeStudents' | translate }}</h3>
       <p>{{ activeStudentsCount() }}</p>
     </article>
     <article class="metric-card">
-      <h3>Inactive Students</h3>
+      <h3>{{ 'pages.admin.students.metrics.inactiveStudents' | translate }}</h3>
       <p>{{ inactiveStudentsCount() }}</p>
     </article>
     <article class="metric-card">
-      <h3>Total Paid</h3>
+      <h3>{{ 'pages.admin.students.metrics.totalPaid' | translate }}</h3>
       <p>{{ totalPaidAmount() | number: '1.0-2' }}</p>
     </article>
   </section>
     <section class="admin-card admin-card--full">
       <div class="student-header-row">
         <div>
-          <h2>Student Management</h2>
+          <h2>{{ 'pages.admin.workspaceTabs.studentManagement' | translate }}</h2>
         </div>
         <div class="student-header-row__actions">
-          <button type="button" (click)="openCreateStudentDialog()">Add Student</button>
+          <button type="button" (click)="openCreateStudentDialog()">{{ 'pages.admin.students.addStudent' | translate }}</button>
         </div>
       </div>
 
@@ -219,23 +219,23 @@
           spellcheck="false"
           [ngModel]="studentSearchQuery()"
           (ngModelChange)="setStudentSearchQuery($event)"
-          placeholder="Search by name or email"
+          [placeholder]="'pages.admin.students.searchPlaceholder' | translate"
         />
         <select
           [ngModel]="studentStatusFilter()"
           (ngModelChange)="setStudentStatusFilter($event)"
         >
-          <option value="all">All statuses</option>
-          <option value="active">Active only</option>
-          <option value="inactive">Inactive only</option>
+          <option value="all">{{ 'pages.admin.students.filters.allStatuses' | translate }}</option>
+          <option value="active">{{ 'pages.admin.students.filters.activeOnly' | translate }}</option>
+          <option value="inactive">{{ 'pages.admin.students.filters.inactiveOnly' | translate }}</option>
         </select>
         <span class="student-controls__meta">
-          Showing {{ pagedStudents().length }} of {{ filteredStudents().length }}
+          {{ 'pages.admin.students.showing' | translate: { shown: pagedStudents().length, total: filteredStudents().length } }}
         </span>
       </div>
 
       @if (!filteredStudents().length) {
-        <p class="state-text">No students available.</p>
+        <p class="state-text">{{ 'pages.admin.students.empty' | translate }}</p>
       } @else {
         <div class="student-grid">
           <aside class="student-list-panel">
@@ -261,16 +261,16 @@
 
             <div class="student-pagination">
               <button type="button" class="secondary" [disabled]="studentPage() <= 1" (click)="prevStudentPage()">
-                Previous
+                {{ 'shared.misc.previous' | translate }}
               </button>
-              <span>Page {{ studentPage() }} of {{ studentPageCount() }}</span>
+              <span>{{ 'pages.admin.students.pageOf' | translate: { page: studentPage(), total: studentPageCount() } }}</span>
               <button
                 type="button"
                 class="secondary"
                 [disabled]="studentPage() >= studentPageCount()"
                 (click)="nextStudentPage()"
               >
-                Next
+                {{ 'shared.misc.next' | translate }}
               </button>
             </div>
           </aside>
@@ -288,14 +288,14 @@
                   </p>
                   @if (getGroupName(student.groupId)) {
                     <p class="student-detail-head__group">
-                      Group: <strong>{{ getGroupName(student.groupId) }}</strong>
+                      {{ 'pages.admin.students.groupLabel' | translate }} <strong>{{ getGroupName(student.groupId) }}</strong>
                     </p>
                   }
                 </div>
                 <div class="user-item__actions student-detail-head__actions">
-                  <button type="button" class="secondary" (click)="openEditStudentDialog(student)">Edit</button>
+                  <button type="button" class="secondary" (click)="openEditStudentDialog(student)">{{ 'shared.misc.edit' | translate }}</button>
                   <button type="button" class="secondary" (click)="toggleStudentStatus(student)">
-                    {{ student.status === 'active' ? 'Deactivate' : 'Activate' }}
+                    {{ student.status === 'active' ? ('shared.misc.deactivate' | translate) : ('shared.misc.activate' | translate) }}
                   </button>
                 </div>
                 <button
@@ -316,20 +316,20 @@
                 </p>
                 <h5>Mistakes</h5>
                 @if (!student.placement.mistakes.length) {
-                  <p class="state-text">No mistakes recorded.</p>
+                  <p class="state-text">{{ 'pages.admin.students.noMistakes' | translate }}</p>
                 } @else {
                   <ul class="mistake-list">
                     @for (mistake of visibleMistakes(); track mistake.questionId) {
                       <li>
                         <strong>{{ mistake.questionPrompt }}</strong>
-                        <span>Your answer: {{ mistake.studentAnswer }}</span>
-                        <span>Correct answer: {{ mistake.correctAnswer }}</span>
+                        <span>{{ 'pages.admin.students.yourAnswer' | translate }} {{ mistake.studentAnswer }}</span>
+                        <span>{{ 'pages.admin.students.correctAnswer' | translate }} {{ mistake.correctAnswer }}</span>
                       </li>
                     }
                   </ul>
                   @if (student.placement.mistakes.length > 8) {
                     <button type="button" class="secondary" (click)="toggleAllMistakes()">
-                      {{ showAllMistakes() ? 'Show fewer mistakes' : 'Show all mistakes' }}
+                      {{ showAllMistakes() ? ('pages.admin.students.showFewerMistakes' | translate) : ('pages.admin.students.showAllMistakes' | translate) }}
                     </button>
                   }
                 }
@@ -342,7 +342,7 @@
                   | Next payment: {{ student.nextPaymentAmount | number: '1.0-2' }} on {{ student.nextPaymentDate | date: 'mediumDate' }}
                 </p>
                 @if (!student.payments.length) {
-                  <p class="state-text">No payment records yet.</p>
+                  <p class="state-text">{{ 'pages.admin.students.noPaymentRecords' | translate }}</p>
                 } @else {
                   <ul class="payment-list">
                     @for (payment of visiblePayments(); track payment.id) {
@@ -355,7 +355,7 @@
                   </ul>
                   @if (student.payments.length > 8) {
                     <button type="button" class="secondary" (click)="toggleAllPayments()">
-                      {{ showAllPayments() ? 'Show fewer payments' : 'Show all payments' }}
+                      {{ showAllPayments() ? ('pages.admin.students.showFewerPayments' | translate) : ('pages.admin.students.showAllPayments' | translate) }}
                     </button>
                   }
                 }
@@ -366,7 +366,7 @@
                 @if (student.notes && student.notes.trim()) {
                   <p class="student-notes-readonly">{{ student.notes }}</p>
                 } @else {
-                  <p class="state-text">No notes yet. Use Edit to add coaching notes.</p>
+                  <p class="state-text">{{ 'pages.admin.students.noNotesYet' | translate }}</p>
                 }
               </section>
             }

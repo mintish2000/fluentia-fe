@@ -13,6 +13,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
+import { TranslateModule } from '@ngx-translate/core';
 import { BaseComponent } from '@shared/components/base/base.component';
 import { Question } from '@shared/interfaces/learning/learning.interface';
 import { ScrollRevealContainerDirective } from '@shared/directives/scroll-reveal-container.directive';
@@ -46,6 +47,7 @@ const STUDENT_DETAIL_COLLAPSE_AT = 8;
     MatButtonModule,
     MatIconModule,
     MatMenuModule,
+    TranslateModule,
   ],
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.scss',
