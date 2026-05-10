@@ -67,7 +67,7 @@ export const englishLocal: Locale = {
           titleLine2: 'JOURNEY TODAY!',
           bullets: [
             'Professional online English lessons tailored to your goals',
-            'Small groups and 1–on–1 classes available',
+            'Small groups and 1-on-1 classes available',
           ],
         },
         tagline: {
@@ -338,15 +338,15 @@ export const englishLocal: Locale = {
         mostPopular: 'most popular',
         aboutClasses: 'Classes Structure',
         groupClassesStructureTitle: 'GROUP CLASSES ',
-        groupClassesStructureText: 'All levels are offered morning and evening, with 4 sessions per week. Each session is 60 minutes, taught by our certified teachers.',
+        groupClassesStructureText: 'All levels are offered in the morning and evening, with 4 sessions per week. Each session is 60 minutes long and is taught by our certified teachers.',
         privateClassesStructureTitle: 'Private Classes',
         privateTagFlexible: 'Fully flexible',
         privateTagDuration: '30 or 60 minutes',
         groupClassesPricingTitle: 'Group Classes Pricing',
-        privateTitle: '(1–on–1): Private General English, IELTS Preparation, or SAT 1 (Reading & Writing) Classes',
-        private30Title: '30–Minute Private Classes',
-        private60Title: '60–Minute Private Classes',
-        privateLead: '1–on–1 instruction, fully customized lessons, flexible scheduling',
+        privateTitle: '(1-on-1): Private General English, IELTS Preparation, or SAT 1 (Reading & Writing) Classes',
+        private30Title: '30-minute Private Classes',
+        private60Title: '60-minute Private Classes',
+        privateLead: '1-on-1 instruction, fully customized lessons, flexible scheduling',
         sessions: {
           one: 'One session',
           four: 'Four sessions',
@@ -369,15 +369,15 @@ export const englishLocal: Locale = {
           twelveMonths: 'Twelve months',
         },
         features: {
-          session60: '60–minute sessions',
+          session60: '60-minute sessions',
           max6: 'Max 6 students',
           fourPerWeek: '4 sessions/week',
           digitalMaterials: 'Digital materials',
           progressTracking: 'Progress tracking',
         },
         bonus: {
-          twoClasses: 'Includes 2 bonus 1–on–1 classes',
-          fiveClasses: 'Includes 5 bonus 1–on–1 classes',
+          twoClasses: 'Includes 2 bonus 1-on-1 classes',
+          fiveClasses: 'Includes 5 bonus 1-on-1 classes',
         },
         checkout: {
           close: 'Close checkout',
@@ -403,7 +403,7 @@ export const englishLocal: Locale = {
       about: {
         title: 'ABOUT US',
         subtitle: 'WHO WE ARE',
-        lead: 'Co–founders and certified English instructors',
+        lead: 'Co-founders and certified English instructors',
         leadText: 'Experienced in teaching students across different levels, ages, and learning goals.',
         leadPoints: [
           'Each with over 10 years of experience in English language instruction',
@@ -421,22 +421,22 @@ export const englishLocal: Locale = {
         expertiseItems: [
           'General English (A1–C1)',
           'Writing and critical thinking',
-          'Speaking–focused and communicative learning',
+          'Speaking-focused and communicative learning',
         ],
         missionTitle: 'Mission & Philosophy',
         missionText: 'We help students of all levels learn English in a practical, engaging, and effective way.',
         pills: {
           goal: {
-            title: 'Goal–Oriented',
+            title: 'Goal-Oriented',
             text: 'Every lesson has clear objectives aligned with your English goals',
           },
           studentCentered: {
-            title: 'Student–Centered',
+            title: 'Student-Centered',
             text: 'Classes focus on your needs, interests, and learning styles',
           },
           interactive: {
             title: 'Interactive',
-            text: 'Maximum speaking practice and real–life communication',
+            text: 'Maximum speaking practice and real-life communication',
           },
           professional: {
             title: 'Professional',
@@ -449,21 +449,21 @@ export const englishLocal: Locale = {
         subtitle: 'Professionally delivered, interactive online lessons',
         learningFormats: 'OUR LEARNING FORMATS',
         groupClassesTitle: 'General English Group Classes',
-        groupList: ['Max 6 students', 'Interactive learning', 'Peer support', '60–minute sessions'],
-        privateTitle: '(1–on–1): Private General English, IELTS Preparation, or SAT 1 (Reading & Writing) Classes',
-        privateList: ['Customized curriculum', 'Full teacher focus', 'Faster progress', '30 or 60–minute sessions'],
+        groupList: ['Max 6 students', 'Interactive learning', 'Peer support', '60-minute sessions'],
+        privateTitle: '(1-on-1): Private General English, IELTS Preparation, or SAT 1 (Reading & Writing) Classes',
+        privateList: ['Customized curriculum', 'Full teacher focus', 'Faster progress', '30 or 60-minute sessions'],
         classStructure: 'CLASS STRUCTURE',
         chips: {
           platform: { title: 'Platform', text: 'Delivered via Microsoft Teams' },
           materials: { title: 'Materials', text: 'Guided Digital Sources' },
-          approach: { title: 'Approach', text: 'Real–life Speaking Application' },
+          approach: { title: 'Approach', text: 'Real-life Speaking Application' },
         },
         highlightsTitle: 'Learning Experience Highlights',
         highlights: {
           active: { title: 'Active participation', text: 'Practicing from day one with meaningful speaking opportunities' },
-          feedback: { title: 'Immediate feedback', text: 'Gaining real–time corrections and personalized guidance' },
+          feedback: { title: 'Immediate feedback', text: 'Gaining real-time corrections and personalized guidance' },
           progress: { title: 'Progress tracking', text: 'Monitoring growth through regular assessments' },
-          realWorld: { title: 'Real–world language use', text: 'Applying practical language in everyday situations' },
+          realWorld: { title: 'Real-world language use', text: 'Applying practical language in everyday situations' },
         },
       },
       contact: {
@@ -524,7 +524,7 @@ export const englishLocal: Locale = {
             objectives: ['Handle most travel and everyday situations effectively', 'Give reasons and explanations for opinions', 'Understand TV shows, movies, and basic media with subtitles', 'Describe experiences, events, dreams, and ambitions'],
           },
           b2: {
-            label: 'Upper–Intermediate',
+            label: 'Upper-Intermediate',
             duration: '4–6 months (Intensive) or 10–12 months (Regular)',
             who: 'Students who can interact with native speakers fluently',
             outcome: 'Can communicate effectively in professional and academic contexts',
@@ -534,10 +534,10 @@ export const englishLocal: Locale = {
           c1: {
             label: 'Advanced',
             duration: '5–7 months (Intensive) or 12–14 months (Regular)',
-            who: 'Students aiming for near–native proficiency',
+            who: 'Students aiming for near-native proficiency',
             outcome: 'Can use English for all professional, academic, and social purposes with precision',
-            skills: { speaking: ['Express ideas fluently, accurately, and persuasively'], listening: ['Understand virtually all spoken English, including complex discussions'], reading: ['Interpret complex texts, literature, and specialized materials'], writing: ['Write well–structured, coherent, and detailed texts'] },
-            objectives: ['Use English flexibly for social, academic, and professional purposes', 'Understand virtually everything read or heard', 'Summarize and reconstruct arguments from multiple sources', 'Produce clear, well–structured texts on complex subjects'],
+            skills: { speaking: ['Express ideas fluently, accurately, and persuasively'], listening: ['Understand virtually all spoken English, including complex discussions'], reading: ['Interpret complex texts, literature, and specialized materials'], writing: ['Write well-structured, coherent, and detailed texts'] },
+            objectives: ['Use English flexibly for social, academic, and professional purposes', 'Understand virtually everything read or heard', 'Summarize and reconstruct arguments from multiple sources', 'Produce clear, well-structured texts on complex subjects'],
           },
         },
       },
