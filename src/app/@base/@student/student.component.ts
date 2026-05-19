@@ -140,6 +140,7 @@ export default class StudentComponent extends BaseComponent {
       .subscribe({
         next: (res) => {
           this.hub.update((h) => (h ? { ...h, shift: res.shift } : h));
+          this._toast.showSuccess(this._translate.instant('pages.student.shift.saved'));
         },
         error: () => {
           this.shiftError.set(this._translate.instant('pages.student.shift.saveFailed'));

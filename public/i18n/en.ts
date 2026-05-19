@@ -230,6 +230,7 @@ export const englishLocal: Locale = {
           evening: 'Evening',
           ariaLabel: 'Toggle session shift between morning and evening',
           saving: 'Saving shift...',
+          saved: 'Shift updated successfully.',
           saveFailed: 'Could not update shift. Please try again.',
         },
       },

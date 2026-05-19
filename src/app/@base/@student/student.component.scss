@@ -104,3 +104,97 @@
   color: rgba(11, 58, 102, 0.78);
   font-weight: 700;
 }
+
+.role-page__shift {
+  gap: 0.75rem;
+  padding: 0.35rem 0.55rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(255, 244, 197, 0.8), rgba(11, 58, 102, 0.08));
+}
+
+.role-page__shift--saving {
+  align-items: flex-start;
+}
+
+.role-page__shift-control {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.role-page__shift-option {
+  display: inline-grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  border: 1px solid rgba(11, 58, 102, 0.08);
+  background: rgba(255, 255, 255, 0.82);
+  color: rgba(11, 58, 102, 0.45);
+  font-size: 1.1rem;
+  line-height: 1;
+  transition:
+    transform 160ms ease,
+    color 160ms ease,
+    background-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.role-page__shift-option.is-active {
+  color: #0b3a66;
+  background: #ffffff;
+  box-shadow: 0 8px 18px rgba(11, 58, 102, 0.12);
+  transform: translateY(-1px);
+}
+
+.role-page__shift-toggle {
+  --mdc-switch-selected-track-color: rgba(11, 58, 102, 0.28);
+  --mdc-switch-selected-hover-track-color: rgba(11, 58, 102, 0.34);
+  --mdc-switch-selected-focus-track-color: rgba(11, 58, 102, 0.34);
+  --mdc-switch-selected-pressed-track-color: rgba(11, 58, 102, 0.34);
+  --mdc-switch-unselected-track-color: rgba(212, 166, 42, 0.32);
+  --mdc-switch-unselected-hover-track-color: rgba(212, 166, 42, 0.38);
+  --mdc-switch-unselected-focus-track-color: rgba(212, 166, 42, 0.38);
+  --mdc-switch-unselected-pressed-track-color: rgba(212, 166, 42, 0.38);
+  --mdc-switch-selected-handle-color: #0b3a66;
+  --mdc-switch-selected-hover-handle-color: #0b3a66;
+  --mdc-switch-selected-focus-handle-color: #0b3a66;
+  --mdc-switch-selected-pressed-handle-color: #0b3a66;
+  --mdc-switch-unselected-handle-color: #d4a62a;
+  --mdc-switch-unselected-hover-handle-color: #d4a62a;
+  --mdc-switch-unselected-focus-handle-color: #d4a62a;
+  --mdc-switch-unselected-pressed-handle-color: #d4a62a;
+  --mdc-switch-selected-focus-state-layer-color: rgba(11, 58, 102, 0.16);
+  --mdc-switch-selected-hover-state-layer-color: rgba(11, 58, 102, 0.12);
+  --mdc-switch-selected-pressed-state-layer-color: rgba(11, 58, 102, 0.16);
+  --mdc-switch-unselected-focus-state-layer-color: rgba(212, 166, 42, 0.18);
+  --mdc-switch-unselected-hover-state-layer-color: rgba(212, 166, 42, 0.14);
+  --mdc-switch-unselected-pressed-state-layer-color: rgba(212, 166, 42, 0.18);
+}
+
+.role-page__shift-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.78rem;
+  color: #0b3a66;
+  white-space: nowrap;
+  min-height: 1rem;
+}
+
+.role-page__shift-spinner {
+  display: inline-block;
+  width: 0.95rem;
+  height: 0.95rem;
+  border: 2px solid rgba(11, 58, 102, 0.16);
+  border-top-color: #0b3a66;
+  border-radius: 50%;
+  animation: student-shift-spin 0.7s linear infinite;
+}
+
+@keyframes student-shift-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

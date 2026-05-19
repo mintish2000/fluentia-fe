@@ -29,15 +29,35 @@
       </div>
     </div>
     @if (placementDone() && hub()) {
-      <div class="role-page__shift">
-        <span>{{ 'pages.student.shift.morning' | translate }}</span>
-        <mat-slide-toggle
-          [checked]="hub()!.shift === 'evening'"
-          [disabled]="shiftSaving()"
-          (change)="updateShift($event.checked)"
-          aria-label="{{ 'pages.student.shift.ariaLabel' | translate }}"
-        ></mat-slide-toggle>
-        <span>{{ 'pages.student.shift.evening' | translate }}</span>
+      <div class="role-page__shift" [class.role-page__shift--saving]="shiftSaving()" [attr.aria-busy]="shiftSaving()">
+        <span
+          class="role-page__shift-option"
+          [class.is-active]="hub()!.shift === 'morning'"
+          [attr.title]="'pages.student.shift.morning' | translate"
+          aria-hidden="true"
+        >&#9728;</span>
+        <div class="role-page__shift-control">
+          <mat-slide-toggle
+            class="role-page__shift-toggle"
+            [checked]="hub()!.shift === 'evening'"
+            [disabled]="shiftSaving()"
+            [hideIcon]="true"
+            (change)="updateShift($event.checked)"
+            aria-label="{{ 'pages.student.shift.ariaLabel' | translate }}"
+          ></mat-slide-toggle>
+          @if (shiftSaving()) {
+            <span class="role-page__shift-status" role="status" aria-live="polite">
+              <span class="role-page__shift-spinner" aria-hidden="true"></span>
+              <span>{{ 'pages.student.shift.saving' | translate }}</span>
+            </span>
+          }
+        </div>
+        <span
+          class="role-page__shift-option"
+          [class.is-active]="hub()!.shift === 'evening'"
+          [attr.title]="'pages.student.shift.evening' | translate"
+          aria-hidden="true"
+        >&#9790;</span>
       </div>
     }
   </header>
