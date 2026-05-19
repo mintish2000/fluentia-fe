@@ -463,7 +463,11 @@ export const englishLocal: Locale = {
         },
         paymentSuccessDialog: {
           title: 'Payment Successful!',
-          message: 'Thank you for your payment. We will contact you within 24 hours to get you started.',
+          message1: 'Your registration has been completed successfully.',
+          message2:
+            'You will receive a confirmation email within 24 hours with your class details and steps.',
+          message3:
+            'If you don\'t receive an email within this time, please contact us directly.',
           close: 'Got it',
         },
       },

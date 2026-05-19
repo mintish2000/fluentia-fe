@@ -15,7 +15,9 @@ import { TranslateModule } from '@ngx-translate/core';
       </div>
       <h2 mat-dialog-title>{{ 'pages.pricing.paymentSuccessDialog.title' | translate }}</h2>
       <mat-dialog-content>
-        <p>{{ 'pages.pricing.paymentSuccessDialog.message' | translate }}</p>
+        <p>{{ 'pages.pricing.paymentSuccessDialog.message1' | translate }}</p>
+        <p>{{ 'pages.pricing.paymentSuccessDialog.message2' | translate }}</p>
+        <p>{{ 'pages.pricing.paymentSuccessDialog.message3' | translate }}</p>
       </mat-dialog-content>
       <mat-dialog-actions align="end">
         <button mat-flat-button color="primary" [mat-dialog-close]="true">

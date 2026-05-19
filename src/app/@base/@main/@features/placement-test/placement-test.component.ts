@@ -38,6 +38,7 @@ export default class PlacementTestComponent implements OnDestroy {
   readonly isSubmitting = signal(false);
   readonly timerSecondsLeft = signal(0);
   readonly questions = signal<Question[]>([]);
+  readonly shuffledOptionsMap = signal<Record<string, string[]>>({});
   readonly singleAnswerMap = signal<Record<string, string>>({});
   readonly multiAnswerMap = signal<Record<string, string[]>>({});
   readonly textAnswerMap = signal<Record<string, string | undefined>>({});
@@ -78,6 +79,7 @@ export default class PlacementTestComponent implements OnDestroy {
       const qs = this._placementTestService.placementQuestions();
       if (completed) {
         this.questions.set([]);
+        this.shuffledOptionsMap.set({});
         this._stopTimer();
         return;
       }
@@ -85,6 +87,13 @@ export default class PlacementTestComponent implements OnDestroy {
       this.multiAnswerMap.set({});
       this.textAnswerMap.set({});
       this.questions.set(qs);
+      this.shuffledOptionsMap.set(
+        qs.reduce<Record<string, string[]>>((acc, question) => {
+          const parsed = parseQuestionMeta(question.options);
+          acc[question.id] = this._shuffleOptions(parsed.options);
+          return acc;
+        }, {}),
+      );
       if (qs.length) {
         const seconds = this._placementTestService.examDurationSeconds();
         this.timerSecondsLeft.set(seconds);
@@ -145,6 +154,10 @@ export default class PlacementTestComponent implements OnDestroy {
    * Returns parsed option list from question options payload.
    */
   getQuestionOptions(question: Question): string[] {
+    const shuffled = this.shuffledOptionsMap()[question.id];
+    if (shuffled) {
+      return shuffled;
+    }
     const parsed = parseQuestionMeta(question.options);
     return parsed.options;
   }
@@ -272,5 +285,17 @@ export default class PlacementTestComponent implements OnDestroy {
     const minutes = Math.floor(safeSeconds / 60);
     const seconds = safeSeconds % 60;
     return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  }
+
+  /**
+   * Returns a shuffled copy of options using Fisher-Yates.
+   */
+  private _shuffleOptions(options: string[]): string[] {
+    const shuffled = [...options];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
   }
 }

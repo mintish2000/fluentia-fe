@@ -12,6 +12,7 @@ import {
 import type { StudentHubPayload } from '@base/@student/student-hub.models';
 import { UserService } from '@shared/services/user/user.service';
 import { ApiService } from '@shared/services/api/api.service';
+import { NO_CACHE } from '@core/interceptors/cache.interceptor';
 import {
   mapPlacementRecordsToQuestions,
   mapPlacementWorkspaceToQuiz,
@@ -63,11 +64,17 @@ export class PlacementTestService {
     this.isStatusLoaded.set(false);
 
     forkJoin({
-      hub: this._api.get<StudentHubPayload>({ path: '/student/hub' }).pipe(
+      hub: this._api.get<StudentHubPayload>({
+        path: '/student/hub',
+        contexts: [{ key: NO_CACHE, value: true }],
+      }).pipe(
         catchError(() => of(null)),
       ),
       workspace: this._api
-        .get<PlacementWorkspacePayload | null>({ path: '/student/placement' })
+        .get<PlacementWorkspacePayload | null>({
+          path: '/student/placement',
+          contexts: [{ key: NO_CACHE, value: true }],
+        })
         .pipe(catchError(() => of(null))),
     })
       .pipe(finalize(() => this.isLoadingStatus.set(false)))
