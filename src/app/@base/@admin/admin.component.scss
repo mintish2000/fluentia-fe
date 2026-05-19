@@ -877,6 +877,21 @@ $admin-btn-pill: 9999px;
   resize: vertical;
 }
 
+.student-section button.secondary {
+  border: 1px solid rgba(11, 58, 102, 0.2);
+  border-radius: $admin-btn-pill;
+  padding: 0.5rem 0.95rem;
+  font-weight: 800;
+  color: $brand-navy;
+  background: rgba(11, 58, 102, 0.08);
+  cursor: pointer;
+  transition: background 0.12s ease;
+}
+
+.student-section button.secondary:hover {
+  background: rgba(11, 58, 102, 0.14);
+}
+
 .mistake-list,
 .payment-list {
   margin: 0;

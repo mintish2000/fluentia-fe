@@ -1,5 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -11,7 +10,6 @@ import { GroupDialogData, GroupDialogResult } from '../../models/admin-group.mod
   selector: 'app-admin-group-dialog',
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     MatDialogModule,
     MatFormFieldModule,
@@ -20,6 +18,7 @@ import { GroupDialogData, GroupDialogResult } from '../../models/admin-group.mod
   ],
   templateUrl: './group-dialog.component.html',
   styleUrl: './group-dialog.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GroupDialogComponent {
   private readonly _dialogRef = inject(MatDialogRef<GroupDialogComponent, GroupDialogResult>);

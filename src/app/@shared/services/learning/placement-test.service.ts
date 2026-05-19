@@ -16,7 +16,7 @@ import {
   mapPlacementRecordsToQuestions,
   mapPlacementWorkspaceToQuiz,
 } from '@shared/utils/learning/placement-workspace.mapper';
-import { catchError, finalize, forkJoin, Observable, of } from 'rxjs';
+import { catchError, finalize, forkJoin, Observable, of, Subject } from 'rxjs';
 
 /**
  * Student placement gate and exam state using {@code GET /student/hub} + {@code GET /student/placement}
@@ -28,6 +28,8 @@ export class PlacementTestService {
   private readonly _userService = inject(UserService);
 
   readonly isLoadingStatus = signal(false);
+  /** Emits once after a successful placement submission. */
+  readonly placementSubmitted$ = new Subject<void>();
   readonly placementQuiz = signal<Quiz | null>(null);
   /** Id for {@code POST /placement/:placementId/submit} (from load payload). */
   readonly placementId = signal<string | null>(null);
@@ -119,5 +121,6 @@ export class PlacementTestService {
   markCompleted() {
     this.hasCompletedPlacement.set(true);
     this.isStatusLoaded.set(true);
+    this.placementSubmitted$.next();
   }
 }

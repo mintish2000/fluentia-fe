@@ -6,6 +6,8 @@
         <li>{{ 'pages.home.hero.bullets.0' | translate }}</li>
         <li>{{ 'pages.home.hero.bullets.1' | translate }}</li>
       </ul>
+      <br />
+      <button type="button" class="cta cta--gold" (click)="navigateToLogin()">{{ 'pages.home.placement.ctaPrimary' | translate }}</button>
     </div>
 
     <div class="hero__media" aria-hidden="true">
@@ -24,6 +26,27 @@
   <section class="tagline" id="how">
     <div class="tagline__eyebrow tagline__eyebrow--title-case">{{ 'pages.home.tagline.eyebrow' | translate }}</div>
     <div class="tagline__heading">{{ 'pages.home.tagline.heading' | translate }}</div>
+  </section>
+
+  <section class="stats" data-scroll-reveal>
+    <div class="stats__grid">
+      <div class="stat">
+        <div class="stat__value">{{ 'pages.home.stats.studentsValue' | translate }}</div>
+        <div class="stat__label">{{ 'pages.home.stats.studentsLabel' | translate }}</div>
+      </div>
+      <div class="stat">
+        <div class="stat__value">{{ 'pages.home.stats.levelsValue' | translate }}</div>
+        <div class="stat__label">{{ 'pages.home.stats.levelsLabel' | translate }}</div>
+      </div>
+      <div class="stat">
+        <div class="stat__value">{{ 'pages.home.stats.teachersValue' | translate }}</div>
+        <div class="stat__label">{{ 'pages.home.stats.teachersLabel' | translate }}</div>
+      </div>
+      <div class="stat">
+        <div class="stat__value">{{ 'pages.home.stats.sessionsValue' | translate }}</div>
+        <div class="stat__label">{{ 'pages.home.stats.sessionsLabel' | translate }}</div>
+      </div>
+    </div>
   </section>
 
   <section class="features">
@@ -45,7 +68,7 @@
 
       <div class="feature">
         <span class="material-icons">person</span>
-        <div class="feature__label">1–on–1</div>
+        <div class="feature__label">1-on-1</div>
       </div>
     </div>
   </section>

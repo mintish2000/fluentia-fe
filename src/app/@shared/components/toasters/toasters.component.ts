@@ -1,5 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { Component, inject, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, ViewEncapsulation } from '@angular/core';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -22,7 +21,6 @@ interface ToastDialogData {
 @Component({
   selector: 'app-toasters',
   imports: [
-    CommonModule,
     MatCardModule,
     MatButtonModule,
     MatIconModule,
@@ -32,7 +30,8 @@ interface ToastDialogData {
   ],
   templateUrl: './toasters.component.html',
   styleUrl: './toasters.component.scss',
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToastersComponent {
   private _translate = inject(TranslateService);

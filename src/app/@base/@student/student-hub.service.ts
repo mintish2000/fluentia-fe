@@ -1,22 +1,47 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { ApiService } from '@shared/services/api/api.service';
-import { map } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
+import { NO_CACHE } from '@core/interceptors/cache.interceptor';
 import { StudentHubPayload, StudentHubPlacement, StudentShift } from './student-hub.models';
 
 /**
  * {@code GET /api/v1/student/hub} — placement, group, payments (see FRONTEND_API.md).
+ *
+ * Owns the hub state as signals so every consumer stays in sync without
+ * manual event buses or duplicated HTTP calls.
  */
 @Injectable({ providedIn: 'root' })
 export class StudentHubService {
   private readonly _api = inject(ApiService);
 
+  /** Latest hub snapshot — shared across all consumers. */
+  readonly hub = signal<StudentHubPayload | null>(null);
+
+  /** True while a load is in flight. */
+  readonly isLoading = signal(false);
+
   /**
-   * Returns the authenticated student's hub snapshot.
+   * Fetches a fresh hub snapshot, always bypassing the HTTP cache.
+   * Updates {@link hub} and {@link isLoading} so all signal consumers
+   * react immediately without extra subscriptions.
    */
-  getHub() {
+  load(): Observable<StudentHubPayload> {
+    this.isLoading.set(true);
     return this._api
-      .get<StudentHubPayload>({ path: '/student/hub' })
-      .pipe(map((payload) => this._mapPayload(payload)));
+      .get<StudentHubPayload>({
+        path: '/student/hub',
+        contexts: [{ key: NO_CACHE, value: true }],
+      })
+      .pipe(
+        map((payload) => this._mapPayload(payload)),
+        tap({
+          next: (payload) => {
+            this.hub.set(payload);
+            this.isLoading.set(false);
+          },
+          error: () => this.isLoading.set(false),
+        }),
+      );
   }
 
   /**

@@ -1,6 +1,5 @@
-import { CommonModule } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Component, DestroyRef, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject } from '@angular/core';
 import { FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -15,7 +14,6 @@ import { RegisterForm } from '../interfaces/login.interface';
 @Component({
   selector: 'app-register',
   imports: [
-    CommonModule,
     RouterModule,
     ReactiveFormsModule,
     ActionButtonComponent,
@@ -23,6 +21,7 @@ import { RegisterForm } from '../interfaces/login.interface';
     MatFormFieldModule,
     MatInputModule,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 })

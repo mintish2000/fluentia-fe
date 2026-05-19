@@ -64,16 +64,16 @@
     <section class="admin-card admin-card--full">
       <div class="section-head">
         <div>
-          <h2>Placement Test CRUD</h2>
+          <h2>{{ 'pages.admin.placement.title' | translate }}</h2>
         </div>
-        <span class="section-head__badge">Quality Control Workspace</span>
+        <span class="section-head__badge">{{ 'pages.admin.placement.badge' | translate }}</span>
       </div>
 
       <div class="stats-inline">
         <p class="state-text">
-          Quiz: {{ placementQuiz()?.title || 'Placement Test' }} | Questions:
-          {{ placementQuestions().length }} | Exam time:
-          {{ placementExamDurationMinutes() }} minutes
+          {{ 'pages.admin.placement.quizLabel' | translate }}: {{ placementQuiz()?.title || ('pages.admin.placement.title' | translate) }}
+          &nbsp;|&nbsp; {{ 'pages.admin.placement.questionsLabel' | translate }}: {{ placementQuestions().length }}
+          &nbsp;|&nbsp; {{ 'pages.admin.placement.examTimeLabel' | translate }}: {{ placementExamDurationMinutes() }} {{ 'pages.admin.placement.minutes' | translate }}
         </p>
       </div>
 
@@ -83,26 +83,26 @@
           (click)="openCreatePlacementQuestionDialog()"
           [disabled]="isLoading()"
         >
-          Add Question
+          {{ 'pages.admin.placement.addQuestion' | translate }}
         </button>
         <button type="button" class="secondary" (click)="refreshPlacementWorkspace()">
-          Reload questions
+          {{ 'pages.admin.placement.reloadQuestions' | translate }}
         </button>
       </div>
 
       @if (!placementQuestions().length) {
-        <p class="state-text">No placement questions available.</p>
+        <p class="state-text">{{ 'pages.admin.placement.empty' | translate }}</p>
       } @else {
         <div class="user-list">
           @for (question of placementQuestions(); track question.id; let index = $index) {
             <article class="user-item user-item--placement">
               <div class="user-item__content">
-                <h3>Q{{ index + 1 }} – {{ getPlacementQuestionType(question) }}</h3>
+                <h3>{{ 'pages.admin.placement.questionPrefix' | translate }}{{ index + 1 }} – {{ getPlacementQuestionType(question) }}</h3>
                 <p>{{ question.prompt }}</p>
                 <p>
-                  Options: {{ parsePlacementQuestionOptions(question).join(' | ') || 'Text answer' }}
+                  {{ 'pages.admin.placement.options' | translate }} {{ parsePlacementQuestionOptions(question).join(' | ') || ('pages.admin.placement.textAnswer' | translate) }}
                 </p>
-                <p>Correct: {{ getPlacementCorrectAnswerLabel(question) }}</p>
+                <p>{{ 'pages.admin.placement.correct' | translate }} {{ getPlacementCorrectAnswerLabel(question) }}</p>
               </div>
               <div class="user-item__actions">
                 <button
@@ -110,7 +110,7 @@
                   class="secondary"
                   (click)="openEditPlacementQuestionDialog(question)"
                 >
-                  Edit
+                  {{ 'shared.misc.edit' | translate }}
                 </button>
               </div>
               <button
@@ -319,12 +319,12 @@
               </div>
 
               <section class="student-section">
-                <h4>Placement Degree</h4>
+                <h4>{{ 'pages.admin.students.placementDegreeTitle' | translate }}</h4>
                 <p>
-                  Score: {{ student.placement.score }}% ({{ student.placement.correctAnswers }}/{{ student.placement.totalQuestions }})
-                  | Submitted: {{ student.placement.submittedAt | date: 'medium' }}
+                  {{ 'pages.admin.students.scoreLabel' | translate }} {{ student.placement.score }}% ({{ student.placement.correctAnswers }}/{{ student.placement.totalQuestions }})
+                  &nbsp;|&nbsp; {{ 'pages.admin.students.submittedLabel' | translate }} {{ student.placement.submittedAt | date: 'medium' }}
                 </p>
-                <h5>Mistakes</h5>
+                <h5>{{ 'pages.admin.students.mistakesTitle' | translate }}</h5>
                 @if (!student.placement.mistakes.length) {
                   <p class="state-text">{{ 'pages.admin.students.noMistakes' | translate }}</p>
                 } @else {
@@ -346,10 +346,10 @@
               </section>
 
               <section class="student-section">
-                <h4>Payments</h4>
+                <h4>{{ 'pages.admin.students.paymentsTitle' | translate }}</h4>
                 <p>
-                  Total paid: {{ getStudentPaidAmount(student) | number: '1.0-2' }}
-                  | Next payment: {{ student.nextPaymentAmount | number: '1.0-2' }} on {{ student.nextPaymentDate | date: 'mediumDate' }}
+                  {{ 'pages.admin.students.totalPaidLabel' | translate }} {{ getStudentPaidAmount(student) | number: '1.0-2' }}
+                  &nbsp;|&nbsp; {{ 'pages.admin.students.nextPaymentLabel' | translate }} {{ student.nextPaymentAmount | number: '1.0-2' }} {{ 'pages.admin.students.nextPaymentOn' | translate }} {{ student.nextPaymentDate | date: 'mediumDate' }}
                 </p>
                 @if (!student.payments.length) {
                   <p class="state-text">{{ 'pages.admin.students.noPaymentRecords' | translate }}</p>
@@ -372,7 +372,7 @@
               </section>
 
               <section class="student-section">
-                <h4>Notes</h4>
+                <h4>{{ 'pages.admin.students.notesTitle' | translate }}</h4>
                 @if (student.notes && student.notes.trim()) {
                   <p class="student-notes-readonly">{{ student.notes }}</p>
                 } @else {

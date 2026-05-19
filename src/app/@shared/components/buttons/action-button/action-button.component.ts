@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, input, output } from '@angular/core';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -12,13 +12,15 @@ import {
 @Component({
   selector: 'app-action-button',
   imports: [
-    CommonModule,
+    NgClass,
+    NgTemplateOutlet,
     MatButtonModule,
     MatIconModule,
     MatProgressSpinnerModule,
   ],
   templateUrl: './action-button.component.html',
   styleUrl: './action-button.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ActionButtonComponent {
   text = input.required<string>();

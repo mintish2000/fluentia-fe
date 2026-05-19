@@ -18,6 +18,7 @@ import { ScrollRevealContainerDirective } from '@shared/directives/scroll-reveal
 import { finalize } from 'rxjs';
 import { StudentHubService } from './student-hub.service';
 import { StudentHubPayload, StudentShift } from './student-hub.models';
+import { PRICING_PLAN_DETAILS, type PricingPlanId } from '@shared/constants/pricing-plans';
 
 @Component({
   selector: 'app-student',
@@ -36,9 +37,9 @@ export default class StudentComponent extends BaseComponent {
   readonly displayName = computed(
     () => this.currentUser()?.name || this._translate.instant('pages.student.fallbackName'),
   );
-  readonly isLoading = this._isLoading;
+  readonly isLoading = this._studentHub.isLoading;
   readonly lastSyncedAt = signal<Date | null>(null);
-  readonly hub = signal<StudentHubPayload | null>(null);
+  readonly hub = this._studentHub.hub;
   readonly hubLoadError = signal<string | null>(null);
   readonly shiftSaving = signal(false);
   readonly shiftError = signal<string | null>(null);
@@ -75,25 +76,22 @@ export default class StudentComponent extends BaseComponent {
   constructor() {
     super();
     this._loadHub();
+    this._placementTestService.placementSubmitted$
+      .pipe(takeUntilDestroyed(this._destroyRef))
+      .subscribe(() => this._loadHub());
+    // hub signal in StudentHubService updates automatically after payment
   }
 
   /**
    * Loads {@code GET /student/hub} per FRONTEND_API.md.
    */
   private _loadHub() {
-    this._isLoading.set(true);
     this.hubLoadError.set(null);
     this._studentHub
-      .getHub()
-      .pipe(
-        takeUntilDestroyed(this._destroyRef),
-        finalize(() => this._isLoading.set(false)),
-      )
+      .load()
+      .pipe(takeUntilDestroyed(this._destroyRef))
       .subscribe({
-        next: (payload) => {
-          this.hub.set(payload);
-          this.lastSyncedAt.set(new Date());
-        },
+        next: () => this.lastSyncedAt.set(new Date()),
         error: () => {
           this.hubLoadError.set(this._translate.instant('pages.student.errors.loadFailed'));
         },
@@ -113,6 +111,17 @@ export default class StudentComponent extends BaseComponent {
    */
   logout() {
     this._authService.kickOut();
+  }
+
+  /**
+   * Returns the human-readable plan description for a given planKey, or null if unknown.
+   */
+  planDescription(planKey: string | undefined): string | null {
+    if (!planKey) {
+      return null;
+    }
+    const details = PRICING_PLAN_DETAILS[planKey as PricingPlanId];
+    return details?.description ?? null;
   }
 
   /**

@@ -15,9 +15,10 @@
   }
 
   <header class="role-page__header">
-    <h1>{{ 'pages.student.title' | translate }}</h1>
-    <p>{{ 'pages.student.welcomeBack' | translate }} {{ displayName() }}</p>
-    <div class="role-page__sync">
+    <div class="role-page__header-col">
+      <h1>{{ 'pages.student.title' | translate }}</h1>
+      <p>{{ 'pages.student.welcomeBack' | translate }} {{ displayName() }}</p>
+      <div class="role-page__sync">
       <span>
         {{ 'pages.student.lastSynced' | translate }}:
         {{ lastSyncedAt() ? (lastSyncedAt() | date: 'medium') : ('pages.student.notSyncedYet' | translate) }}
@@ -25,7 +26,20 @@
       <button type="button" class="secondary" [disabled]="isLoading()" (click)="refreshOverview()">
         {{ 'pages.student.refresh' | translate }}
       </button>
+      </div>
     </div>
+    @if (placementDone() && hub()) {
+      <div class="role-page__shift">
+        <span>{{ 'pages.student.shift.morning' | translate }}</span>
+        <mat-slide-toggle
+          [checked]="hub()!.shift === 'evening'"
+          [disabled]="shiftSaving()"
+          (change)="updateShift($event.checked)"
+          aria-label="{{ 'pages.student.shift.ariaLabel' | translate }}"
+        ></mat-slide-toggle>
+        <span>{{ 'pages.student.shift.evening' | translate }}</span>
+      </div>
+    }
   </header>
 
   @if (hubLoadError()) {
@@ -33,7 +47,18 @@
   }
 
   @if (isLoading()) {
-    <p class="state-text">{{ 'pages.student.loadingData' | translate }}</p>
+    <div class="skeleton-group" aria-busy="true" aria-label="Loading">
+      <div class="skeleton-card">
+        <div class="skeleton-line skeleton-line--title"></div>
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line skeleton-line--short"></div>
+      </div>
+      <div class="skeleton-card">
+        <div class="skeleton-line skeleton-line--title"></div>
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line skeleton-line--short"></div>
+      </div>
+    </div>
   }
 
   @if (placementDone() && hub()?.placement) {
@@ -72,6 +97,9 @@
           @for (payment of hub()!.payments; track payment.id) {
             <article class="role-item">
               <div>
+                @if (planDescription(payment.planKey); as desc) {
+                  <p class="payment-plan">{{ desc }}</p>
+                }
                 <h3>{{ payment.amount }} {{ payment.currency }}</h3>
                 <p>{{ payment.paidAt | date: 'mediumDate' }} — {{ payment.status }}</p>
               </div>
@@ -110,26 +138,4 @@
     </section>
   }
 
-  @if (placementDone() && hub()) {
-    <section class="role-section" [class.role-section--dimmed]="showPlacementGate()">
-      <h2>{{ 'pages.student.shift.title' | translate }}</h2>
-      <p>{{ 'pages.student.shift.description' | translate }}</p>
-      <div class="info-card info-card--inline">
-        <span>{{ 'pages.student.shift.morning' | translate }}</span>
-        <mat-slide-toggle
-          [checked]="hub()!.shift === 'evening'"
-          [disabled]="shiftSaving()"
-          (change)="updateShift($event.checked)"
-          aria-label="{{ 'pages.student.shift.ariaLabel' | translate }}"
-        ></mat-slide-toggle>
-        <span>{{ 'pages.student.shift.evening' | translate }}</span>
-      </div>
-      @if (shiftSaving()) {
-        <p class="state-text">{{ 'pages.student.shift.saving' | translate }}</p>
-      }
-      @if (shiftError()) {
-        <p class="state-text state-text--error">{{ shiftError() }}</p>
-      }
-    </section>
-  }
 </section>

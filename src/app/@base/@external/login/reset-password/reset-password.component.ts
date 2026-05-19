@@ -1,6 +1,5 @@
-import { CommonModule } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
 import { FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -18,7 +17,6 @@ const FORGOT_PASSWORD_STATIC_NOTICE =
 @Component({
   selector: 'app-reset-password',
   imports: [
-    CommonModule,
     RouterModule,
     ReactiveFormsModule,
     ActionButtonComponent,
@@ -28,6 +26,7 @@ const FORGOT_PASSWORD_STATIC_NOTICE =
   ],
   templateUrl: './reset-password.component.html',
   styleUrl: './reset-password.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class ResetPasswordComponent extends BaseComponent {
   private _externalService = inject(ExternalService);

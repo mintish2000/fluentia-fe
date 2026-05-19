@@ -1,5 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { provideNativeDateAdapter } from '@angular/material/core';
@@ -20,7 +19,6 @@ import {
   selector: 'app-admin-student-dialog',
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     MatDialogModule,
     MatSlideToggleModule,
@@ -35,6 +33,7 @@ import {
   providers: [provideNativeDateAdapter()],
   templateUrl: './student-dialog.component.html',
   styleUrl: './student-dialog.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StudentDialogComponent {
   private readonly _dialogRef = inject(

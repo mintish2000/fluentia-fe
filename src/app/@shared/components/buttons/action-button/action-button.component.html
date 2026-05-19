@@ -36,7 +36,7 @@
   <ng-container *ngTemplateOutlet="loader"></ng-container>
   } @else {
   <div class="d-flex justify-content-center align-items-center gap-2">
-    <mat-icon *ngIf="icon()">{{ icon() }}</mat-icon>
+    @if (icon()) { <mat-icon>{{ icon() }}</mat-icon> }
     <span>{{ text() }}</span>
   </div>
   }
@@ -59,7 +59,7 @@
   <ng-container *ngTemplateOutlet="loader"></ng-container>
   } @else {
   <div class="d-flex justify-content-center align-items-center gap-2">
-    <mat-icon *ngIf="icon()">{{ icon() }}</mat-icon>
+    @if (icon()) { <mat-icon>{{ icon() }}</mat-icon> }
     <span>{{ text() }}</span>
   </div>
   }
@@ -83,7 +83,7 @@
   } @else {
   <div class="d-flex justify-content-center align-items-center gap-2">
     <span>{{ text() }}</span>
-    <span class="material-icons" *ngIf="icon()">{{ icon() }}</span>
+    @if (icon()) { <span class="material-icons">{{ icon() }}</span> }
   </div>
   }
 </button>

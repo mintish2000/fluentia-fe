@@ -1,5 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -18,7 +17,6 @@ import { parseQuestionMeta } from '@shared/utils/learning/quiz.utils';
   selector: 'app-placement-question-dialog',
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     MatDialogModule,
     MatFormFieldModule,
@@ -29,6 +27,7 @@ import { parseQuestionMeta } from '@shared/utils/learning/quiz.utils';
   ],
   templateUrl: './placement-question-dialog.component.html',
   styleUrl: './placement-question-dialog.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlacementQuestionDialogComponent {
   private readonly _dialogRef = inject(

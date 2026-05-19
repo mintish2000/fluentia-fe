@@ -16,6 +16,25 @@
   border-radius: 16px;
   box-shadow: 0 10px 26px rgba(31, 42, 55, 0.08);
   padding: 1.1rem 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.role-page__header-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.role-page__shift {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: rgba(11, 58, 102, 0.78);
+  flex-shrink: 0;
 }
 
 .role-page__header h1 {

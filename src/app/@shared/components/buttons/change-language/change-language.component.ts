@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, computed, inject, output, ViewEncapsulation } from '@angular/core';
 import { MatMenuModule } from '@angular/material/menu';
 import { TranslateModule } from '@ngx-translate/core';
@@ -8,7 +7,6 @@ import { ActionButtonComponent } from '../action-button/action-button.component'
 @Component({
   selector: 'app-change-language',
   imports: [
-    CommonModule,
     ActionButtonComponent,
     MatMenuModule,
     TranslateModule,

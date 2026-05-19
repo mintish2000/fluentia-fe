@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { CoreModule } from '@core/core.module';
@@ -8,6 +8,7 @@ import { CoreModule } from '@core/core.module';
   imports: [CoreModule, MatButtonModule],
   templateUrl: './page-not-found.component.html',
   styleUrl: './page-not-found.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PageNotFoundComponent {
   private _router = inject(Router);

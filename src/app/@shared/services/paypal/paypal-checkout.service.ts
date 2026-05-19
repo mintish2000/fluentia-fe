@@ -1,61 +1,37 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, NgZone, inject } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 import { environment } from '@environments/environment';
-import {
-  PRICING_PLAN_DETAILS,
-  type PricingPlanId,
-} from '@shared/constants/pricing-plans';
+import { type PricingPlanId } from '@shared/constants/pricing-plans';
 import { ToastService } from '@shared/services/toast/toast.service';
+import { PaymentsService } from '@shared/services/learning/payments.service';
 
-type PayPalActions = {
-  order: {
-    create: (payload: Record<string, unknown>) => Promise<string>;
-    capture: () => Promise<unknown>;
-  };
+type PayPalButtonsConfig = {
+  style?: Record<string, unknown>;
+  createOrder: () => Promise<string>;
+  onApprove: (data: { orderID: string }) => Promise<void>;
+  onError: (err: unknown) => void;
 };
 
 export type PaypalCheckoutSuccessContext = {
-  /** PayPal capture id ({@code purchase_units[0].payments.captures[0].id}), else order id fallback. */
+  /** PayPal capture id returned by the backend after server-side capture. */
   providerReference: string;
+  /** Captured amount as confirmed by the backend. */
+  amount: number;
+  /** Currency code as confirmed by the backend. */
+  currency: string;
 };
-
-/**
- * Reads capture id from Orders API capture response; falls back to top-level order {@code id}.
- */
-function extractPayPalProviderReference(details: unknown): string {
-  if (!details || typeof details !== 'object') {
-    return '';
-  }
-  const d = details as Record<string, unknown>;
-  const units = d['purchase_units'];
-  if (Array.isArray(units) && units[0] && typeof units[0] === 'object') {
-    const pu = units[0] as Record<string, unknown>;
-    const payments = pu['payments'];
-    if (payments && typeof payments === 'object') {
-      const captures = (payments as Record<string, unknown>)['captures'];
-      if (Array.isArray(captures) && captures[0] && typeof captures[0] === 'object') {
-        const id = (captures[0] as Record<string, unknown>)['id'];
-        if (typeof id === 'string' && id.length > 0) {
-          return id;
-        }
-      }
-    }
-  }
-  const orderId = d['id'];
-  return typeof orderId === 'string' ? orderId : '';
-}
 
 @Injectable({ providedIn: 'root' })
 export class PaypalCheckoutService {
   private readonly _toast = inject(ToastService);
+  private readonly _paymentsService = inject(PaymentsService);
+  private readonly _ngZone = inject(NgZone);
   private _scriptPromise: Promise<void> | null = null;
 
   get clientId(): string {
     return environment.paypalClientId?.trim() ?? '';
   }
 
-  get secretClientId(): string {
-    return environment.secretClientId?.trim() ?? '';
-  }
   /**
    * Loads PayPal JS SDK once. Requires `paypalClientId` in environment.
    */
@@ -64,7 +40,7 @@ export class PaypalCheckoutService {
     if (!clientId || typeof window === 'undefined') {
       return Promise.reject(new Error('PayPal client ID is not configured.'));
     }
-    const w = window as Window & { paypal?: { Buttons: (o: Record<string, unknown>) => { render: (el: HTMLElement) => Promise<void> } } };
+    const w = window as Window & { paypal?: unknown };
     if (w.paypal) {
       return Promise.resolve();
     }
@@ -74,8 +50,9 @@ export class PaypalCheckoutService {
     const currency = environment.paypalCurrency ?? 'USD';
     this._scriptPromise = new Promise((resolve, reject) => {
       const script = document.createElement('script');
-      script.src = `https://www.paypal.com/sdk/js?client-id=${encodeURIComponent(clientId)}&currency=${encodeURIComponent(currency)}`;
+      script.src = `https://www.paypal.com/sdk/js?client-id=${encodeURIComponent(clientId)}&currency=${encodeURIComponent(currency)}&intent=capture&components=buttons`;
       script.async = true;
+      (script as HTMLScriptElement & { fetchPriority: string }).fetchPriority = 'high';
       script.onload = () => resolve();
       script.onerror = () => {
         this._scriptPromise = null;
@@ -87,22 +64,19 @@ export class PaypalCheckoutService {
   }
 
   /**
-   * Renders Smart Payment Buttons (create + capture on the client).
-   * For production hardening, create/capture on your API instead.
+   * Renders Smart Payment Buttons backed by server-side order create and capture.
+   * The backend uses the PayPal secret key — it never reaches the browser.
    */
   async renderButtons(
     container: HTMLElement,
     planId: PricingPlanId,
     handlers: { onSuccess: (ctx: PaypalCheckoutSuccessContext) => void },
   ): Promise<void> {
-    const plan = PRICING_PLAN_DETAILS[planId];
-    if (!plan) {
-      this._toast.showError('Unknown product.');
-      return;
-    }
-
     await this.loadScript();
-    const w = window as Window & { paypal?: { Buttons: (o: Record<string, unknown>) => { render: (el: HTMLElement) => Promise<void> } } };
+
+    const w = window as Window & {
+      paypal?: { Buttons: (cfg: PayPalButtonsConfig) => { render: (el: HTMLElement) => Promise<void> } };
+    };
     const paypal = w.paypal;
     if (!paypal) {
       this._toast.showError('PayPal could not be loaded.');
@@ -110,7 +84,6 @@ export class PaypalCheckoutService {
     }
 
     container.replaceChildren();
-    const currency = environment.paypalCurrency ?? 'USD';
 
     const buttons = paypal.Buttons({
       style: {
@@ -120,33 +93,34 @@ export class PaypalCheckoutService {
         height: 48,
         borderRadius: 14,
       },
-      createOrder: (_data: unknown, actions: PayPalActions) =>
-        actions.order.create({
-          intent: 'CAPTURE',
-          purchase_units: [
-            {
-              amount: {
-                currency_code: currency,
-                value: plan.amount,
-              },
-              description: plan.description,
-              custom_id: planId,
-            },
-          ],
-        }),
-      onApprove: (_data: unknown, actions: PayPalActions) =>
-        actions.order.capture().then((details: unknown) => {
-          const providerReference = extractPayPalProviderReference(details);
-          handlers.onSuccess({
-            providerReference: providerReference || 'paypal-capture-unknown',
+      // Order is created server-to-server; the secret never leaves the backend.
+      createOrder: () =>
+        firstValueFrom(this._paymentsService.createPaypalOrder({ planId })).then(
+          (res) => res.orderId,
+        ),
+      // Capture is verified server-to-server; backend returns confirmed amount/currency.
+      // NgZone.run() ensures Angular change detection fires so isSavingPayment
+      // and other signals trigger the loading spinner in the template.
+      onApprove: (data) =>
+        firstValueFrom(
+          this._paymentsService.capturePaypalOrder(data.orderID),
+        ).then((capture) => {
+          this._ngZone.run(() => {
+            handlers.onSuccess({
+              providerReference: capture.providerReference,
+              amount: capture.amount,
+              currency: capture.currency,
+            });
           });
         }),
-      onError: (err: { message?: string } | Error) => {
-        const msg =
-          err && typeof err === 'object' && 'message' in err
-            ? String(err.message)
-            : 'PayPal could not complete checkout.';
-        this._toast.showError(msg);
+      onError: (err: unknown) => {
+        this._ngZone.run(() => {
+          const msg =
+            err && typeof err === 'object' && 'message' in err
+              ? String((err as { message: unknown }).message)
+              : 'PayPal could not complete checkout.';
+          this._toast.showError(msg);
+        });
       },
     });
 

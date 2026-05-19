@@ -21,6 +21,7 @@ export interface StudentHubPayment {
   currency: string;
   paidAt: string;
   status: string;
+  planKey?: string;
 }
 
 export type StudentShift = 'morning' | 'evening';

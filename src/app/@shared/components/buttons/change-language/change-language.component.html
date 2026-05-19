@@ -7,7 +7,9 @@
 />
 
 <mat-menu #languageMenu="matMenu">
-  <button *ngFor="let lang of filteredSystemLanguages()" (click)="switchLanguage(lang)" mat-menu-item>
-    {{ 'pages.layout.header.language.' + lang | translate }}
-  </button>
+  @for (lang of filteredSystemLanguages(); track lang) {
+    <button (click)="switchLanguage(lang)" mat-menu-item>
+      {{ 'pages.layout.header.language.' + lang | translate }}
+    </button>
+  }
 </mat-menu>

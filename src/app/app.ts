@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { environment } from '@environments/environment';
 import * as appLocales from '@i18n/index';
@@ -8,7 +8,8 @@ import { SystemService } from '@shared/services/system/system.service';
   selector: 'app-root',
   imports: [RouterOutlet],
   template: `<router-outlet />`,
-  styleUrl: './app.scss'
+  styleUrl: './app.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class App {
   private _systemService = inject(SystemService);

@@ -9,8 +9,7 @@ export const environment = {
     csv: 50 * 1024 * 1024, // 50MB
     pdf: 20 * 1024 * 1024, // 20MB
   },
-  paypalClientId: 'AT5Ll8qjh1JksFVRCDoObsw0_X8-xNJ7Vc50sDxxGiOVT6PRBrqic1QAfRx8CeztG8-nfudHUfUl1TWs',
-  secretClientId: 'EKIIFlUWx5Q0-M4_UDtjsPUF2_rH9SCgVKPh9xeh8Z9Ua3gh24olYQZKoaPu8b-brei8AtLEdSJePsSA',
+  paypalClientId: 'AQ1k1fW1vdxpnr2aUsOkbswfHHexVzxSEmb93RW7iIXxsRoXnPuDbdskK2yQ7qBOwAUGFl0fzf_MtwHu',
   paypalCurrency: 'USD',
   paypalHostedCheckoutUrlByPlan: {} as Record<string, string>,
 };

@@ -1,5 +1,4 @@
-import { CommonModule } from '@angular/common';
-import { Component, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { AbstractControl, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
@@ -27,9 +26,10 @@ interface FormErrorMessage {
 
 @Component({
   selector: 'app-form-errors',
-  imports: [CommonModule, ReactiveFormsModule, TranslateModule],
+  imports: [ReactiveFormsModule, TranslateModule],
   templateUrl: './form-errors.component.html',
   styleUrl: './form-errors.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormErrorsComponent {
   translate = inject(TranslateService);

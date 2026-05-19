@@ -691,6 +691,34 @@
   width: 100%;
   min-width: 0;
   box-sizing: border-box;
+
+  &--hidden {
+    display: none;
+  }
+}
+
+.checkout-dialog__saving {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 24px 22px;
+  font-size: 14px;
+  color: #1a3348;
+}
+
+.checkout-dialog__saving-spinner {
+  display: block;
+  width: 36px;
+  height: 36px;
+  border: 3px solid rgba(26, 51, 72, 0.15);
+  border-top-color: #1a3348;
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
 .checkout-dialog__footnote {

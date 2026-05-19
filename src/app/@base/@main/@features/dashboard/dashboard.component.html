@@ -3,7 +3,7 @@
   <!-- Date-range filter (always visible so user can change range before data loads) -->
   <form class="dashboard-filter" (ngSubmit)="applyDateRange()">
     <label class="dashboard-filter__field">
-      <span class="dashboard-filter__label">From</span>
+      <span class="dashboard-filter__label">{{ 'pages.dashboard.filter.from' | translate }}</span>
       <input
         type="date"
         class="dashboard-filter__input"
@@ -14,7 +14,7 @@
       />
     </label>
     <label class="dashboard-filter__field">
-      <span class="dashboard-filter__label">To</span>
+      <span class="dashboard-filter__label">{{ 'pages.dashboard.filter.to' | translate }}</span>
       <input
         type="date"
         class="dashboard-filter__input"
@@ -24,11 +24,43 @@
         required
       />
     </label>
-    <button type="submit" class="dashboard-filter__apply" [disabled]="isLoading()">Apply</button>
+    <button type="submit" class="dashboard-filter__apply" [disabled]="isLoading()">{{ 'pages.dashboard.filter.apply' | translate }}</button>
   </form>
 
   @if (isLoading()) {
-    <p class="dashboard-page__loading">{{ 'pages.dashboard.loading' | translate }}</p>
+    <div class="skeleton-group" aria-busy="true" aria-label="Loading">
+      <div class="skeleton-kpis">
+        <div class="skeleton-card">
+          <div class="skeleton-line skeleton-line--short"></div>
+          <div class="skeleton-line skeleton-line--value"></div>
+        </div>
+        <div class="skeleton-card">
+          <div class="skeleton-line skeleton-line--short"></div>
+          <div class="skeleton-line skeleton-line--value"></div>
+        </div>
+        <div class="skeleton-card">
+          <div class="skeleton-line skeleton-line--short"></div>
+          <div class="skeleton-line skeleton-line--value"></div>
+        </div>
+        <div class="skeleton-card">
+          <div class="skeleton-line skeleton-line--short"></div>
+          <div class="skeleton-line skeleton-line--value"></div>
+        </div>
+        <div class="skeleton-card">
+          <div class="skeleton-line skeleton-line--short"></div>
+          <div class="skeleton-line skeleton-line--value"></div>
+        </div>
+        <div class="skeleton-card">
+          <div class="skeleton-line skeleton-line--short"></div>
+          <div class="skeleton-line skeleton-line--value"></div>
+        </div>
+      </div>
+      <div class="skeleton-card skeleton-card--wide">
+        <div class="skeleton-line skeleton-line--title"></div>
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line skeleton-line--short"></div>
+      </div>
+    </div>
   } @else if (loadError()) {
     <p class="dashboard-page__error" role="alert">{{ loadError() }}</p>
     <button type="button" class="dashboard-page__retry" (click)="refreshDashboard()">{{ 'pages.dashboard.retry' | translate }}</button>

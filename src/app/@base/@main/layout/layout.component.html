@@ -181,14 +181,58 @@
                 {{ 'pages.layout.footer.startPlacementTest' | translate }}
               </a>
             }
+            <div class="footer-social">
+              <a
+                class="footer-social__link"
+                href="https://www.instagram.com/fluentiaacademy2026"
+                target="_blank"
+                rel="noopener noreferrer"
+                [attr.aria-label]="'pages.layout.footer.social.instagram' | translate"
+              >
+                <span class="material-icons" aria-hidden="true">camera_alt</span>
+              </a>
+              <a
+                class="footer-social__link"
+                href="https://www.facebook.com/share/18EgzsuH3P/?mibextid=wwXIfr"
+                target="_blank"
+                rel="noopener noreferrer"
+                [attr.aria-label]="'pages.layout.footer.social.facebook' | translate"
+              >
+                <span class="material-icons" aria-hidden="true">facebook</span>
+              </a>
+              <a
+                class="footer-social__link"
+                href="https://www.linkedin.com/company/fluenia-academy/"
+                target="_blank"
+                rel="noopener noreferrer"
+                [attr.aria-label]="'pages.layout.footer.social.linkedin' | translate"
+              >
+                <span class="material-icons" aria-hidden="true">work</span>
+              </a>
+            </div>
           </div>
 
-          <div class="footer-copy">{{ 'pages.layout.footer.copy' | translate }}</div>
+          <nav class="footer-nav" [attr.aria-label]="'pages.layout.footer.quickLinksTitle' | translate">
+            <div class="footer-nav__title">{{ 'pages.layout.footer.quickLinksTitle' | translate }}</div>
+            <a class="footer-nav__link" routerLink="/main/home">{{ 'pages.layout.footer.quickLinks.home' | translate }}</a>
+            <a class="footer-nav__link" routerLink="/main/about">{{ 'pages.layout.footer.quickLinks.about' | translate }}</a>
+            <a class="footer-nav__link" routerLink="/main/pricing">{{ 'pages.layout.footer.quickLinks.pricing' | translate }}</a>
+            <a class="footer-nav__link" routerLink="/main/levels">{{ 'pages.layout.footer.quickLinks.levels' | translate }}</a>
+            <a class="footer-nav__link" routerLink="/main/contact">{{ 'pages.layout.footer.quickLinks.contact' | translate }}</a>
+          </nav>
 
-          <div class="footer-actions">
-            <a class="footer-contact-link" routerLink="/main/contact">
-              {{ 'pages.layout.footer.contactUsButton' | translate }}
-            </a>
+          <div class="footer-right">
+            <div class="footer-copy">{{ 'pages.layout.footer.copy' | translate }}</div>
+            <div class="footer-actions">
+              <a class="footer-contact-link" routerLink="/main/contact">
+                {{ 'pages.layout.footer.contactUsButton' | translate }}
+              </a>
+              @if (!isAuthenticated()) {
+                <a class="footer-test-link" routerLink="/external/login">
+                  {{ 'pages.layout.footer.startPlacementTest' | translate }}
+                </a>
+              }
+            </div>
           </div>
         </div>
       </footer>

@@ -29,6 +29,8 @@ import { PlacementTestService } from '@shared/services/learning/placement-test.s
 import { UserService } from '@shared/services/user/user.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { TranslateService } from '@ngx-translate/core';
+import { MatDialog } from '@angular/material/dialog';
+import { PaymentSuccessDialogComponent } from './payment-success-dialog.component';
 
 @Component({
   selector: 'app-pricing',
@@ -47,14 +49,23 @@ export default class PricingComponent {
   private readonly _studentHubService = inject(StudentHubService);
   private readonly _placementTestService = inject(PlacementTestService);
   private readonly _translate = inject(TranslateService);
+  private readonly _dialog = inject(MatDialog);
   private readonly _destroyRef = inject(DestroyRef);
 
   readonly checkoutPlan = signal<PricingPlanId | null>(null);
-  readonly isCheckingStudentCourses = signal(false);
-  readonly hasStudentEnrollments = signal(true);
-  readonly hasActiveStudentPayment = signal(false);
+  /** Derived from the shared hub signal — no manual set() needed. */
+  readonly isCheckingStudentCourses = computed(() => this._studentHubService.isLoading());
+  readonly hasStudentEnrollments = computed(() => {
+    const hub = this._studentHubService.hub();
+    return hub === null || hub.group != null;
+  });
+  readonly hasActiveStudentPayment = computed(() => {
+    const hub = this._studentHubService.hub();
+    return hub !== null && (hub.status ?? '').trim().toLowerCase() === 'active';
+  });
   readonly paymentSaveError = signal<string | null>(null);
   readonly isRetryingPaymentSave = signal(false);
+  readonly isSavingPayment = signal(false);
   readonly shouldShowPlacementEntry = this._placementTestService.shouldShowPlacementEntry;
   readonly shouldShowNoCoursesMessage = computed(
     () =>
@@ -72,7 +83,13 @@ export default class PricingComponent {
 
   constructor() {
     this._placementTestService.refreshStatus();
-    this._loadStudentHubForPricing();
+    // Load hub for authenticated students — service signal drives all derived state.
+    if (this._userService.isAuthenticated() && this._userService.isStudentSignal()) {
+      this._studentHubService.load().pipe(takeUntilDestroyed(this._destroyRef)).subscribe();
+    }
+    // Pre-load the PayPal SDK in the background so it is already cached when
+    // the user opens checkout — eliminates the script-fetch delay on first click.
+    this._paypal.loadScript().catch(() => { /* will retry on demand */ });
 
     effect(() => {
       const plan = this.checkoutPlan();
@@ -96,14 +113,9 @@ export default class PricingComponent {
         void this._paypal
           .renderButtons(el, plan, {
             onSuccess: (ctx) => {
-              const planDetail = PRICING_PLAN_DETAILS[plan];
-              if (!planDetail) {
-                this._toast.showError(this._translate.instant('pages.pricing.errors.unknownProduct'));
-                return;
-              }
               this.persistPaymentRecord({
-                amount: Number.parseFloat(planDetail.amount),
-                currency: environment.paypalCurrency ?? 'USD',
+                amount: ctx.amount,
+                currency: ctx.currency,
                 providerReference: ctx.providerReference,
               });
             },
@@ -115,37 +127,6 @@ export default class PricingComponent {
           );
       });
     });
-  }
-
-  /**
-   * Uses {@code GET /student/hub} — group assignment replaces legacy enrollment listing.
-   */
-  private _loadStudentHubForPricing(): void {
-    const user = this._userService.currentUser();
-    if (!user || !this._userService.isStudentSignal()) {
-      this.hasStudentEnrollments.set(true);
-      this.hasActiveStudentPayment.set(false);
-      return;
-    }
-
-    this.isCheckingStudentCourses.set(true);
-    this._studentHubService
-      .getHub()
-      .pipe(takeUntilDestroyed(this._destroyRef))
-      .subscribe({
-        next: (hub) => {
-          this.hasActiveStudentPayment.set(
-            (hub.status ?? '').trim().toLowerCase() === 'active',
-          );
-          this.hasStudentEnrollments.set(hub.group != null);
-          this.isCheckingStudentCourses.set(false);
-        },
-        error: () => {
-          this.hasActiveStudentPayment.set(false);
-          this.hasStudentEnrollments.set(true);
-          this.isCheckingStudentCourses.set(false);
-        },
-      });
   }
 
   planSummary(planId: PricingPlanId): string {
@@ -175,7 +156,7 @@ export default class PricingComponent {
 
   buyNow(planId: PricingPlanId): void {
 
-    if (this.hasActiveStudentPayment()) {
+    if (this.hasActiveStudentPayment() && !planId.startsWith('private-')) {
       this._toast.showError(
         this._translate.instant('pages.pricing.errors.activePaymentExists'),
       );
@@ -213,6 +194,7 @@ export default class PricingComponent {
     const isRetry = options.isRetry === true;
     this.paymentSaveError.set(null);
     this.isRetryingPaymentSave.set(isRetry);
+    this.isSavingPayment.set(true);
 
     this._paymentsService
       .recordMyPayment(payload)
@@ -221,15 +203,23 @@ export default class PricingComponent {
         next: () => {
           this.paymentSaveError.set(null);
           this.isRetryingPaymentSave.set(false);
+          this.isSavingPayment.set(false);
           this._pendingPaymentPayload.set(null);
-          this._toast.showSuccess(this._translate.instant('pages.pricing.messages.paymentSuccess'));
+          // Open the dialog before clearing the checkout so there is no
+          // frame where neither the checkout nor the dialog is visible.
+          this._dialog.open(PaymentSuccessDialogComponent, {
+            width: '420px',
+            disableClose: false,
+          });
           this.checkoutPlan.set(null);
           this._mountedPlan = null;
           this._mountedEl = null;
-          this._loadStudentHubForPricing();
+          // Reload hub bypassing cache — hub signal updates instantly for all consumers.
+          this._studentHubService.load().pipe(takeUntilDestroyed(this._destroyRef)).subscribe();
         },
         error: () => {
           this.isRetryingPaymentSave.set(false);
+          this.isSavingPayment.set(false);
           this._pendingPaymentPayload.set(payload);
           this.paymentSaveError.set(
             this._translate.instant('pages.pricing.errors.receiptSaveFailedShort'),

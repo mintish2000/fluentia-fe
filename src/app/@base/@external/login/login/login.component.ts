@@ -1,7 +1,6 @@
 import { CdkTrapFocus } from '@angular/cdk/a11y';
-import { CommonModule } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
 import { FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -18,7 +17,6 @@ import { LoginForm } from '../interfaces/login.interface';
 @Component({
   selector: 'app-login',
   imports: [
-    CommonModule,
     RouterModule,
     CdkTrapFocus,
     ReactiveFormsModule,
@@ -29,6 +27,7 @@ import { LoginForm } from '../interfaces/login.interface';
     MatIconModule,
     MatCheckboxModule,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
