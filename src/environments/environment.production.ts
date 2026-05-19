@@ -9,7 +9,7 @@ export const environment = {
     csv: 50 * 1024 * 1024, // 50MB
     pdf: 20 * 1024 * 1024, // 20MB
   },
-  paypalClientId: 'AQ1k1fW1vdxpnr2aUsOkbswfHHexVzxSEmb93RW7iIXxsRoXnPuDbdskK2yQ7qBOwAUGFl0fzf_MtwHu',
+  paypalClientId: 'AWSOcZlVBBb6Fzo1lbmm3dj1Hx5rlJxfBd0_TJ7PXQeBCoNzmHoe42BBw5PNo8a9HMRyw_COCnF6rG5s',
   paypalCurrency: 'USD',
   paypalHostedCheckoutUrlByPlan: {} as Record<string, string>,
 };

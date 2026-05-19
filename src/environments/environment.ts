@@ -10,7 +10,7 @@ export const environment = {
     pdf: 20 * 1024 * 1024, // 20MB
   },
   /** PayPal REST app Client ID (Dashboard → Apps & credentials). Use live credentials for production or sandbox ID for testing. */
-  paypalClientId: 'AQ1k1fW1vdxpnr2aUsOkbswfHHexVzxSEmb93RW7iIXxsRoXnPuDbdskK2yQ7qBOwAUGFl0fzf_MtwHu',
+  paypalClientId: 'AWSOcZlVBBb6Fzo1lbmm3dj1Hx5rlJxfBd0_TJ7PXQeBCoNzmHoe42BBw5PNo8a9HMRyw_COCnF6rG5s',
   paypalCurrency: 'USD',
   /** Optional hosted checkout URLs keyed by plan id (`group-1m`, etc.) if you prefer PayPal buttons over the SDK. */
   paypalHostedCheckoutUrlByPlan: {} as Record<string, string>,
