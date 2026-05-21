@@ -164,7 +164,7 @@ export const englishLocal: Locale = {
           apply: 'Apply',
         },
         errors: {
-          loadFailed: 'Could not load dashboard data. Check /assets/mock/dashboard.json.',
+          loadFailed: 'Could not load dashboard data.',
         },
         kpis: {
           students: 'Students',
@@ -178,7 +178,7 @@ export const englishLocal: Locale = {
           studentsByGroup: 'Students by group',
           studentsByStatus: 'Students by status',
           placementDistribution: 'Placement score distribution',
-          revenueTrend: 'Revenue trend (USD, mock)',
+          revenueTrend: 'Revenue trend',
         },
         profile: {
           viewProfile: 'Profile',

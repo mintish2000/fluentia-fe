@@ -143,7 +143,7 @@ export const arabicLocal: Locale = {
       },
       dashboard: {
         title: 'لوحة المعلومات',
-        headerDescription: 'معلومات مفصلة وإرشادات لتحسين أدائك في الخطابة',
+        headerDescription: 'مرحبًا بك في لوحة المعلومات الخاصة بك.',
         description: 'هنا يمكنك الاطلاع على المعلومات والإحصائيات المهمة.',
         loading: 'جارٍ تحميل لوحة المعلومات...',
         retry: 'إعادة المحاولة',
@@ -156,7 +156,7 @@ export const arabicLocal: Locale = {
           apply: 'تطبيق',
         },
         errors: {
-          loadFailed: 'تعذر تحميل بيانات لوحة المعلومات. تحقق من /assets/mock/dashboard.json.',
+          loadFailed: 'تعذر تحميل بيانات لوحة المعلومات.',
         },
         kpis: {
           students: 'الطلاب',
@@ -170,7 +170,7 @@ export const arabicLocal: Locale = {
           studentsByGroup: 'الطلاب حسب المجموعة',
           studentsByStatus: 'الطلاب حسب الحالة',
           placementDistribution: 'توزيع درجات تحديد المستوى',
-          revenueTrend: 'اتجاه الإيرادات (USD تجريبي)',
+          revenueTrend: 'اتجاه الإيرادات',
         },
         profile: {
           viewProfile: 'الملف الشخصي',
