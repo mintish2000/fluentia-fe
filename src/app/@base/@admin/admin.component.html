@@ -357,6 +357,7 @@
                   <ul class="payment-list">
                     @for (payment of visiblePayments(); track payment.id) {
                       <li>
+                        <span>{{ getPaymentPlanDescription(payment.planKey) }}</span>
                         <span>{{ payment.amount | number: '1.0-2' }} {{ payment.currency }}</span>
                         <span>{{ payment.status }}</span>
                         <span>{{ payment.paidAt | date: 'medium' }}</span>

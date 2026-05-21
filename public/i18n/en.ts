@@ -451,6 +451,19 @@ export const englishLocal: Locale = {
           savingPayment: 'Saving your payment…',
           footnote: 'Encrypted payment – Powered by PayPal',
         },
+        paymentMethod: {
+          close: 'Close payment method chooser',
+          title: 'Choose payment method',
+          paypalDesc: 'Continue with PayPal checkout',
+          cliqDesc: 'Pay using CliQ alias',
+        },
+        cliq: {
+          close: 'Close CliQ instructions',
+          title: 'Pay via CliQ',
+          aliasLabel: 'ALIAS:',
+          instructions: 'After payment, send us the receipt by email.',
+          followUp: 'We will contact you as soon as we confirm your payment.',
+        },
         errors: {
           unknownProduct: 'Unknown product.',
           paypalLoadFailed: 'Could not load PayPal checkout. Check paypalClientId in environment.',

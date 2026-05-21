@@ -12,6 +12,88 @@
     </div>
   }
 
+  @if (paymentChoicePlan(); as planId) {
+    <div
+      class="checkout-backdrop"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="payment-method-title"
+      (click)="closePaymentChoice()"
+    >
+      <div class="checkout-dialog" (click)="$event.stopPropagation()">
+        <div class="checkout-dialog__accent" aria-hidden="true"></div>
+        <button type="button" class="checkout-close" (click)="closePaymentChoice()" [attr.aria-label]="'pages.pricing.paymentMethod.close' | translate">
+          <span class="material-icons" aria-hidden="true">close</span>
+        </button>
+        <div class="checkout-dialog__header">
+          <div class="checkout-dialog__icon-wrap" aria-hidden="true">
+            <span class="material-icons">payments</span>
+          </div>
+          <div class="checkout-dialog__headlines">
+            <p class="checkout-dialog__eyebrow">{{ 'pages.pricing.checkout.secureCheckout' | translate }}</p>
+            <h2 id="payment-method-title" class="checkout-dialog__title">{{ 'pages.pricing.paymentMethod.title' | translate }}</h2>
+          </div>
+        </div>
+        <div class="checkout-dialog__summary-card">
+          <span class="checkout-dialog__summary-label">{{ 'pages.pricing.checkout.yourOrder' | translate }}</span>
+          <p class="checkout-dialog__summary">{{ planSummary(planId) }}</p>
+        </div>
+
+        <div class="payment-methods">
+          <button type="button" class="payment-method payment-method--paypal" (click)="choosePaypal(planId)">
+            <img class="payment-method__logo payment-method__logo--paypal" src="/images/paypal-payment.webp" alt="PayPal" loading="lazy" decoding="async" />
+            <span class="payment-method__name">PayPal</span>
+            <span class="payment-method__desc">{{ 'pages.pricing.paymentMethod.paypalDesc' | translate }}</span>
+          </button>
+
+          <button type="button" class="payment-method payment-method--cliq" (click)="chooseCliq(planId)">
+            <img class="payment-method__logo payment-method__logo--cliq" src="/images/cliq-payment.png" alt="CliQ" loading="lazy" decoding="async" />
+            <span class="payment-method__name">CliQ</span>
+            <span class="payment-method__desc">{{ 'pages.pricing.paymentMethod.cliqDesc' | translate }}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (cliqPlan(); as planId) {
+    <div
+      class="checkout-backdrop"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="cliq-title"
+      (click)="closeCliqPopup()"
+    >
+      <div class="checkout-dialog" (click)="$event.stopPropagation()">
+        <div class="checkout-dialog__accent" aria-hidden="true"></div>
+        <button type="button" class="checkout-close" (click)="closeCliqPopup()" [attr.aria-label]="'pages.pricing.cliq.close' | translate">
+          <span class="material-icons" aria-hidden="true">close</span>
+        </button>
+        <div class="checkout-dialog__header">
+          <div class="checkout-dialog__icon-wrap" aria-hidden="true">
+            <img class="checkout-dialog__icon-logo checkout-dialog__icon-logo--cliq" src="/images/cliq-payment.png" alt="" loading="lazy" decoding="async" />
+          </div>
+          <div class="checkout-dialog__headlines">
+            <p class="checkout-dialog__eyebrow">CliQ</p>
+            <h2 id="cliq-title" class="checkout-dialog__title">{{ 'pages.pricing.cliq.title' | translate }}</h2>
+          </div>
+        </div>
+        <div class="checkout-dialog__summary-card">
+          <span class="checkout-dialog__summary-label">{{ 'pages.pricing.checkout.yourOrder' | translate }}</span>
+          <p class="checkout-dialog__summary">{{ planSummary(planId) }}</p>
+        </div>
+        <div class="cliq-info" role="status" aria-live="polite">
+          <p class="cliq-info__alias">{{ 'pages.pricing.cliq.aliasLabel' | translate }} <strong>FLUENTIA25</strong></p>
+          <p>{{ 'pages.pricing.cliq.instructions' | translate }}</p>
+          <p>
+            <a class="cliq-info__email" href="mailto:fluentiaacademy@outlook.com?subject=Payment%20Confirmation%20for%20Plan&body=Hello%20Fluentia%20Team%2C%0A%0AI%20completed%20my%20payment%20via%20CliQ.%20Here%20are%20my%20details%3A%0A-%20Full%20Name%3A%20%0A-%20Selected%20Plan%3A%20%0A-%20Payment%20Date%3A%20%0A-%20Reference%20Number%3A%20%0A%0AThank%20you.">fluentiaacademy&#64;outlook.com</a>
+          </p>
+          <p>{{ 'pages.pricing.cliq.followUp' | translate }}</p>
+        </div>
+      </div>
+    </div>
+  }
+
   @if (checkoutPlan(); as planId) {
     <div
       class="checkout-backdrop"
@@ -27,7 +109,7 @@
         </button>
         <div class="checkout-dialog__header">
           <div class="checkout-dialog__icon-wrap" aria-hidden="true">
-            <span class="material-icons">lock</span>
+            <img class="checkout-dialog__icon-logo checkout-dialog__icon-logo--paypal" src="/images/paypal-payment.webp" alt="" loading="lazy" decoding="async" />
           </div>
           <div class="checkout-dialog__headlines">
             <p class="checkout-dialog__eyebrow">{{ 'pages.pricing.checkout.secureCheckout' | translate }}</p>

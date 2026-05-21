@@ -27,6 +27,7 @@ export interface StudentPaymentRecord {
   amount: number;
   currency: string;
   paidAt: string;
+  planKey: string;
   status: 'paid' | 'failed' | 'refunded';
 }
 

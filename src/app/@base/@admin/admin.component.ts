@@ -15,6 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { TranslateModule } from '@ngx-translate/core';
 import { BaseComponent } from '@shared/components/base/base.component';
+import { PRICING_PLAN_DETAILS, type PricingPlanId } from '@shared/constants/pricing-plans';
 import { Question } from '@shared/interfaces/learning/learning.interface';
 import { ScrollRevealContainerDirective } from '@shared/directives/scroll-reveal-container.directive';
 import { GroupDialogComponent } from './dialogs/group-dialog/group-dialog.component';
@@ -411,5 +412,11 @@ export default class AdminComponent extends BaseComponent {
     return student.payments
       .filter((payment) => payment.status === 'paid')
       .reduce((sum, payment) => sum + payment.amount, 0);
+  }
+
+  /** Returns human-readable plan text for admin payment history rows. */
+  getPaymentPlanDescription(planKey: string): string {
+    const details = PRICING_PLAN_DETAILS[planKey as PricingPlanId];
+    return details?.description ?? planKey;
   }
 }

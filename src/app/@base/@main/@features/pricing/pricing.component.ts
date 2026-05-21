@@ -53,6 +53,8 @@ export default class PricingComponent {
   private readonly _destroyRef = inject(DestroyRef);
 
   readonly checkoutPlan = signal<PricingPlanId | null>(null);
+  readonly paymentChoicePlan = signal<PricingPlanId | null>(null);
+  readonly cliqPlan = signal<PricingPlanId | null>(null);
   /** Derived from the shared hub signal — no manual set() needed. */
   readonly isCheckingStudentCourses = computed(() => this._studentHubService.isLoading());
   readonly hasStudentEnrollments = computed(() => {
@@ -145,6 +147,23 @@ export default class PricingComponent {
     this._mountedEl = null;
   }
 
+  closePaymentChoice(): void {
+    this.paymentChoicePlan.set(null);
+  }
+
+  closeCliqPopup(): void {
+    this.cliqPlan.set(null);
+  }
+
+  choosePaypal(planId: PricingPlanId): void {
+    this.openPaypalFlow(planId);
+  }
+
+  chooseCliq(planId: PricingPlanId): void {
+    this.paymentChoicePlan.set(null);
+    this.cliqPlan.set(planId);
+  }
+
   retrySavePayment(): void {
     const payload = this._pendingPaymentPayload();
     if (!payload || this.isRetryingPaymentSave()) {
@@ -155,7 +174,6 @@ export default class PricingComponent {
   }
 
   buyNow(planId: PricingPlanId): void {
-
     if (this.hasActiveStudentPayment() && !planId.startsWith('private-')) {
       this._toast.showError(
         this._translate.instant('pages.pricing.errors.activePaymentExists'),
@@ -167,6 +185,16 @@ export default class PricingComponent {
       void this._router.navigateByUrl('/external/login');
       return;
     }
+
+    this.paymentSaveError.set(null);
+    this.isRetryingPaymentSave.set(false);
+    this._pendingPaymentPayload.set(null);
+    this.paymentChoicePlan.set(planId);
+  }
+
+  private openPaypalFlow(planId: PricingPlanId): void {
+    this.paymentChoicePlan.set(null);
+    this.cliqPlan.set(null);
 
     const hosted = environment.paypalHostedCheckoutUrlByPlan[planId];
     if (hosted) {
@@ -181,9 +209,6 @@ export default class PricingComponent {
       return;
     }
 
-    this.paymentSaveError.set(null);
-    this.isRetryingPaymentSave.set(false);
-    this._pendingPaymentPayload.set(null);
     this.checkoutPlan.set(planId);
   }
 

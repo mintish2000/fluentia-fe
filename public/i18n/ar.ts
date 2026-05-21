@@ -443,6 +443,19 @@ export const arabicLocal: Locale = {
           savingPayment: 'جارٍ حفظ الدفعة…',
           footnote: 'دفع مشفر – مدعوم من PayPal',
         },
+        paymentMethod: {
+          close: 'إغلاق اختيار طريقة الدفع',
+          title: 'اختر طريقة الدفع',
+          paypalDesc: 'المتابعة عبر دفع PayPal',
+          cliqDesc: 'الدفع باستخدام معرف CliQ',
+        },
+        cliq: {
+          close: 'إغلاق تعليمات CliQ',
+          title: 'الدفع عبر CliQ',
+          aliasLabel: 'المعرف:',
+          instructions: 'بعد الدفع، أرسل لنا الإيصال عبر البريد الإلكتروني.',
+          followUp: 'سنتواصل معك بعد تأكيد الدفع قريبًا.',
+        },
         errors: {
           unknownProduct: 'منتج غير معروف.',
           paypalLoadFailed: 'تعذر تحميل الدفع عبر PayPal. تحقق من paypalClientId في الإعدادات.',
