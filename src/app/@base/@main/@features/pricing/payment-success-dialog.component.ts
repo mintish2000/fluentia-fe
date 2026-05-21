@@ -57,7 +57,6 @@ import { TranslateModule } from '@ngx-translate/core';
       outline-offset: 3px;
     }
     .payment-success-dialog {
-      width: min(460px, 92vw);
       padding: 16px 14px 12px;
       text-align: center;
       border-radius: 20px;

@@ -233,8 +233,9 @@ export default class PricingComponent {
           // Open the dialog before clearing the checkout so there is no
           // frame where neither the checkout nor the dialog is visible.
           this._dialog.open(PaymentSuccessDialogComponent, {
-            width: '420px',
             disableClose: false,
+            width: 'auto',
+            maxWidth: '92vw',
           });
           this.checkoutPlan.set(null);
           this._mountedPlan = null;

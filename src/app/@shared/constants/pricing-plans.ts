@@ -17,7 +17,7 @@ export const PRICING_PLAN_DETAILS: Record<
   { amount: string; description: string }
 > = {
   'group-1m': {
-    amount: '1.00',
+    amount: '100.00',
     description: 'Fluentia — Group classes (1 month)',
   },
   'group-2m': {
@@ -37,7 +37,7 @@ export const PRICING_PLAN_DETAILS: Record<
     description: 'Fluentia — Group classes (12 months)',
   },
   'private-30-1': {
-    amount: '1.00',
+    amount: '20.00',
     description: 'Fluentia — Private 30 min (1 session)',
   },
   'private-30-4': {
