@@ -101,7 +101,7 @@ export const arabicLocal: Locale = {
               desc: 'اختر باقتك ووقتك ثم ابدأ رحلتك!',
             },
           ],
-          ctaPrimary: 'سجل الدخول لتقديم اختبار تحديد المستوى المجاني',
+          ctaPrimary: 'ابدأ اختبار تحديد المستوى الآن!',
           ctaSecondary: 'تعرّف على مستوياتنا',
         },
         about: {

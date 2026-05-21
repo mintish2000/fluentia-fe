@@ -109,7 +109,7 @@ export const englishLocal: Locale = {
               desc: 'Choose your package and time, and then begin your journey!',
             },
           ],
-          ctaPrimary: 'Log In to Take the Free Placement Test',
+          ctaPrimary: 'Start Placement Test Now!',
           ctaSecondary: 'Check Our Levels',
         },
         about: {
