@@ -481,7 +481,7 @@ export const englishLocal: Locale = {
           message2:
             'You will receive a confirmation email within 24 hours with your class details and steps.',
           message3:
-            'If you don\'t receive an email within this time, please contact us directly.',
+            'If you don\'t receive an email within this time, please contact us.',
           close: 'Got it',
         },
       },
