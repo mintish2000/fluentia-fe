@@ -397,7 +397,8 @@ export const arabicLocal: Locale = {
         privateTagFlexible: 'مرونة كاملة',
         privateTagDuration: '30 أو 60 دقيقة',
         groupClassesPricingTitle: 'أسعار الدروس الجماعية',
-        privateTitle: '(1–1): دروس إنجليزية عامة خاصة، تحضير IELTS أو SAT 1 (القراءة والكتابة)',
+        privateTitle30: '(1–1): دروس إنجليزية خاصة تركز على المحادثة',
+        privateTitle60: '(1–1): دروس إنجليزية عامة خاصة، تحضير IELTS أو SAT 1 (القراءة والكتابة)',
         private30Title: 'دروس خاصة 30 دقيقة',
         private60Title: 'دروس خاصة 60 دقيقة',
         privateLead: 'دروس فردية 1–1، محتوى مخصص بالكامل، مواعيد مرنة',
@@ -405,6 +406,8 @@ export const arabicLocal: Locale = {
           one: 'حصة واحدة',
           four: 'أربع حصص',
           eight: 'ثماني حصص',
+          twelve: 'اثنان عشر حصة',
+          sixteen: 'ستة عشر حصة',
         },
         schedule: {
           title: 'الجدول والمواعيد',

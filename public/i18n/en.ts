@@ -405,7 +405,8 @@ export const englishLocal: Locale = {
         privateTagFlexible: 'Fully flexible',
         privateTagDuration: '30 or 60 minutes',
         groupClassesPricingTitle: 'Group Classes Pricing',
-        privateTitle: '(1-on-1): Private General English, IELTS Preparation, or SAT 1 (Reading & Writing) Classes',
+        privateTitle30: '(1-on-1): Speaking-focused Sessions',
+        privateTitle60: '(1-on-1): Private General English, IELTS Preparation, or SAT 1 (Reading & Writing) Classes',
         private30Title: '30-minute Private Classes',
         private60Title: '60-minute Private Classes',
         privateLead: '1-on-1 instruction, fully customized lessons, flexible scheduling',
@@ -413,6 +414,8 @@ export const englishLocal: Locale = {
           one: 'One session',
           four: 'Four sessions',
           eight: 'Eight sessions',
+          twelve: 'Twelve sessions',
+          sixteen: 'Sixteen sessions',
         },
         schedule: {
           title: 'Schedule & Time Slots',

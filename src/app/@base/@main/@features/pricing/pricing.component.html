@@ -297,17 +297,17 @@
     </div>
 
     <div class="private">
-      <div class="private__title">
-        {{ 'pages.pricing.privateTitle' | translate }}
-      </div>
       <div class="private__grid">
         <article class="mini-card">
+          <div class="private__title">
+            {{ 'pages.pricing.privateTitle30' | translate }}
+          </div>
           <div class="mini-card__title">{{ 'pages.pricing.private30Title' | translate }}</div>
           <p class="mini-card__lead">{{ 'pages.pricing.privateLead' | translate }}</p>
           <div class="mini-card__row">
             <span>{{ 'pages.pricing.sessions.one' | translate }}</span>
             <span class="mini-card__row-right">
-              <strong>$20</strong>
+              <strong>$15</strong>
               <button type="button" class="cta cta--gold cta--inline" (click)="buyNow('private-30-1')" >
                 {{ 'pages.pricing.buy' | translate }}
               </button>
@@ -316,7 +316,7 @@
           <div class="mini-card__row">
             <span>{{ 'pages.pricing.sessions.four' | translate }}</span>
             <span class="mini-card__row-right">
-              <strong>$70</strong>
+              <strong>$52</strong>
               <button type="button" class="cta cta--gold cta--inline" (click)="buyNow('private-30-4')" >
                 {{ 'pages.pricing.buy' | translate }}
               </button>
@@ -325,21 +325,42 @@
           <div class="mini-card__row">
             <span>{{ 'pages.pricing.sessions.eight' | translate }}</span>
             <span class="mini-card__row-right">
-              <strong>$150</strong>
+              <strong>$96</strong>
               <button type="button" class="cta cta--gold cta--inline" (click)="buyNow('private-30-8')" >
                 {{ 'pages.pricing.buy' | translate }}
               </button>
             </span>
           </div>
+          <div class="mini-card__row">
+            <span>{{ 'pages.pricing.sessions.twelve' | translate }}</span>
+            <span class="mini-card__row-right">
+              <strong>$132</strong>
+              <button type="button" class="cta cta--gold cta--inline" (click)="buyNow('private-30-12')" >
+                {{ 'pages.pricing.buy' | translate }}
+              </button>
+            </span>
+          </div>
+          <div class="mini-card__row">
+            <span>{{ 'pages.pricing.sessions.sixteen' | translate }}</span>
+            <span class="mini-card__row-right">
+              <strong>$168</strong>
+              <button type="button" class="cta cta--gold cta--inline" (click)="buyNow('private-30-16')" >
+                {{ 'pages.pricing.buy' | translate }}
+              </button>
+            </span>
+          </div>
         </article>
-
+        
         <article class="mini-card">
+          <div class="private__title">
+            {{ 'pages.pricing.privateTitle60' | translate }}
+          </div>
           <div class="mini-card__title">{{ 'pages.pricing.private60Title' | translate }}</div>
           <p class="mini-card__lead">{{ 'pages.pricing.privateLead' | translate }}</p>
           <div class="mini-card__row">
             <span>{{ 'pages.pricing.sessions.one' | translate }}</span>
             <span class="mini-card__row-right">
-              <strong>$35</strong>
+              <strong>$25</strong>
               <button type="button" class="cta cta--gold cta--inline" (click)="buyNow('private-60-1')" >
                 {{ 'pages.pricing.buy' | translate }}
               </button>
@@ -348,7 +369,7 @@
           <div class="mini-card__row">
             <span>{{ 'pages.pricing.sessions.four' | translate }}</span>
             <span class="mini-card__row-right">
-              <strong>$130</strong>
+              <strong>$90</strong>
               <button type="button" class="cta cta--gold cta--inline" (click)="buyNow('private-60-4')" >
                 {{ 'pages.pricing.buy' | translate }}
               </button>
@@ -357,8 +378,17 @@
           <div class="mini-card__row">
             <span>{{ 'pages.pricing.sessions.eight' | translate }}</span>
             <span class="mini-card__row-right">
-              <strong>$280</strong>
+              <strong>$170</strong>
               <button type="button" class="cta cta--gold cta--inline" (click)="buyNow('private-60-8')" >
+                {{ 'pages.pricing.buy' | translate }}
+              </button>
+            </span>
+          </div>
+          <div class="mini-card__row">
+            <span>{{ 'pages.pricing.sessions.twelve' | translate }}</span>
+            <span class="mini-card__row-right">
+              <strong>$240</strong>
+              <button type="button" class="cta cta--gold cta--inline" (click)="buyNow('private-60-12')" >
                 {{ 'pages.pricing.buy' | translate }}
               </button>
             </span>
