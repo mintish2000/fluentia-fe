@@ -13,7 +13,8 @@ export type PricingPlanId =
   | 'private-60-1'
   | 'private-60-4'
   | 'private-60-8'
-  | 'private-60-12';
+  | 'private-60-12'
+  | 'private-60-16';
 
 export const PRICING_PLAN_DETAILS: Record<
   PricingPlanId,
@@ -74,5 +75,9 @@ export const PRICING_PLAN_DETAILS: Record<
   'private-60-12': {
     amount: '240.00',
     description: 'Fluentia — Private 60 min (12 sessions)',
+  },
+  'private-60-16': {
+    amount: '300.00',
+    description: 'Fluentia — Private 60 min (16 sessions)',
   },
 };
